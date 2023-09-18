@@ -8,13 +8,14 @@ class IntroOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Container(color: Colors.red,
+      body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
         child: Column(
           children: [
-            Container(color: Colors.teal,height: MediaQuery.of(context).size.height *.7,
+            Container(//color: Colors.teal,
+               height: MediaQuery.of(context).size.height *.7,
             child:
             Column(children: [
               Padding(
@@ -48,7 +49,8 @@ class IntroOne extends StatelessWidget {
 
 
             ],),),
-            Container(color: Colors.blueGrey ,height: MediaQuery.of(context).size.height *.23,
+            Container(//color: Colors.blueGrey ,
+               height: MediaQuery.of(context).size.height *.23,
             child:
               Column(
                 children: [ Padding(
@@ -58,7 +60,7 @@ class IntroOne extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/intro2');
                     },
-                    child: Text('Continue',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600)),
+                    child: Text('Continue',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
                       onPrimary: Colors.green.shade800,

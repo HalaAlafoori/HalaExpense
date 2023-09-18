@@ -36,7 +36,7 @@ class _IntroThree extends State<IntroThree>{
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Container(color: Colors.red,
+      body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
@@ -44,10 +44,11 @@ class _IntroThree extends State<IntroThree>{
         SingleChildScrollView(
           child: Column(
             children: [
-              Container(color: Colors.teal,height: MediaQuery.of(context).size.height *.7,
+              Container(//color: Colors.teal,
+                // height: MediaQuery.of(context).size.height *.7,
               child: Column(children: [
                 Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  padding: const EdgeInsets.symmetric(vertical: 50),
                   child: Text(
                     'Choose 3 categories to start with :',
                     style: TextStyle(
@@ -58,7 +59,7 @@ class _IntroThree extends State<IntroThree>{
                   ),
                 ),
                 Container(
-                  height: (MediaQuery.of(context).size.height) * .60,
+                  height: (MediaQuery.of(context).size.height) * .55,
                   child: ListView(
                     children:
                     catergories.map((item){
@@ -84,17 +85,20 @@ class _IntroThree extends State<IntroThree>{
                   ),
                 ),
               ],),),
-              Container(color: Colors.blueGrey ,height: MediaQuery.of(context).size.height *.23,
+              Container(//color: Colors.blueGrey ,
+                 height: MediaQuery.of(context).size.height *.23,
               child:
               Column(
                 children: [ Padding(
                   padding: const EdgeInsets.all(50.0),
                   child: ElevatedButton(
 
+
                     onPressed: () {
+                      
                       Navigator.of(context).pushReplacementNamed('/intro3');
                     },
-                    child: Text('Get Started',style: TextStyle(fontSize: 18,fontWeight: FontWeight.w600)),
+                    child: Text('Get Started',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600)),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.white,
                       onPrimary: Colors.green.shade800,
