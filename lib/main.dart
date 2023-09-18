@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'intro_pages/intro_one.dart';
+import 'intro_pages/intro_three.dart';
 import 'intro_pages/intro_two.dart';
 
 void main() {
@@ -30,7 +31,8 @@ class MyApp extends StatelessWidget {
       ),
     routes: {
       '/intro1': (context) => IntroOne(),
-      '/intro1': (context) => IntroTwo(),
+      '/intro2': (context) => IntroTwo(),
+      '/intro3': (context) => IntroThree(),
     },
       initialRoute: '/intro1',
     );
