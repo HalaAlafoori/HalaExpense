@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:halaexpenses/intro_pages/three_dots.dart';
 
 class IntroThree extends StatefulWidget {
   @override
@@ -138,15 +139,7 @@ class _IntroThree extends State<IntroThree>{
 
                   ),
                 ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-
-                    Icon(Icons.circle,color: Colors.white,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.white,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.green,),
-
-                  ],),],
+                  threeDots(3),],
               ),)
 
             ],

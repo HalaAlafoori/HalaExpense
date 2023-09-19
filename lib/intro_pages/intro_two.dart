@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'three_dots.dart';
+
 class IntroTwo extends StatelessWidget {
   RegExp nameRegExp = RegExp(r'^[a-zA-Z]');
   RegExp emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
@@ -43,6 +45,7 @@ class IntroTwo extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+
                         controller: nameCtr,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         style: TextStyle(color: Colors.green.shade900),
@@ -74,6 +77,7 @@ class IntroTwo extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        keyboardType: TextInputType.emailAddress,
                         controller: emailCtr,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         style: TextStyle(color: Colors.green.shade900),
@@ -103,8 +107,10 @@ class IntroTwo extends StatelessWidget {
                       ),
                     ),
                     Padding(
+
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         controller: budgetCtr,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         style: TextStyle(color: Colors.green.shade900),
@@ -136,6 +142,7 @@ class IntroTwo extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: TextFormField(
+                        obscureText: true,
                         controller: passwordCtr,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         style: TextStyle(color: Colors.green.shade900),
@@ -190,15 +197,7 @@ class IntroTwo extends StatelessWidget {
 
                   ),
                 ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-
-                    Icon(Icons.circle,color: Colors.white,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.green,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.white,),
-
-                  ],),],
+                  threeDots(2),],
               ),)
 
             ],

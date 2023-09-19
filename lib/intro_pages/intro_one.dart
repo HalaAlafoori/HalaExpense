@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'three_dots.dart';
+
 class IntroOne extends StatelessWidget {
   const IntroOne({Key? key}) : super(key: key);
 
@@ -64,15 +66,7 @@ class IntroOne extends StatelessWidget {
 
                   ),
                 ),
-                  Row(mainAxisAlignment: MainAxisAlignment.center,children: [
-
-                    Icon(Icons.circle,color: Colors.green,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.white,),
-                    SizedBox(width: 16),
-                    Icon(Icons.circle,color: Colors.white,),
-
-                  ],),],
+                  threeDots(1),],
               ),)
 
           ],
