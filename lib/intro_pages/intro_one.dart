@@ -60,11 +60,8 @@ class IntroOne extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).pushReplacementNamed('/intro2');
                     },
-                    child: Text('Continue',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600)),
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.white,
-                      onPrimary: Colors.green.shade800,
-                    ),
+                    child: Text('Continue',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.green.shade900)),
+
                   ),
                 ),
                   Row(mainAxisAlignment: MainAxisAlignment.center,children: [

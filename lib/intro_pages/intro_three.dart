@@ -134,12 +134,8 @@ class _IntroThree extends State<IntroThree>{
                         null,
 
 
-                    child: Text('Get Started',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600)),
-                    style: ElevatedButton.styleFrom(
-                      onSurface: Colors.blueGrey,
-                      primary: Colors.white,
-                      onPrimary: Colors.green.shade800,
-                    ),
+                    child: Text('Get Started',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.green.shade900)),
+
                   ),
                 ),
                   Row(mainAxisAlignment: MainAxisAlignment.center,children: [
