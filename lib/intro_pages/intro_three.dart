@@ -11,6 +11,10 @@ class IntroThree extends StatefulWidget {
 
 }
 class _IntroThree extends State<IntroThree>{
+
+  //bool btnIsActive=true;
+  int chosenNum=0;
+  bool btnIsActive=false;
   List catergories=[
     {'name':"Food",'isChecked':false,},
     {'name':"Transportation",'isChecked':false,},
@@ -33,9 +37,14 @@ class _IntroThree extends State<IntroThree>{
 
 
   ];
+  List chosenCategories=[];
+
+
   @override
   Widget build(BuildContext context) {
+
     return  Scaffold(
+
       body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
@@ -65,13 +74,24 @@ class _IntroThree extends State<IntroThree>{
                     catergories.map((item){
                       return
                         CheckboxListTile(
+
                           side: BorderSide(color: Colors.green.shade900),
                           checkColor: Colors.white,
+
+
                           // tileColor: Colors.white,
                           activeColor: Colors.green,
                           checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
                           title: Text(item['name'],style: TextStyle(color: Colors.green.shade900),),
                           value: item['isChecked'],onChanged: (val){
+                          if(val!){
+                            chosenNum++;
+
+                          }
+                          else{
+                            chosenNum--;
+                          }
+                          print(chosenNum);
                           setState(() {
                             item['isChecked']=val;
                           });
@@ -82,24 +102,41 @@ class _IntroThree extends State<IntroThree>{
 
 
 
+
                   ),
                 ),
+             
+
               ],),),
               Container(//color: Colors.blueGrey ,
                  height: MediaQuery.of(context).size.height *.23,
               child:
               Column(
-                children: [ Padding(
+                children: [
+
+
+
+                  Padding(
                   padding: const EdgeInsets.all(50.0),
                   child: ElevatedButton(
 
 
-                    onPressed: () {
-                      
-                      Navigator.of(context).pushReplacementNamed('/intro3');
-                    },
+
+
+                    onPressed: chosenNum>=3
+                        ?
+                        (){
+                          setState(() {
+                            print("______________________________");
+                            btnIsActive=true;
+                          });
+                        } :
+                        null,
+
+
                     child: Text('Get Started',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600)),
                     style: ElevatedButton.styleFrom(
+                      onSurface: Colors.blueGrey,
                       primary: Colors.white,
                       onPrimary: Colors.green.shade800,
                     ),
