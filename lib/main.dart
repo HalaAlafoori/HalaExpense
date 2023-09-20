@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halaexpenses/main_page.dart';
 
 import 'color.dart';
 import 'intro_pages/intro_one.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
 
-        primarySwatch: white,
+        primarySwatch:darkgreen ,
 
 
       ),
@@ -27,8 +28,10 @@ class MyApp extends StatelessWidget {
       '/intro1': (context) => IntroOne(),
       '/intro2': (context) => IntroTwo(),
       '/intro3': (context) => IntroThree(),
+      '/': (context) => MainPage(),
+
     },
-      initialRoute: '/intro1',
+      initialRoute: '/',
     );
   }
 }
