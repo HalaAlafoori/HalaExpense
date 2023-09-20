@@ -4,7 +4,7 @@ import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/shared/app_bar.dart';
 import 'package:halaexpenses/shared/drawer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+//import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 class MainPage extends StatefulWidget {
 
 
@@ -18,8 +18,10 @@ class Total{
   final int money;
 }
 class _MainPageState extends State<MainPage> {
-  var income=3000;
-  var spent=1000;
+  var income=3200;
+  var spent=3220;
+
+
 
   int _currentIndex=0;
   late List<Total> _chartData;
@@ -27,7 +29,7 @@ class _MainPageState extends State<MainPage> {
 
   List<Total> getChartData(){
     final List<Total> chartData=[
-      Total('income', income),
+      Total('total', income+spent),
       Total('spent', spent),
 
 
@@ -133,6 +135,7 @@ class _MainPageState extends State<MainPage> {
                         height: MediaQuery.of(context).size.height * .3,
                         child:
                         SfCircularChart(
+
                           palette: [darkgreen,darkred],
                           //title: ChartTitle(text: "Contienents"),
                           //legend: Legend(isVisible: true,),
@@ -145,7 +148,12 @@ class _MainPageState extends State<MainPage> {
                                 xValueMapper: (datum, index) => datum.title,
                                 yValueMapper: (datum, index) => datum.money,
                                 dataLabelSettings: DataLabelSettings(isVisible: false),
-                                enableTooltip: true
+                                enableTooltip: true,
+                                explode: true,
+
+                                // Explode all the segments
+                                explodeAll: true
+
                             )],
 
 
@@ -159,8 +167,68 @@ class _MainPageState extends State<MainPage> {
               ),
 
 
-              Container(//color: Colors.blue ,
-                height: MediaQuery.of(context).size.height *.4,
+              Container(
+                padding: EdgeInsets.all(10),
+               // color: Colors.blue ,
+                height: MediaQuery.of(context).size.height *.5,
+                child: Column(
+                  children: [
+                    Container(//color: Colors.lightGreen ,
+                      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children:[
+                        Text("Recent treansactions",style: TextStyle(fontSize: 18,color: Colors.grey),),
+                          OutlinedButton(
+                            child: Text("See All >"),
+
+                            style: ButtonStyle(
+                              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                            ),
+
+                            onPressed: () {},
+                          ),],
+
+                      ),
+                    ),
+                    Container(//color: Colors.lime,
+                      height: MediaQuery.of(context).size.height *.415 ,
+                      child:
+                      ListView(
+                        children: [
+                          Container(//color: Colors.yellowAccent,
+                            height: MediaQuery.of(context).size.height *.12 ,
+
+
+                            padding: EdgeInsets.symmetric(vertical: 15,horizontal: 5),
+                            child: ListTile(
+                              leading: Container(
+                                  padding: EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color:darkgreen,
+                                  ),
+                                  child: Icon(Icons.coffee,size: 30,)),
+                              title: Container(margin: EdgeInsets.only(left: 20),//color: Colors.redAccent,
+                                child: Text("Food"),
+                              ),
+                              subtitle: Container(margin: EdgeInsets.only(left: 20),//color: Colors.indigoAccent,
+                                child: Text("Lunch"),
+                              ),
+                              trailing:
+                              Container(
+                                //color: Colors.pinkAccent,
+                                  padding: EdgeInsets.symmetric(vertical: 10)
+                                  ,child: Column(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("\$200"),Text("Mon 06,2023",style: TextStyle(color: Colors.grey),),],))
+
+                            ),
+                          ),
+
+
+                        ],
+                      ) ,
+                    )
+                  ],
+
+                ),
               ),
 
             ],),
