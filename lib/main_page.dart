@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/shared/app_bar.dart';
 import 'package:halaexpenses/shared/drawer.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -49,16 +50,16 @@ class _MainPageState extends State<MainPage> {
 
       drawer: MyDrawer(),
       body:
-          Container(padding: EdgeInsets.all(10),
+          Container(padding: EdgeInsets.all(10),//color: Colors.pink,
             child: Column(children: [
               Container(
                 decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.blueGrey.shade50,),
-                padding: EdgeInsets.all(25),
-                height: MediaQuery.of(context).size.height * .4,
+                //padding: EdgeInsets.all(25),
+                height: MediaQuery.of(context).size.height * .3,
                 child: Row(children: [
                   Container(//color: Colors.teal,
-                    padding: EdgeInsets.symmetric(vertical: 30),
-                    width: MediaQuery.of(context).size.width * .35,
+                    padding: EdgeInsets.symmetric(vertical: 21),
+                    width: MediaQuery.of(context).size.width * .4,
 
 
                     child: Column(//left
@@ -74,7 +75,7 @@ class _MainPageState extends State<MainPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Text("\$",style: TextStyle(color: Colors.green),),
+                                    child: Text("\$",style: TextStyle(color: darkgreen),),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -101,7 +102,7 @@ class _MainPageState extends State<MainPage> {
                                 children: [
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    child: Text("\$",style: TextStyle(color: Colors.red),),
+                                    child: Text("\$",style: TextStyle(color: darkred),),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
@@ -125,15 +126,16 @@ class _MainPageState extends State<MainPage> {
                     ),
                   ),
                   Container(//color: Colors.amber,
-                    padding: EdgeInsets.only(top:20),
+                    //padding: EdgeInsets.only(top:30),
                     child: Column(//right
                       children: [
-                        Container(width: MediaQuery.of(context).size.width * .47,
+                        Container(width: MediaQuery.of(context).size.width * .55,
                         height: MediaQuery.of(context).size.height * .3,
                         child:
                         SfCircularChart(
+                          palette: [darkgreen,darkred],
                           //title: ChartTitle(text: "Contienents"),
-                          legend: Legend(isVisible: true,),
+                          //legend: Legend(isVisible: true,),
                           tooltipBehavior: _tooltipBehavior,
                           series: [
 
