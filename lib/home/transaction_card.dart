@@ -11,7 +11,8 @@ Widget TransactionCard(context){
 
     padding: EdgeInsets.symmetric(vertical: 15,horizontal: 5),
     child: ListTile(
-        leading: Container(
+        leading:
+        Container(
             padding: EdgeInsets.all(14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),

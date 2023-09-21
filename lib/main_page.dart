@@ -42,7 +42,10 @@ class _MainPageState extends State<MainPage> {
       shape: RoundedRectangleBorder(
     borderRadius: BorderRadius.circular(15),
 
-    ), onPressed: () {  }, ),
+    ), onPressed: () {
+        Navigator.pushNamed(context, "/add");
+
+    }, ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedItemColor: Colors.grey,
         showUnselectedLabels: true,
