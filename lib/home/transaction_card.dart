@@ -16,7 +16,7 @@ Widget TransactionCard(context){
             padding: EdgeInsets.all(14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color:darkgreen,
+              color:darkred,
             ),
             child: Icon(Icons.coffee,size: 30,)),
         title: Container(margin: EdgeInsets.only(left: 20),//color: Colors.redAccent,

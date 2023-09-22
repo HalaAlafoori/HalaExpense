@@ -7,6 +7,9 @@ import 'package:halaexpenses/shared/app_bar.dart';
 import 'package:halaexpenses/shared/drawer.dart';
 import 'package:halaexpenses/shared/total.dart';
 
+import 'categories/main_categories.dart';
+import 'goals/main_goals.dart';
+
 class MainPage extends StatefulWidget {
 
 
@@ -21,11 +24,14 @@ class _MainPageState extends State<MainPage> {
   var spent=3220;
   List pages=[
     MainHome(3200,2100),
+    MainGoals(),
+    MainCategories(),
+
   ];
 
 
 
-  int _currentIndex=0;
+  int _currentIndex=1;
 
   @override
   Widget build(BuildContext context) {
@@ -65,11 +71,12 @@ class _MainPageState extends State<MainPage> {
             icon:Icon(Icons.home),
             label:'Home',
 
+
           ),
 
           BottomNavigationBarItem(
               icon:Icon(Icons.bar_chart),
-              label:'Sacle'
+              label:'Goals'
           ),
           BottomNavigationBarItem(
               icon:Icon(Icons.list_rounded),
