@@ -4,6 +4,7 @@ import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
+import '../shared/brunch/title_input.dart';
 import 'icons.dart';
 
 class AddCat extends StatefulWidget {
@@ -23,6 +24,7 @@ class _AddCat extends State<AddCat> {
   int _selectedIcon=0;
 
   var formKey=GlobalKey<FormState>();
+  var nameCon=TextEditingController();
   //reg exp
 
 
@@ -44,53 +46,7 @@ class _AddCat extends State<AddCat> {
               height: MediaQuery.of(context).size.height *.77,
               child:
               Column(children: [
-                Container(margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
-
-
-
-
-                  child:
-
-
-
-                  TextFormField(
-
-                    //controller: nameCtr,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    style: TextStyle(color: Colors.green.shade900),
-
-                    validator: (value){
-                      if(value == "")
-                      {return "title is required";}
-
-                      else{
-                        if(value!.length <3){return "title must be longer that 3 chars";}
-                        bool isValid = MyRegularExp.alphanumRegExp.hasMatch(value);
-                        if (!isValid) {
-                          return "title must only contains letter and numbers";
-                        }
-                      }},
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
-                      labelText: "Title",
-
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder:UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                    ),
-                  ),
-
-
-                ),
+                TitleInput(nameCon,"Name"),
                 Container(//color:Colors.red,
                   margin: EdgeInsets.only(bottom: 10),
                   height: MediaQuery.of(context).size.height*.3,
@@ -114,7 +70,7 @@ class _AddCat extends State<AddCat> {
                         Container(padding: EdgeInsets.only(top:10,bottom: 20),
                           child:
 
-                          Text("Transaction Type",style: TextStyle(fontSize: 18),),),
+                          Text("Category Type",style: TextStyle(fontSize: 18),),),
                         Container(width: MediaQuery.of(context).size.width/2,
                           child: RadioListTile(value: TransactionType.income,
 

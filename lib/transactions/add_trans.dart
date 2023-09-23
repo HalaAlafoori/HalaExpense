@@ -3,7 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/categories/icons.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+import 'package:halaexpenses/shared/brunch/title_input.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
+
+import '../shared/brunch/money_input.dart';
 
 class AddTrans extends StatefulWidget {
   const AddTrans({Key? key}) : super(key: key);
@@ -35,7 +38,8 @@ class _AddTrans extends State<AddTrans> {
   Icon? _selectedIcon;
   int _selectedIndex=0;
   var formKey=GlobalKey<FormState>();
-  //reg exp
+  var priceCon=TextEditingController();
+  var titleCon=TextEditingController();
 
 
   @override
@@ -56,103 +60,8 @@ class _AddTrans extends State<AddTrans> {
                 height: MediaQuery.of(context).size.height *.77,
                 child:
                 Column(children: [
-                  Container(margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
-
-
-
-
-                  child:
-
-
-
-                  TextFormField(
-
-                    //controller: nameCtr,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    style: TextStyle(color: Colors.green.shade900),
-
-                    validator: (value){
-                      if(value == "")
-                      {return "title is required";}
-
-                      else{
-                        if(value!.length <3){return "title must be longer that 3 chars";}
-                        bool isValid = MyRegularExp.alphanumRegExp.hasMatch(value);
-                        if (!isValid) {
-                          return "title must only contains letter and numbers";
-                        }
-                      }},
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
-                      labelText: "Title",
-
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder:UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                    ),
-                  ),
-
-
-                ),
-                  Container(
-                    margin: EdgeInsets.only(bottom: 10),
-                    padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
-
-
-
-
-                    child:
-
-
-                    // Container(padding: EdgeInsets.only(left:10),
-                    //     width: MediaQuery.of(context).size.width,
-                    //     child:
-                    //     Text("Amount")),
-                    TextFormField(
-
-                      //controller: nameCtr,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      style: TextStyle(color: Colors.green.shade900),
-
-                      validator: (value){
-                        if(value == "")
-                        {return "price is required";}
-
-                        else{
-
-                          bool isValid = MyRegularExp.priceRegExp.hasMatch(value!);
-                          if (!isValid) {
-                            return "price is not in a correct format";
-                          }
-                        }},
-                      decoration: InputDecoration(
-                        fillColor: Colors.grey.shade200,
-                        filled: true,
-                        labelText: "Price",
-
-                        labelStyle: TextStyle(color: Colors.black),
-                        focusedBorder:UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                          borderRadius: BorderRadius.circular(23.0),
-                        ),
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey.shade200),
-                          borderRadius: BorderRadius.circular(23.0),
-                        ),
-                      ),
-                    ),
-
-                  ),
+                 TitleInput(titleCon, "Title"),
+                  MoneyInput(priceCon, "Price"),
 
 
                   Container(//color:Colors.red,

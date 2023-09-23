@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/color.dart';
+import 'package:halaexpenses/shared/brunch/money_input.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
@@ -34,6 +35,7 @@ class _AddGoals extends State<AddGoals> {
   Icon? _selectedIcon;
   int _selectedIndex=0;
   var formKey=GlobalKey<FormState>();
+  var limitCon=TextEditingController();
 
 
 
@@ -61,56 +63,7 @@ class _AddGoals extends State<AddGoals> {
               child:
               Column(children: [
 
-                Container(
-                  margin: EdgeInsets.only(bottom: 10),
-                  padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
-
-
-
-
-                  child:
-
-
-                  // Container(padding: EdgeInsets.only(left:10),
-                  //     width: MediaQuery.of(context).size.width,
-                  //     child:
-                  //     Text("Amount")),
-                  TextFormField(
-
-                    //controller: nameCtr,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    style: TextStyle(color: Colors.green.shade900),
-
-                    validator: (value){
-                      if(value == "")
-                      {return "price is required";}
-
-                      else{
-
-                        bool isValid = MyRegularExp.priceRegExp.hasMatch(value!);
-                        if (!isValid) {
-                          return "price is not in a correct format";
-                        }
-                      }},
-                    decoration: InputDecoration(
-                      fillColor: Colors.grey.shade200,
-                      filled: true,
-                      labelText: "Price",
-
-                      labelStyle: TextStyle(color: Colors.black),
-                      focusedBorder:UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.grey.shade200),
-                        borderRadius: BorderRadius.circular(23.0),
-                      ),
-                    ),
-                  ),
-
-                ),
+               MoneyInput(limitCon, "Limit"),
 
 
                 Container(//color:Colors.red,
