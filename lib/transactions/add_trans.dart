@@ -45,169 +45,175 @@ class _AddTrans extends State<AddTrans> {
   @override
   Widget build(BuildContext context) {
     return
-      SingleChildScrollView(
-        physics: NeverScrollableScrollPhysics(),
-      child:
+
+
       Container(//color: Colors.indigoAccent,
+          height: MediaQuery.of(context).size.height,
           padding: EdgeInsets.all(20),child:
         Form(
           key: formKey,
           child:
 
 
-            Column(children: [
-              Container(//color: Colors.redAccent,
-                height: MediaQuery.of(context).size.height *.77,
-                child:
-                Column(children: [
-                 TitleInput(titleCon, "Title"),
-                  MoneyInput(priceCon, "Price"),
 
 
-                  Container(//color:Colors.red,
-                    margin: EdgeInsets.only(bottom: 10),
-                    height: MediaQuery.of(context).size.height*.14,
-                    padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+             Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+                Container(//color: Colors.redAccent,
+                  height: MediaQuery.of(context).size.height *.7,
+
+                  child:
+                  SingleChildScrollView(
+                    child: Column(children: [
+                     TitleInput(titleCon, "Title"),
+                      MoneyInput(priceCon, "Price"),
+
+
+                      Container(//color:Colors.red,
+                        margin: EdgeInsets.only(bottom: 10),
+                        height: MediaQuery.of(context).size.height*.14,
+                        padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
+                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
 
 
 
 
-                    child:
+                        child:
 
 
 
-                    Container(padding: EdgeInsets.only(left:10),
-                      width: MediaQuery.of(context).size.width,
-                      child:
-                      // Text("Category")),
-                      DropdownButtonFormField(items: categories.map(
-                              (item) =>  DropdownMenuItem(child: Text(item),value:item)).toList(),
+                        Container(padding: EdgeInsets.only(left:10),
+                          width: MediaQuery.of(context).size.width,
+                          child:
+                          // Text("Category")),
+                          DropdownButtonFormField(items: categories.map(
+                                  (item) =>  DropdownMenuItem(child: Text(item),value:item)).toList(),
 
-                        onChanged: (val){
-                          setState(() {
-                            String valstr=val as String;
+                            onChanged: (val){
+                              setState(() {
+                                String valstr=val as String;
 
-                            _selectedCategory=valstr;
-                            _selectedIndex=categories.indexOf(valstr);
-                            _selectedIcon=(categories_icons[_selectedIndex]);
-                          });
-                        },value: _selectedCategory,
-                        icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
-                        dropdownColor: Colors.grey.shade200,
+                                _selectedCategory=valstr;
+                                _selectedIndex=categories.indexOf(valstr);
+                                _selectedIcon=(categories_icons[_selectedIndex]);
+                              });
+                            },value: _selectedCategory,
+                            icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
+                            dropdownColor: Colors.grey.shade200,
 
-                        decoration: InputDecoration(
-                          fillColor: Colors.grey.shade200,
-                          filled: true,
-                          labelText: "Categories",
-                          labelStyle: TextStyle(color: Colors.black),
+                            decoration: InputDecoration(
+                              fillColor: Colors.grey.shade200,
+                              filled: true,
+                              labelText: "Categories",
+                              labelStyle: TextStyle(color: Colors.black),
 
 
-                          prefixIcon:  Container(
-                              margin: EdgeInsets.only(right:15),
-                              padding: EdgeInsets.all(14),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                color:transaction_color[_selectedIndex],
+                              prefixIcon:  Container(
+                                  margin: EdgeInsets.only(right:15),
+                                  padding: EdgeInsets.all(14),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    color:transaction_color[_selectedIndex],
+                                  ),
+                                  child: Icon(_selectedIcon?.icon,color: Colors.black26,)),
+
+
+
+                              focusedBorder:UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey.shade200),
+                                borderRadius: BorderRadius.circular(23.0),
                               ),
-                              child: Icon(_selectedIcon?.icon,color: Colors.black26,)),
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Colors.grey.shade200),
+                                borderRadius: BorderRadius.circular(23.0),
+                              ),
+                            ),),
 
-
-
-                          focusedBorder:UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(23.0),
-                          ),
-                          enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.grey.shade200),
-                            borderRadius: BorderRadius.circular(23.0),
-                          ),
-                        ),),
-
-                    ),
-
-                  ),
-                  Container(//color:Colors.red,
-                    margin: EdgeInsets.only(bottom: 10),
-                    height: MediaQuery.of(context).size.height*.3,
-                    padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                    // decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
-
-
-
-
-
-
-
-
-
-
-                  ),
-                ],),
-              ),
-
-
-              Container(//color: Colors.blue,
-                height: MediaQuery.of(context).size.height *.1,
-                child: Row(
-                  children: [
-
-                    Container(
-
-                      width: MediaQuery.of(context).size.width*.45,
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child:
-                      OutlinedButton(
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
                         ),
 
-                        style: ButtonStyle(
-
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                        ),
-
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/");
-                        },
                       ),
-                    ),
-                    Container(
+                      Container(//color:Colors.red,
+                        margin: EdgeInsets.only(bottom: 10),
+                        height: MediaQuery.of(context).size.height*.3,
+                        padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
+                        // decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
 
-                      width: MediaQuery.of(context).size.width*.45,
-                      padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
-                      child:
-                      OutlinedButton(
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text("Add",style: TextStyle(fontSize: 20,color: Colors.black)),
-                        ),
 
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                        ),
 
-                        onPressed: () {
-                          if(formKey.currentState!.validate()){
-                            Navigator.pushNamed(context, "/");
-                          }
-                        },
+
+
+
+
+
+
+
                       ),
-                    ),
-                  ],
+                    ],),
+                  ),
                 ),
-              )
+
+
+                Container(//color: Colors.blue,
+                  height: MediaQuery.of(context).size.height *.1,
+                  child: Row(
+                    children: [
+
+                      Container(
+
+                        width: MediaQuery.of(context).size.width*.45,
+                        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                        child:
+                        OutlinedButton(
+                          child:
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
+                          ),
+
+                          style: ButtonStyle(
+
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                          ),
+
+                          onPressed: () {
+                            Navigator.pushNamed(context, "/");
+                          },
+                        ),
+                      ),
+                      Container(
+
+                        width: MediaQuery.of(context).size.width*.45,
+                        padding: EdgeInsets.symmetric(horizontal: 20,vertical: 10),
+                        child:
+                        OutlinedButton(
+                          child:
+                          Padding(
+                            padding: const EdgeInsets.all(20.0),
+                            child: Text("Add",style: TextStyle(fontSize: 20,color: Colors.black)),
+                          ),
+
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                          ),
+
+                          onPressed: () {
+                            if(formKey.currentState!.validate()){
+                              Navigator.pushNamed(context, "/");
+                            }
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                )
 
 
 
 
-            ],),
-          ),
-        ),
+              ],),
+            ),
+
+
 
     );
   }

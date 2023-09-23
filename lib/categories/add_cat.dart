@@ -20,7 +20,7 @@ class _AddCat extends State<AddCat> {
 
 
   }
-  TransactionType? _selectedType;
+  TransactionType _selectedType=TransactionType.income;
   int _selectedIcon=0;
 
   var formKey=GlobalKey<FormState>();
@@ -81,7 +81,7 @@ class _AddCat extends State<AddCat> {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),
                               onChanged: (val){
                                 setState(() {
-                                  _selectedType=val;
+                                  _selectedType=val!;
                                 });
                               }),
                         ),
@@ -93,10 +93,11 @@ class _AddCat extends State<AddCat> {
                               title: Text(TransactionType.spent.name),
                               tileColor:TransactionType.spent==_selectedType? Colors.white70:Colors.grey.shade200,
 
+
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),
                               onChanged: (val){
                                 setState(() {
-                                  _selectedType=val;
+                                  _selectedType=val!;
                                 });
                               }),
                         ),
@@ -251,7 +252,7 @@ class _AddCat extends State<AddCat> {
                       ),
 
                       onPressed: () {
-                        if(formKey.currentState!.validate()){
+                        if(formKey.currentState!.validate() && _selectedType != null){
                           Navigator.pushNamed(context, "/");
                         }
                       },

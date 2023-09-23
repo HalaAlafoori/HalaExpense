@@ -42,6 +42,7 @@ class _MainPageState extends State<MainPage> {
 
     floatingActionButton:MyFloatingBtn(context,_currentIndex),
 
+
       bottomNavigationBar: MyButtomNav(_currentIndex,(i){
         _currentIndex=i;
         setState(() {
