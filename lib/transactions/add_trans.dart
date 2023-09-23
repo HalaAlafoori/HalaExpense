@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:halaexpenses/categories/icons.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
@@ -10,7 +11,7 @@ class AddTrans extends StatefulWidget {
   @override
   State<AddTrans> createState() => _AddTrans();
 }
-enum TransactionType{income, spent}
+
 
 class _AddTrans extends State<AddTrans> {
   _AddTrans(){
@@ -19,17 +20,20 @@ class _AddTrans extends State<AddTrans> {
     _selectedIcon=categories_icons[0];
 
 
+
+
   }
-  final List categories=['Food','Electronics'];
-  final List categories_icons=[Icon(Icons.fastfood),Icon(Icons.electrical_services_sharp)];
+  final List categories=['Food','Salary'];
+  final List categories_icons=[Icon(MyIcons.allicons[6]),Icon(MyIcons.allicons[9])];
   //final List transaction_type=['income','spent'];
-  final  List transaction_color=[darkgreen,darkred];
+  final  List transaction_color=[darkred,darkgreen];
 
 
   String? _selectedCategory="";
 
-  TransactionType? _selectedType;
-  Icon? _selectedIcon=null;
+
+  Icon? _selectedIcon;
+  int _selectedIndex=0;
   var formKey=GlobalKey<FormState>();
   //reg exp
 
@@ -176,7 +180,8 @@ class _AddTrans extends State<AddTrans> {
                             String valstr=val as String;
 
                             _selectedCategory=valstr;
-                            _selectedIcon=(categories_icons[categories.indexOf(valstr)]);
+                            _selectedIndex=categories.indexOf(valstr);
+                            _selectedIcon=(categories_icons[_selectedIndex]);
                           });
                         },value: _selectedCategory,
                         icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
@@ -194,7 +199,7 @@ class _AddTrans extends State<AddTrans> {
                               padding: EdgeInsets.all(14),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(20),
-                                color:_selectedType==TransactionType.income ?darkgreen:darkred,
+                                color:transaction_color[_selectedIndex],
                               ),
                               child: Icon(_selectedIcon?.icon,color: Colors.black26,)),
 
@@ -222,55 +227,11 @@ class _AddTrans extends State<AddTrans> {
 
 
 
-                    child:
 
 
 
-                    Container(
-                      width: MediaQuery.of(context).size.width,
 
-                      // Text("Category")),
-                      child:
-                      Column(crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(padding: EdgeInsets.only(top:10,bottom: 20),
-                            child:
 
-                            Text("Transaction Type",style: TextStyle(fontSize: 18),),),
-                          Container(width: MediaQuery.of(context).size.width/2,
-                            child: RadioListTile(value: TransactionType.income,
-
-                                groupValue: _selectedType,
-                                title: Text(TransactionType.income.name),
-                                tileColor:TransactionType.income==_selectedType? Colors.white70:Colors.grey.shade200,
-
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),
-                                onChanged: (val){
-                                  setState(() {
-                                    _selectedType=val;
-                                  });
-                                }),
-                          ),
-
-                          SizedBox(height:15 ),
-                          Container(width: MediaQuery.of(context).size.width/2,
-                            child: RadioListTile(value: TransactionType.spent,
-                                groupValue: _selectedType,
-                                title: Text(TransactionType.spent.name),
-                                tileColor:TransactionType.spent==_selectedType? Colors.white70:Colors.grey.shade200,
-
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),
-                                onChanged: (val){
-                                  setState(() {
-                                    _selectedType=val;
-                                  });
-                                }),
-                          ),
-
-                        ],
-                      ),
-
-                    ),
 
                   ),
                 ],),
