@@ -39,6 +39,7 @@ dependencies:
   flutter_svg: ^1.0.2
   syncfusion_flutter_charts: ^19.1.54
   percent_indicator: ^4.2.3
+  font_awesome_flutter: ^10.0.0
 
 dev_dependencies:
   flutter_test:

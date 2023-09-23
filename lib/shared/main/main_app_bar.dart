@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBar MyAppBar(String title){
+AppBar MyMainAppBar(String title){
   return  AppBar(
     title: Text(title),
     centerTitle: true,

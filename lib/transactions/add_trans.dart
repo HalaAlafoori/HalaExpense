@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/color.dart';
-import 'package:halaexpenses/shared/reg_exp.dart';
-import 'package:halaexpenses/shared/app_bar.dart';
+import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
 class AddTrans extends StatefulWidget {
   const AddTrans({Key? key}) : super(key: key);
@@ -33,25 +33,26 @@ class _AddTrans extends State<AddTrans> {
   var formKey=GlobalKey<FormState>();
   //reg exp
 
-  RegExp alphanumRegExp = RegExp('^[a-zA-Z0-9]+\$');
-  RegExp priceRegExp = RegExp(r'^\d+(\.\d{1,2})?$');
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: MyAppBar("Add Transaction"),
-        body: Container(//color: Colors.indigoAccent,
+    return
+      SingleChildScrollView(
+        physics: NeverScrollableScrollPhysics(),
+      child:
+      Container(//color: Colors.indigoAccent,
           padding: EdgeInsets.all(20),child:
         Form(
           key: formKey,
           child:
-          SingleChildScrollView(
-            physics: NeverScrollableScrollPhysics(),
 
-            child: Column(children: [
+
+            Column(children: [
               Container(//color: Colors.redAccent,
-                height: MediaQuery.of(context).size.height *.75,
+                height: MediaQuery.of(context).size.height *.77,
                 child:
-                Column(children: [  Container(margin: EdgeInsets.only(bottom: 10),
+                Column(children: [
+                  Container(margin: EdgeInsets.only(bottom: 10),
                   padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
                   decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
 
@@ -74,7 +75,7 @@ class _AddTrans extends State<AddTrans> {
 
                       else{
                         if(value!.length <3){return "title must be longer that 3 chars";}
-                        bool isValid = alphanumRegExp.hasMatch(value);
+                        bool isValid = MyRegularExp.alphanumRegExp.hasMatch(value);
                         if (!isValid) {
                           return "title must only contains letter and numbers";
                         }
@@ -125,7 +126,7 @@ class _AddTrans extends State<AddTrans> {
 
                         else{
 
-                          bool isValid = priceRegExp.hasMatch(value!);
+                          bool isValid = MyRegularExp.priceRegExp.hasMatch(value!);
                           if (!isValid) {
                             return "price is not in a correct format";
                           }
@@ -232,7 +233,7 @@ class _AddTrans extends State<AddTrans> {
                       child:
                       Column(crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(padding: EdgeInsets.only(top:15,bottom: 25),
+                          Container(padding: EdgeInsets.only(top:10,bottom: 20),
                             child:
 
                             Text("Transaction Type",style: TextStyle(fontSize: 18),),),
@@ -336,7 +337,7 @@ class _AddTrans extends State<AddTrans> {
 
             ],),
           ),
-        ),)
+        ),
 
     );
   }

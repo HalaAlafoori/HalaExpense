@@ -3,8 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/home/main_home.dart';
 import 'package:halaexpenses/home/transaction_card.dart';
-import 'package:halaexpenses/shared/app_bar.dart';
-import 'package:halaexpenses/shared/drawer.dart';
+import 'package:halaexpenses/shared/main/buttom_nav.dart';
+import 'package:halaexpenses/shared/main/floating_btn.dart';
+import 'package:halaexpenses/shared/main/main_app_bar.dart';
+import 'package:halaexpenses/shared/main/drawer.dart';
+import 'package:halaexpenses/shared/main/main_body.dart';
 import 'package:halaexpenses/shared/total.dart';
 
 import 'categories/main_categories.dart';
@@ -22,67 +25,30 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   var income=3200;
   var spent=3220;
-  List pages=[
-    MainHome(3200,2100),
-    MainGoals(),
-    MainCategories(),
-
-  ];
 
 
 
-  int _currentIndex=1;
+
+  int _currentIndex=0;
 
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-  appBar: MyAppBar("Home"),
+  appBar: MyMainAppBar("Hala Expense"),
 
 
       drawer: MyDrawer(),
-      body:pages[_currentIndex],
+      body:MyMainBody(_currentIndex),
 
-    floatingActionButton:
-    FloatingActionButton(
-      child: Icon(Icons.add,size: 34),
-      shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(15),
+    floatingActionButton:MyFloatingBtn(context,_currentIndex),
 
-    ), onPressed: () {
-        Navigator.pushNamed(context, "/add");
+      bottomNavigationBar: MyButtomNav(_currentIndex,(i){
+        _currentIndex=i;
+        setState(() {
 
-    }, ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        showSelectedLabels: true,
-        // backgroundColor: Colors.blueGrey,
-        onTap: (i){
-          _currentIndex=i;
-          setState(() {
+        });
+      })
 
-          });
-        },
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-
-            tooltip: "This is the home button",
-            icon:Icon(Icons.home),
-            label:'Home',
-
-
-          ),
-
-          BottomNavigationBarItem(
-              icon:Icon(Icons.bar_chart),
-              label:'Goals'
-          ),
-          BottomNavigationBarItem(
-              icon:Icon(Icons.list_rounded),
-              label:'Categories'
-          ),
-        ],),
 
 
     );
