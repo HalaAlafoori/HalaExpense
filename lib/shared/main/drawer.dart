@@ -70,11 +70,11 @@ Drawer MyDrawer(){
                               borderRadius: BorderRadius.circular(20),
                               color:darkgreen,
                             ),
-                            child: Icon(Icons.lock_clock_rounded,size: 40,)),
+                            child: Icon(Icons.settings,size: 40,)),
 
 
                               Container(margin: EdgeInsets.only(left: 0,top: 10),//color: Colors.redAccent,
-                                child: Text("Logout",style: TextStyle(fontSize: 13),),
+                                child: Text("Settings",style: TextStyle(fontSize: 13),),
 
                           ),]
                         ,
@@ -83,7 +83,7 @@ Drawer MyDrawer(){
                   ),
 
                 ),
-                Container(color:Colors.red,
+                Container(//color:Colors.red,
                   padding: const EdgeInsets.symmetric(vertical: 30.0),
                   child:
                   Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -96,10 +96,10 @@ Drawer MyDrawer(){
                               borderRadius: BorderRadius.circular(20),
                               color:darkgreen,
                             ),
-                            child: Icon(Icons.settings,size: 40,)),
+                            child: Icon(Icons.lock_clock_rounded,size: 40,)),
 
                           Container(margin: EdgeInsets.only(left: 0,top: 10),//color: Colors.redAccent,
-                            child: Text("Settings",style: TextStyle(fontSize: 13),),
+                            child: Text("Logout",style: TextStyle(fontSize: 13),),
                           ),
 
                         ]
@@ -113,11 +113,11 @@ Drawer MyDrawer(){
                               borderRadius: BorderRadius.circular(20),
                               color:darkgreen,
                             ),
-                            child: Icon(Icons.person_add,size: 40,)),
+                            child: Icon(Icons.share_rounded,size: 40,)),
 
 
                           Container(margin: EdgeInsets.only(left: 0,top: 10),//color: Colors.redAccent,
-                            child: Text("Delete Account",style: TextStyle(fontSize: 13),),
+                            child: Text("Share",style: TextStyle(fontSize: 13),),
 
                           ),]
                         ,

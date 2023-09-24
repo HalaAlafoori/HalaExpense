@@ -5,67 +5,14 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 //import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../color.dart';
+import '../shared/main/dismiss_backgrounds.dart';
 class Total{
   Total(this.title,this.money);
   final String title;
   final double money;
 }
-Widget slideRightBackground() {
-  return Container(
-    color: Colors.grey.shade200,
-    child: Align(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          SizedBox(
-            width: 20,
-          ),
-          Icon(
-            Icons.edit,
-            color: darkgreen,
-          ),
-          Text(
-            " Edit",
-            style: TextStyle(
-              color: darkgreen,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ],
-      ),
-      alignment: Alignment.centerLeft,
-    ),
-  );
-}
-Widget slideLeftBackground() {
-  return Container(
-    color: Colors.grey.shade200,
-    child: Align(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: <Widget>[
-          Icon(
-            Icons.delete,
-            color: darkred,
-          ),
-          Text(
-            " Delete",
-            style: TextStyle(
-              color: darkred,
-              fontWeight: FontWeight.w700,
-            ),
-            textAlign: TextAlign.right,
-          ),
-          SizedBox(
-            width: 20,
-          ),
-        ],
-      ),
-      alignment: Alignment.centerRight,
-    ),
-  );
-}
+
+
 class MainHome extends StatefulWidget {
   final double income;
   final double spent;
@@ -218,9 +165,9 @@ var dir;
 
 
         Container(
-          padding: EdgeInsets.all(10),
-          // color: Colors.blue ,
-          height: MediaQuery.of(context).size.height *.5,
+          padding: EdgeInsets.only(top: 10,left: 10,right: 10),
+           //color: Colors.blue ,
+          height: MediaQuery.of(context).size.height *.513,
           child: Column(
             children: [
               Container(//color: Colors.lightGreen ,
@@ -242,7 +189,7 @@ var dir;
                 ),
               ),
               Container(//color: Colors.lime,
-                height: MediaQuery.of(context).size.height *.415 ,
+                height: MediaQuery.of(context).size.height *.444 ,
                 child:
                 ListView.builder(itemBuilder:(context, index){
                   return
@@ -254,7 +201,7 @@ var dir;
                         onTap: () {
                           print("${items[index]} clicked");
                         },
-                        child: TransactionCard(context)),
+                        child: TransactionCard(context,index)),
                       confirmDismiss: (direction) async {
                         if (direction == DismissDirection.endToStart) {
                           setState(() {
@@ -264,7 +211,7 @@ var dir;
                                 SnackBar(
                                   content: Text('item dismissed'),
                                   duration: Duration(seconds: 2),
-                                  
+
                                   action: SnackBarAction(
                                     label: 'Undo',
                                     onPressed: () {

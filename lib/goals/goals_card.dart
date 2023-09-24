@@ -6,7 +6,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 
 
-Widget GoalCard(context){
+Widget GoalCard(context,index){
   return Container(//color: Colors.grey.shade200,
       width: MediaQuery.of(context).size.width,
       height:MediaQuery.of(context).size.height * .13,
@@ -27,7 +27,7 @@ Widget GoalCard(context){
                   borderRadius: BorderRadius.circular(20),
                   color:Colors.grey.shade200,
                 ),
-                child: Icon(Icons.coffee,size: 30,)),
+                child: Icon(index%3==0?Icons.coffee:Icons.monetization_on_rounded,size: 30,)),
           ),
           Container(//color: Colors.yellow,
             width: MediaQuery.of(context).size.width *.57,
@@ -39,7 +39,7 @@ Widget GoalCard(context){
                   height:MediaQuery.of(context).size.height * .06,
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
                     Container(margin: EdgeInsets.only(left: 10,top: 25),//color: Colors.redAccent,
-                      child: Text("Food",style: TextStyle(fontSize: 17),),
+                      child: Text(index%3==0?"Food":"Salary",style: TextStyle(fontSize: 17),),
                     ),
                     Container(
                       //color: Colors.pinkAccent,
