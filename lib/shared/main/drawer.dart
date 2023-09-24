@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/color.dart';
 
-Drawer MyDrawer(){
+import '../../brunch_page.dart';
+
+Drawer MyDrawer(context){
   return Drawer(
 
     child: Container(
@@ -62,22 +64,29 @@ Drawer MyDrawer(){
                           ]
                         ,
                       ),
-                      Column(crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [Container(
-                            padding: EdgeInsets.all(14),
+                      GestureDetector(
+                        onTap: (){
+                          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                            return BrunchPage(3);
+                          }));
+                        },
+                        child: Column(crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [Container(
+                              padding: EdgeInsets.all(14),
 
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              color:darkgreen,
-                            ),
-                            child: Icon(Icons.settings,size: 40,)),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color:darkgreen,
+                              ),
+                              child: Icon(Icons.settings,size: 40,)),
 
 
-                              Container(margin: EdgeInsets.only(left: 0,top: 10),//color: Colors.redAccent,
-                                child: Text("Settings",style: TextStyle(fontSize: 13),),
+                                Container(margin: EdgeInsets.only(left: 0,top: 10),//color: Colors.redAccent,
+                                  child: Text("Settings",style: TextStyle(fontSize: 13),),
 
-                          ),]
-                        ,
+                            ),]
+                          ,
+                        ),
                       ),
                     ],
                   ),

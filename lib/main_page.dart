@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
   appBar: MyMainAppBar("Hala Expense"),
 
 
-      drawer: MyDrawer(),
+      drawer: MyDrawer(context),
       body:MyMainBody(_currentIndex),
 
     floatingActionButton:MyFloatingBtn(context,_currentIndex),

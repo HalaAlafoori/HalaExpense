@@ -14,7 +14,7 @@ class BrunchPage extends StatefulWidget {
 class _BrunchPageState extends State<BrunchPage> {
   _BrunchPageState(this._page);
   int _page;
-  List<String> titles=["Add Tansaction","Add Saving Plan","Add Category"];
+  List<String> titles=["Add Tansaction","Add Saving Plan","Add Category","Settings"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(

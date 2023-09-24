@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/main_page.dart';
 import 'package:halaexpenses/brunch_page.dart';
+import 'package:halaexpenses/profile/settings.dart';
 import 'package:halaexpenses/transactions/add_trans.dart';
 import 'package:halaexpenses/transactions/show_all_trans.dart';
 
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
       '/showtrans': (context) => ShowAllTrans(),
 
       '/addtrans': (context) => AddTrans(),
+      '/settings': (context) => Settings(),
 
     },
       initialRoute: '/',
