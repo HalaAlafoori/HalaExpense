@@ -5,7 +5,8 @@ import '../color.dart';
 
 
 Widget TransactionCard(context){
-  return  Container(//color: Colors.yellowAccent,
+  return
+    Container(//color: Colors.yellowAccent,
     height: MediaQuery.of(context).size.height *.12 ,
 
 

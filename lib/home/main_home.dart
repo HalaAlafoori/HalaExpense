@@ -10,10 +10,67 @@ class Total{
   final String title;
   final double money;
 }
+Widget slideRightBackground() {
+  return Container(
+    color: Colors.grey.shade200,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          SizedBox(
+            width: 20,
+          ),
+          Icon(
+            Icons.edit,
+            color: darkgreen,
+          ),
+          Text(
+            " Edit",
+            style: TextStyle(
+              color: darkgreen,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerLeft,
+    ),
+  );
+}
+Widget slideLeftBackground() {
+  return Container(
+    color: Colors.grey.shade200,
+    child: Align(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Icon(
+            Icons.delete,
+            color: darkred,
+          ),
+          Text(
+            " Delete",
+            style: TextStyle(
+              color: darkred,
+              fontWeight: FontWeight.w700,
+            ),
+            textAlign: TextAlign.right,
+          ),
+          SizedBox(
+            width: 20,
+          ),
+        ],
+      ),
+      alignment: Alignment.centerRight,
+    ),
+  );
+}
 class MainHome extends StatefulWidget {
   final double income;
   final double spent;
   MainHome(this.income,this.spent);
+
 
   @override
   State<MainHome> createState() => _MainHomeState();
@@ -22,6 +79,9 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   late List<Total> _chartData;
   late TooltipBehavior _tooltipBehavior;
+  final List<String> items=new List<String>.generate(10, (index) => "items ${index+1}");
+var dir;
+  var dismissedItem;
 
   List<Total> getChartData(){
     final List<Total> chartData=[
@@ -184,13 +244,49 @@ class _MainHomeState extends State<MainHome> {
               Container(//color: Colors.lime,
                 height: MediaQuery.of(context).size.height *.415 ,
                 child:
-                ListView(
-                  children: [
-                    TransactionCard(context),
+                ListView.builder(itemBuilder:(context, index){
+                  return
+                    Dismissible(
+                      background: slideRightBackground(),
+                      secondaryBackground: slideLeftBackground(),
+                      key: Key(items[index]),
+                      child: InkWell(
+                        onTap: () {
+                          print("${items[index]} clicked");
+                        },
+                        child: TransactionCard(context)),
+                      confirmDismiss: (direction) async {
+                        if (direction == DismissDirection.endToStart) {
+                          setState(() {
+                            dismissedItem=items[index];
+                            items.removeAt(index);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('item dismissed'),
+                                  duration: Duration(seconds: 2),
+                                  
+                                  action: SnackBarAction(
+                                    label: 'Undo',
+                                    onPressed: () {
+                                      setState(() {
+                                        items.insert(index, dismissedItem!);
+                                        dismissedItem = null;
+                                      });
+                                    },
+                                  ),
+                                ));
+                          });
+                        } else {
+                          // TODO: Navigate to edit page;
+                        }
+                      },
+
+                    );
 
 
-                  ],
-                ) ,
+                } ,
+                  itemCount:items.length ,
+                ),
               )
             ],
 
