@@ -30,7 +30,7 @@ Widget GoalCard(context){
                 child: Icon(Icons.coffee,size: 30,)),
           ),
           Container(//color: Colors.yellow,
-            width: MediaQuery.of(context).size.width *.65,
+            width: MediaQuery.of(context).size.width *.57,
             height:MediaQuery.of(context).size.height * .15,
             child: Column(
               children: [

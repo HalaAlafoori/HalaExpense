@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:halaexpenses/main_page.dart';
 import 'package:halaexpenses/brunch_page.dart';
 import 'package:halaexpenses/transactions/add_trans.dart';
+import 'package:halaexpenses/transactions/show_all_trans.dart';
 
 import 'color.dart';
 import 'intro_pages/intro_one.dart';
@@ -32,6 +33,7 @@ class MyApp extends StatelessWidget {
       '/intro2': (context) => IntroTwo(),
       '/intro3': (context) => IntroThree(),
       '/': (context) => MainPage(),
+      '/showtrans': (context) => ShowAllTrans(),
 
       '/addtrans': (context) => AddTrans(),
 

@@ -174,7 +174,9 @@ class _MainHomeState extends State<MainHome> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                       ),
 
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/showtrans");
+                      },
                     ),],
 
                 ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../home/transaction_card.dart';
 import 'goals_card.dart';
 
 class MainGoals extends StatefulWidget {
@@ -11,15 +12,32 @@ class MainGoals extends StatefulWidget {
 }
 
 class _MainGoals extends State<MainGoals> {
+  bool _customIcons=false;
   @override
   Widget build(BuildContext context) {
     return
-      ListView(padding: EdgeInsets.symmetric(vertical: 10,horizontal: 10),
+      ListView(padding: EdgeInsets.symmetric(vertical: 10,horizontal: 0),
 
         children: [
-          GoalCard(context),
-          GoalCard(context),
-          GoalCard(context),
+          ExpansionTile(title:GoalCard(context),
+           // trailing:_customIcons? Icon(Icons.keyboard_arrow_up_rounded):Icon(Icons.keyboard_arrow_down_rounded),
+
+            children: [TransactionCard(context),
+            TransactionCard(context),
+            TransactionCard(context)],),
+          ExpansionTile(title:GoalCard(context),
+            // trailing:_customIcons? Icon(Icons.keyboard_arrow_up_rounded):Icon(Icons.keyboard_arrow_down_rounded),
+
+            children: [TransactionCard(context),
+              TransactionCard(context),
+              TransactionCard(context)],),
+          ExpansionTile(title:GoalCard(context),
+            // trailing:_customIcons? Icon(Icons.keyboard_arrow_up_rounded):Icon(Icons.keyboard_arrow_down_rounded),
+
+            children: [TransactionCard(context),
+              TransactionCard(context),
+              TransactionCard(context)],),
+
 
 
         ],

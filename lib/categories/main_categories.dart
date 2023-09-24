@@ -17,8 +17,11 @@ class _MainCategoriesState extends State<MainCategories> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GridView.count(crossAxisCount: 2,childAspectRatio: 1,
-      children: List.generate(11, (index) =>CategoryCard(context,index%2==0? darkred:darkgreen) ),
+      body: 
+      Container(padding: EdgeInsets.all(10),
+        child: GridView.count(crossAxisCount: 3,childAspectRatio: 1,
+        children: List.generate(11, (index) =>CategoryCard(context,index%2==0? darkred:darkgreen) ),
+        ),
       ) ,
     );
       
