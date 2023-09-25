@@ -4,7 +4,7 @@ import 'package:halaexpenses/categories/category_card.dart';
 import 'package:halaexpenses/color.dart';
 
 
-import '../home/transaction_card.dart';
+
 
 class MainCategories extends StatefulWidget {
   const MainCategories({Key? key}) : super(key: key);

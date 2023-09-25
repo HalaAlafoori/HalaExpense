@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/home/transaction_card.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-//import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 import '../color.dart';
 import '../shared/main/dismiss_backgrounds.dart';
@@ -202,7 +201,13 @@ var dir;
                           print("${items[index]} clicked");
                         },
                         child: TransactionCard(context,index)),
+                      //onDismissed always dismiss or returns an error
+
                       confirmDismiss: (direction) async {
+                        //async--> Future return value: true or false
+                        //true--> dismissed
+                        //makes the card undragable while confirm(if there is )
+                        //false--> draged back
                         if (direction == DismissDirection.endToStart) {
                           setState(() {
                             dismissedItem=items[index];
@@ -221,7 +226,8 @@ var dir;
                                       });
                                     },
                                   ),
-                                ));
+                                )
+                            );
                           });
                         } else {
                           // TODO: Navigate to edit page;

@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:halaexpenses/color.dart';
-import 'package:halaexpenses/home/main_home.dart';
-import 'package:halaexpenses/home/transaction_card.dart';
+
 import 'package:halaexpenses/shared/main/buttom_nav.dart';
 import 'package:halaexpenses/shared/main/floating_btn.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 import 'package:halaexpenses/shared/main/drawer.dart';
 import 'package:halaexpenses/shared/main/main_body.dart';
-import 'package:halaexpenses/shared/total.dart';
-
-import 'categories/main_categories.dart';
-import 'goals/main_goals.dart';
 
 class MainPage extends StatefulWidget {
 

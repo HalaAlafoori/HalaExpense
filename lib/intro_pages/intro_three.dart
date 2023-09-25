@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:halaexpenses/intro_pages/three_dots.dart';
 
+import '../color.dart';
+
 class IntroThree extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
@@ -46,7 +48,7 @@ class _IntroThree extends State<IntroThree>{
 
     return  Scaffold(
 
-      body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
+      body: Container(
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
@@ -119,23 +121,29 @@ class _IntroThree extends State<IntroThree>{
 
                   Padding(
                   padding: const EdgeInsets.all(50.0),
-                  child: ElevatedButton(
+                  child:
 
+                  ElevatedButton(
+                    child:
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text("Get Started",style: TextStyle(fontSize: 20,color: Colors.black)),
+                    ),
 
-
-
+                    style: ButtonStyle(
+                     // backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                    ),
                     onPressed: chosenNum>=3
                         ?
                         (){
-                          setState(() {
-                            print("______________________________");
-                            btnIsActive=true;
-                          });
-                        } :
-                        null,
+                      setState(() {
 
+                        Navigator.pushNamed(context, "/");
+                      });
+                    } :
+                    null,
 
-                    child: Text('Get Started',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.green.shade900)),
 
                   ),
                 ),

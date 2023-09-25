@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:halaexpenses/shared/brunch/email_input.dart';
+import 'package:halaexpenses/shared/brunch/money_input.dart';
+import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+import 'package:halaexpenses/shared/brunch/title_input.dart';
 
+import '../color.dart';
+import '../shared/brunch/pass_input.dart';
 import 'three_dots.dart';
 
 class IntroTwo extends StatelessWidget {
-  RegExp nameRegExp = RegExp(r'^[a-zA-Z]');
-  RegExp emailRegExp = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$');
-  RegExp budgetRegExp = RegExp(r'^\d+(\.\d{1,2})?$');
-  RegExp passwordRegExp = RegExp(r'^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$');
+
+
   var nameCtr=TextEditingController();
   var emailCtr=TextEditingController();
   var budgetCtr=TextEditingController();
@@ -18,7 +22,7 @@ class IntroTwo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
+      body: Container(
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
@@ -27,151 +31,25 @@ class IntroTwo extends StatelessWidget {
           child: Column(
             children: [
               Container(//color: Colors.teal,
-                 height: MediaQuery.of(context).size.height *.7,
+                 height: MediaQuery.of(context).size.height *.8,
               child:  Column(children: [ Padding(
-                padding: const EdgeInsets.symmetric(vertical: 50),
+                padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Text(
                   'Sign up ',
                   style: TextStyle(
-                    fontSize: 26,
+                    fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green.shade900,
+                    color: darkgreen[600],
                   ),
                 ),
               ),
                 Container(
                   child: Form(key: formKey,child: Column(children: [
 
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-
-                        controller: nameCtr,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: TextStyle(color: Colors.green.shade900),
-                        validator: (value){
-                          if(value == "")
-                          {return "name is required";}
-
-                          else{
-                            if(value!.length <3){return "name must be longer that 3 chars";}
-                            bool isValid = nameRegExp.hasMatch(value);
-                            if (!isValid) {
-                              return "name must only contains letter";
-                            }
-                          }},
-                        decoration: InputDecoration(
-                          labelText: 'Name',
-                          labelStyle: TextStyle(color: Colors.green.shade900),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.emailAddress,
-                        controller: emailCtr,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: TextStyle(color: Colors.green.shade900),
-                        validator: (value){
-                          if(value == "")
-                          {return "email is required";}
-
-                          else{
-
-                            bool isValid = emailRegExp.hasMatch(value!);
-                            if (!isValid) {
-                              return "email must be in a correct format";
-                            }
-                          }},
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          labelStyle: TextStyle(color: Colors.green.shade900),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        controller: budgetCtr,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: TextStyle(color: Colors.green.shade900),
-                        validator: (value){
-                          if(value == "")
-                          {return "budget is required";}
-
-                          else{
-
-                            bool isValid = budgetRegExp.hasMatch(value!);
-                            if (!isValid) {
-                              return "budget is not in a correct format";
-                            }
-                          }},
-                        decoration: InputDecoration(
-                          labelText: 'Budget',
-                          labelStyle: TextStyle(color: Colors.green.shade900),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        obscureText: true,
-                        controller: passwordCtr,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: TextStyle(color: Colors.green.shade900),
-                        validator: (value){
-                          if(value == null)
-                          {return "password is required";}
-
-                          else{
-                            if(value!.length <8){return "password must have a minimum length of 8 characters.";}
-                            bool isValid = passwordRegExp.hasMatch(value);
-                            if (!isValid) {
-                              return """ Password must contain at least one alphabetic character\n and  one numeric digit.\n
-                                    """;
-                            }
-                          }},
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          labelStyle: TextStyle(color: Colors.green.shade900),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(color: Colors.green.shade900),
-                            borderRadius: BorderRadius.circular(8.0),
-                          ),
-                        ),
-                      ),
-                    ),
+                   TitleInput(nameCtr, "Name"),
+                    EmailInput(emailCtr, "Email"),
+                    MoneyInput(budgetCtr, "Current Budget"),
+                    PassInput(passwordCtr,"Password"),
 
 
 
@@ -183,22 +61,35 @@ class IntroTwo extends StatelessWidget {
                   ),
                 ),],),),
               Container(//color: Colors.blueGrey ,
-                 height: MediaQuery.of(context).size.height *.23,
-              child:   Column(
-                children: [ Padding(
-                  padding: const EdgeInsets.all(50.0),
-                  child: ElevatedButton(
+                height: MediaQuery.of(context).size.height *.23,
+                child:
+                Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(50.0),
+                      child:
+                      OutlinedButton(
+                        child:
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text("Continue",style: TextStyle(fontSize: 20,color: Colors.black)),
+                        ),
 
-                    onPressed: () {
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
+                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                        ),
+
+                        onPressed: () {
     if(formKey.currentState!.validate()){
-                      Navigator.of(context).pushReplacementNamed('/intro3');}
-                    },
-                    child: Text('Continue',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.green.shade900)),
 
-                  ),
-                ),
-                  threeDots(2),],
-              ),)
+                          Navigator.pushNamed(context, "/intro3");}
+
+                        },
+                      ),
+                    ),
+                    threeDots(2),],
+                ),)
 
             ],
           ),

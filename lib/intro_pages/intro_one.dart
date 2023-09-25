@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../color.dart';
 import 'three_dots.dart';
 
 class IntroOne extends StatelessWidget {
@@ -10,7 +11,7 @@ class IntroOne extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      body: Container(color:  Color.fromRGBO(86, 161, 82, 0.2),
+      body: Container(
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
@@ -27,7 +28,7 @@ class IntroOne extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green.shade900,
+                    color:darkgreen[600],
                   ),
                 ),
               ),
@@ -37,7 +38,7 @@ class IntroOne extends StatelessWidget {
                   'Track your expenses and manage your finances with ease. Stay organized and take control of your spending.',
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 15,
-                    color: Colors.green.shade900,
+                    color: darkgreen[600],
                   ),
                 ),
               ),
@@ -55,15 +56,27 @@ class IntroOne extends StatelessWidget {
                height: MediaQuery.of(context).size.height *.23,
             child:
               Column(
-                children: [ Padding(
+                children: [
+                  Padding(
                   padding: const EdgeInsets.all(50.0),
-                  child: ElevatedButton(
+                  child:
+                  OutlinedButton(
+                    child:
+                    Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: Text("Continue",style: TextStyle(fontSize: 20,color: Colors.black)),
+                    ),
+
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                    ),
 
                     onPressed: () {
-                      Navigator.of(context).pushReplacementNamed('/intro2');
-                    },
-                    child: Text('Continue',style: TextStyle(fontSize: 24,fontWeight: FontWeight.w600,color: Colors.green.shade900)),
 
+                        Navigator.pushNamed(context, "/intro2");
+
+                    },
                   ),
                 ),
                   threeDots(1),],
