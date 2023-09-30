@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:halaexpenses/shared/brunch/email_input.dart';
 import 'package:halaexpenses/shared/brunch/money_input.dart';
-import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+
 import 'package:halaexpenses/shared/brunch/title_input.dart';
 
 import '../color.dart';
@@ -83,7 +83,7 @@ class IntroTwo extends StatelessWidget {
                         onPressed: () {
     if(formKey.currentState!.validate()){
 
-                          Navigator.pushNamed(context, "/intro3");}
+                          Navigator.pushReplacementNamed(context, "/intro3");}
 
                         },
                       ),

@@ -12,12 +12,13 @@ class IntroOne extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Container(
+
         height: MediaQuery.of(context).size.height,
         padding: EdgeInsets.all(26.0),
         width:MediaQuery.of(context).size.width ,
         child: Column(
           children: [
-            Container(//color: Colors.teal,
+            Container(
                height: MediaQuery.of(context).size.height *.7,
             child:
             Column(children: [
@@ -74,7 +75,7 @@ class IntroOne extends StatelessWidget {
 
                     onPressed: () {
 
-                        Navigator.pushNamed(context, "/intro2");
+                        Navigator.pushReplacementNamed(context, "/intro2");
 
                     },
                   ),

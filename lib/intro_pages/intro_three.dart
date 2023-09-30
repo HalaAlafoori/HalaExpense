@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:halaexpenses/intro_pages/three_dots.dart';
 
-import '../color.dart';
+
 
 class IntroThree extends StatefulWidget {
   @override
@@ -84,7 +84,7 @@ class _IntroThree extends State<IntroThree>{
 
                           // tileColor: Colors.white,
                           activeColor: Colors.green,
-                          checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+                          checkboxShape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                           title: Text(item['name'],style: TextStyle(color: Colors.green.shade900),),
                           value: item['isChecked'],onChanged: (val){
                           if(val!){
@@ -95,6 +95,7 @@ class _IntroThree extends State<IntroThree>{
                             chosenNum--;
                           }
                           print(chosenNum);
+                          //setting value
                           setState(() {
                             item['isChecked']=val;
                           });
@@ -139,7 +140,7 @@ class _IntroThree extends State<IntroThree>{
                         (){
                       setState(() {
 
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pushReplacementNamed(context, "/");
                       });
                     } :
                     null,

@@ -24,7 +24,7 @@ class MainHome extends StatefulWidget {
 
 class _MainHomeState extends State<MainHome> {
   late List<Total> _chartData;
-  late TooltipBehavior _tooltipBehavior;
+  late TooltipBehavior _tooltipBehavior=TooltipBehavior(enable: true);
   final List<String> items=new List<String>.generate(10, (index) => "items ${index+1}");
 var dir;
   var dismissedItem;
@@ -43,7 +43,7 @@ var dir;
   @override
   void initState(){
     _chartData=getChartData();
-    _tooltipBehavior=TooltipBehavior(enable: true);
+    //_tooltipBehavior=TooltipBehavior(enable: true);
     super.initState();
   }
   @override

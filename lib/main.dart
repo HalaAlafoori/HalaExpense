@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       '/settings': (context) => Settings(),
 
     },
-      initialRoute: '/',
+      initialRoute: '/intro1',
     );
   }
 }
