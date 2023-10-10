@@ -5,7 +5,8 @@ import 'package:halaexpenses/categories/category_card.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/models/category_model.dart';
 
-import '../data/repositories/CategoryRepo.dart';
+import '../data/repositories/category_repo.dart';
+import 'delete_cat.dart';
 
 
 
@@ -18,7 +19,7 @@ class MainCategories extends StatefulWidget {
 }
 
 class _MainCategoriesState extends State<MainCategories> {
-  final List<String> items=new List<String>.generate(5, (index) => "items ${index+1}");
+  //final List<String> items=new List<String>.generate(5, (index) => "items ${index+1}");
 
   var dismissedItem;
   @override
@@ -51,19 +52,17 @@ class _MainCategoriesState extends State<MainCategories> {
                                   child:
                                   GestureDetector(child:
                                   CircleAvatar(child:
-                                  Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 10,backgroundColor: darkred,),
-                                    onTap: (){
+                                  Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 13,backgroundColor: darkred,),
+                                    onTap: ()async{
+                                      var delRes=await showDialog(context: context, builder: (context){
+                                        var id=list[index].id??0;
+                                        return DeleteCat(id.toInt());});
                                       setState(() {
-                                        print("---${index}-----");
-                                        dismissedItem=list[index];
-                                        list.removeAt(index);
 
-                                      });
-
-                                    },
+                                      });}
 
                                   )),
-                              CategoryCard(context,index),
+                              CategoryCard(context,list[index]),
                             ],
                           ),
                         ) ,),

@@ -5,7 +5,7 @@ import 'package:halaexpenses/models/category_model.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
-import '../data/repositories/CategoryRepo.dart';
+import '../data/repositories/category_repo.dart';
 import '../shared/brunch/title_input.dart';
 import 'icons.dart';
 
@@ -106,7 +106,7 @@ class _AddCat extends State<AddCat> {
                               onChanged: (val){
                                 setState(() {
                                   _selectedType=val!;
-                                  print("----------------${_selectedType}");
+                                  print("----------------${_selectedType.index}");
                                 });
                               }),
                         ),
@@ -275,6 +275,7 @@ class _AddCat extends State<AddCat> {
                                 "Type":_selectedType.index
 
                               };
+                              print(date);
                               var addRes=await CategoryRepository().addToDb(CategoryModel.fromJson(date));
                               if(addRes ){
                                 setState(() {

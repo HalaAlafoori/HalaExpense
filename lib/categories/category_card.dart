@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halaexpenses/categories/icons.dart';
 
 import '../color.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 
 
-Widget CategoryCard(context,index){
+Widget CategoryCard(context,item){
+
 
   return Container(
     padding: EdgeInsets.all(0),
@@ -23,12 +25,12 @@ Widget CategoryCard(context,index){
 
          decoration: BoxDecoration(
            borderRadius: BorderRadius.circular(20),
-           color:index%3==0?darkred:darkgreen,
+           color:item.type==1?darkred:darkgreen,
          ),
-         child: Icon(index%3==0?Icons.bus_alert_rounded:Icons.monetization_on_rounded,size: 40,)),
+         child: Icon(MyIcons.allicons[item.catIcon],size: 40,)),
 
        Container(margin: EdgeInsets.only(left: 10,top: 10),//color: Colors.redAccent,
-         child: Text(index%3==0?"Transports":"Salary",style: TextStyle(fontSize: 13),),
+         child: Text(item.name,style: TextStyle(fontSize: 13),),
        ),
 
      ]
