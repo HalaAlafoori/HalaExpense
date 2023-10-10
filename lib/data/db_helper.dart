@@ -8,10 +8,10 @@ class DbTables{
   static const String Transactions = "Transaction";
   static const String Plan = "Plan";
 }
-String _catTbl = 'CREATE TABLE ${DbTables.Categories} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT  NULL UNIQUE, CatIcon TEXT, Type INTEGER )';
+String _catTbl = 'CREATE TABLE ${DbTables.Categories} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT  NULL UNIQUE, CatIcon INTEGER, Type INTEGER )';
 String _transTbl = 'CREATE TABLE ${DbTables.Transactions} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, Total REAL NOT NULL,/'
     ' TransDate Text, CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id) )';
-String _planTbl = 'CREATE TABLE ${DbTables.Plan} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Max INTEGER NOT NULL,/'
+String _planTbl = 'CREATE TABLE ${DbTables.Plan} (Id INTEGER PRIMARY KEY AUTOINCREMENT,SpentLimit INTEGER NOT NULL,/'
     ' CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id)  )';
 
 
