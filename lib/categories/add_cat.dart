@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/color.dart';
+import 'package:halaexpenses/models/category_model.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
+import '../data/repositories/CategoryRepo.dart';
 import '../shared/brunch/title_input.dart';
 import 'icons.dart';
 
@@ -25,7 +27,12 @@ class _AddCat extends State<AddCat> {
 
   var formKey=GlobalKey<FormState>();
   var nameCon=TextEditingController();
-  //reg exp
+
+  //add status:
+  bool loading=false;
+  bool iserror=false;
+  bool issuccess=false;
+  String error="";
 
 
   @override
@@ -82,6 +89,7 @@ class _AddCat extends State<AddCat> {
                               onChanged: (val){
                                 setState(() {
                                   _selectedType=val!;
+                                  print("----------------${_selectedType.index}");
                                 });
                               }),
                         ),
@@ -98,6 +106,7 @@ class _AddCat extends State<AddCat> {
                               onChanged: (val){
                                 setState(() {
                                   _selectedType=val!;
+                                  print("----------------${_selectedType}");
                                 });
                               }),
                         ),
@@ -176,6 +185,7 @@ class _AddCat extends State<AddCat> {
                                                   onPressed: (){
                                                     setState(() {
                                                       _selectedIcon=index;
+                                                      print("------------${_selectedIcon}");
                                                     });
                                                     Navigator.of(context).pop();
                                                   },
@@ -205,8 +215,7 @@ class _AddCat extends State<AddCat> {
 
               ],),
             ),
-
-
+            loading?CircularProgressIndicator():
             Container(//color: Colors.blue,
               height: MediaQuery.of(context).size.height *.1,
               child: Row(
@@ -251,17 +260,67 @@ class _AddCat extends State<AddCat> {
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
                       ),
 
-                      onPressed: () {
-                        if(formKey.currentState!.validate() && _selectedType != null){
-                          Navigator.pushNamed(context, "/");
+                        onPressed: ()async{
+                          if(formKey.currentState!.validate()){
+                            try{
+                              setState(() {
+                                loading=true;
+                                issuccess=false;
+                                iserror=false;
+
+                              });
+                              var date={
+                                "Name":nameCon.text,
+                                "CatIcon":_selectedIcon,
+                                "Type":_selectedType.index
+
+                              };
+                              var addRes=await CategoryRepository().addToDb(CategoryModel.fromJson(date));
+                              if(addRes ){
+                                setState(() {
+                                  loading=false;
+                                  issuccess=true;
+                                  iserror=false;
+                                  error="";
+
+                                });
+                                Navigator.of(context).pop(true);
+                              }
+                              else{
+                                setState(() {
+                                  loading=false;
+                                  issuccess=false;
+                                  iserror=true;
+                                  error="Operation failed!!";
+
+                                });
+                              }
+                            }
+
+                            catch(e){
+                              setState(() {
+                                loading=false;
+                                issuccess=false;
+                                iserror=true;
+                                error="Exception: ${e}";
+
+                              });
+                            }
+                          }
+
                         }
-                      },
+
                     ),
                   ),
 
                 ],
               ),
-            )
+            ),
+
+            iserror?Text("error:${error}",style: TextStyle(color: Colors.red),):SizedBox(),
+            issuccess?Text("Added successfully",style: TextStyle(color: Colors.green),):SizedBox()
+
+
 
 
 
