@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halaexpenses/data/db_helper.dart';
+import 'package:halaexpenses/data/repositories/category_repo.dart';
 import 'package:halaexpenses/home/transaction_card.dart';
+import 'package:halaexpenses/models/transaction_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../color.dart';
+import '../data/repositories/transactions_repo.dart';
 import '../shared/main/dismiss_backgrounds.dart';
 class Total{
   Total(this.title,this.money);
@@ -25,7 +29,7 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   late List<Total> _chartData;
   late TooltipBehavior _tooltipBehavior=TooltipBehavior(enable: true);
-  final List<String> items=new List<String>.generate(10, (index) => "items ${index+1}");
+  // List<String> items=new List<String>.generate(10, (index) => "items ${index+1}");
 var dir;
   var dismissedItem;
 
@@ -43,6 +47,7 @@ var dir;
   @override
   void initState(){
     _chartData=getChartData();
+    DbHelper().deleteDatabase();
     //_tooltipBehavior=TooltipBehavior(enable: true);
     super.initState();
   }
@@ -190,56 +195,99 @@ var dir;
               Container(//color: Colors.lime,
                 height: MediaQuery.of(context).size.height *.444 ,
                 child:
-                ListView.builder(itemBuilder:(context, index){
-                  return
-                    Dismissible(
-                      background: slideRightBackground(),
-                      secondaryBackground: slideLeftBackground(),
-                      key: Key(items[index]),
-                      child: InkWell(
-                        onTap: () {
-                          print("${items[index]} clicked");
-                        },
-                        child: TransactionCard(context,index)),
-                      //onDismissed always dismiss or returns an error
+                FutureBuilder<List<Map<String,dynamic>>?>(
+                  future: DbHelper().getAllTransCat(),
+                  builder: (context,snapshot){
+                    if(snapshot.connectionState ==ConnectionState.waiting){
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    else if(snapshot.connectionState ==ConnectionState.done){
+                      if(snapshot.hasError)
+                        return Center(child: Text("Error ${snapshot.error.toString()}"));
+                      else if(snapshot.hasData){
+                        var list=snapshot.data??[];
+                        return
 
-                      confirmDismiss: (direction) async {
-                        //async--> Future return value: true or false
-                        //true--> dismissed
-                        //makes the card undragable while confirm(if there is )
-                        //false--> draged back
-                        if (direction == DismissDirection.endToStart) {
-                          setState(() {
-                            dismissedItem=items[index];
-                            items.removeAt(index);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text('item dismissed'),
-                                  duration: Duration(seconds: 2),
-
-                                  action: SnackBarAction(
-                                    label: 'Undo',
-                                    onPressed: () {
-                                      setState(() {
-                                        items.insert(index, dismissedItem!);
-                                        dismissedItem = null;
-                                      });
+                          ListView.builder(itemBuilder:(context, index){
+                            return
+                              Dismissible(
+                                background: slideRightBackground(),
+                                secondaryBackground: slideLeftBackground(),
+                                key: Key(list[index].toString()),
+                                child: InkWell(
+                                    onTap: () {
+                                     // print("${items[index]} clicked");
                                     },
-                                  ),
-                                )
-                            );
-                          });
-                        } else {
-                          // TODO: Navigate to edit page;
-                        }
-                      },
+                                    child: TransactionCard(context,list[index])),
+                                //onDismissed always dismiss or returns an error
 
-                    );
+                                confirmDismiss: (direction) async {
+                                  //async--> Future return value: true or false
+                                  //true--> dismissed
+                                  //makes the card undragable while confirm(if there is )
+                                  //false--> draged back
+                                  if (direction == DismissDirection.endToStart) {
+                                    setState(() {
+                                      dismissedItem=list[index];
+                                      print(dismissedItem);
+                                      TransactionRepository().deleteFromDb(dismissedItem['TransId']);
+                                     //list.removeAt(index);
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text('item dismissed'),
+                                            duration: Duration(seconds: 2),
+
+                                            action: SnackBarAction(
+                                              label: 'Undo',
+                                              onPressed: () {
+                                                setState(() {
+                                                  var data={
+                                                    "TransId":dismissedItem['TransId'],
+
+                                                    "TransName":dismissedItem['TransName'],
+                                                    "CatId":dismissedItem['CatId'],
+                                                    "Total":(dismissedItem['Total']),
+
+                                                    // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
+                                                    "TransDate":dismissedItem['TransDate']
+
+                                                  };
+                                                  print(data);
+                                                  var addRes= TransactionRepository().addToDb(TransactionModel.fromJson(data));
+
+                                                  //  items.insert(index, dismissedItem!);
+                                                  dismissedItem = null;
+                                                });
+                                              },
+                                            ),
+                                          )
+                                      );
+                                    });
+                                  } else {
+                                    // TODO: Navigate to edit page;
+                                  }
+                                },
+
+                              );
 
 
-                } ,
-                  itemCount:items.length ,
-                ),
+                          } ,
+                            itemCount:list.length ,
+                          );
+                      }
+                      else{
+                        return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                      }
+
+                    }
+                    else{
+                      return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                    }
+
+                  },),
+
               )
             ],
 

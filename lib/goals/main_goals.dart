@@ -19,58 +19,58 @@ class _MainGoals extends State<MainGoals> {
   bool _customIcons=false;
   @override
   Widget build(BuildContext context) {
-    return
+    return Text("fix card");
 
-          ListView.builder(itemBuilder:(context, index){
-            return
-              Dismissible(
-                background: slideRightBackground(),
-                secondaryBackground: slideLeftBackground(),
-                key: Key(items[index]),
-                child: InkWell(
-                    onTap: () {
-                      print("${items[index]} clicked");
-                    },
-                    child:   ExpansionTile(title:GoalCard(context,index),
-                      // trailing:_customIcons? Icon(Icons.keyboard_arrow_up_rounded):Icon(Icons.keyboard_arrow_down_rounded),
-
-                      children: [TransactionCard(context,index),
-                        TransactionCard(context,index),
-                        TransactionCard(context,index)],),
-
-                ),
-                confirmDismiss: (direction) async {
-                  if (direction == DismissDirection.endToStart) {
-                    setState(() {
-                      dismissedItem=items[index];
-                      items.removeAt(index);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('item dismissed'),
-                            duration: Duration(seconds: 2),
-
-                            action: SnackBarAction(
-                              label: 'Undo',
-                              onPressed: () {
-                                setState(() {
-                                  items.insert(index, dismissedItem!);
-                                  dismissedItem = null;
-                                });
-                              },
-                            ),
-                          ));
-                    });
-                  } else {
-                    // TODO: Navigate to edit page;
-                  }
-                },
-
-              );
-
-
-          } ,
-            itemCount:items.length ,
-          );
+          // ListView.builder(itemBuilder:(context, index,null){
+          //   return
+          //     Dismissible(
+          //       background: slideRightBackground(),
+          //       secondaryBackground: slideLeftBackground(),
+          //       key: Key(items[index]),
+          //       child: InkWell(
+          //           onTap: () {
+          //             print("${items[index]} clicked");
+          //           },
+          //           child:   ExpansionTile(title:GoalCard(context,index),
+          //             // trailing:_customIcons? Icon(Icons.keyboard_arrow_up_rounded):Icon(Icons.keyboard_arrow_down_rounded),
+          //
+          //             children: [TransactionCard(context,index),
+          //               TransactionCard(context,index),
+          //               TransactionCard(context,index)],),
+          //
+          //       ),
+          //       confirmDismiss: (direction) async {
+          //         if (direction == DismissDirection.endToStart) {
+          //           setState(() {
+          //             dismissedItem=items[index];
+          //             items.removeAt(index);
+          //             ScaffoldMessenger.of(context).showSnackBar(
+          //                 SnackBar(
+          //                   content: Text('item dismissed'),
+          //                   duration: Duration(seconds: 2),
+          //
+          //                   action: SnackBarAction(
+          //                     label: 'Undo',
+          //                     onPressed: () {
+          //                       setState(() {
+          //                         items.insert(index, dismissedItem!);
+          //                         dismissedItem = null;
+          //                       });
+          //                     },
+          //                   ),
+          //                 ));
+          //           });
+          //         } else {
+          //           // TODO: Navigate to edit page;
+          //         }
+          //       },
+          //
+          //     );
+          //
+          //
+          // } ,
+          //   itemCount:items.length ,
+          // );
 
 
 

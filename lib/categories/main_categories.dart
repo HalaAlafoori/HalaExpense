@@ -24,65 +24,73 @@ class _MainCategoriesState extends State<MainCategories> {
   var dismissedItem;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: 
-      Container(padding: EdgeInsets.all(10),
-        child:
-         FutureBuilder<List<CategoryModel>>(
-          future: CategoryRepository().getAll(),
-          builder: (context,snapshot){
-            if(snapshot.connectionState ==ConnectionState.waiting){
-              return Center(child: CircularProgressIndicator());
-            }
-            else if(snapshot.connectionState ==ConnectionState.done){
-              if(snapshot.hasError)
-                return Center(child: Text("Error ${snapshot.error.toString()}"));
-              else if(snapshot.hasData){
-                var list=snapshot.data??[];
-                return
+    return
+      RefreshIndicator(
+        onRefresh: ()async{
+          setState(() {
 
-                  GridView.count(crossAxisCount: 3,childAspectRatio: 1,
-                    children: List.generate(list.length, (index) =>
-                        Container(//color: Colors.indigo,
-                          child: Column(
-                            children: [
-                              Container(alignment: Alignment.centerRight,
+          });
+        },
+        child: Scaffold(
+        body:
+        Container(padding: EdgeInsets.all(10),
+          child:
+           FutureBuilder<List<CategoryModel>>(
+            future: CategoryRepository().getAll(),
+            builder: (context,snapshot){
+              if(snapshot.connectionState ==ConnectionState.waiting){
+                return Center(child: CircularProgressIndicator());
+              }
+              else if(snapshot.connectionState ==ConnectionState.done){
+                if(snapshot.hasError)
+                  return Center(child: Text("Error ${snapshot.error.toString()}"));
+                else if(snapshot.hasData){
+                  var list=snapshot.data??[];
+                  return
 
-                                  //   color: Colors.yellowAccent,
-                                  child:
-                                  GestureDetector(child:
-                                  CircleAvatar(child:
-                                  Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 13,backgroundColor: darkred,),
-                                    onTap: ()async{
-                                      var delRes=await showDialog(context: context, builder: (context){
-                                        var id=list[index].id??0;
-                                        return DeleteCat(id.toInt());});
-                                      setState(() {
+                    GridView.count(crossAxisCount: 3,childAspectRatio: 1,
+                      children: List.generate(list.length, (index) =>
+                          Container(//color: Colors.indigo,
+                            child: Column(
+                              children: [
+                                Container(alignment: Alignment.centerRight,
 
-                                      });}
+                                    //   color: Colors.yellowAccent,
+                                    child:
+                                    GestureDetector(child:
+                                    CircleAvatar(child:
+                                    Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 13,backgroundColor: darkred,),
+                                      onTap: ()async{
+                                        var delRes=await showDialog(context: context, builder: (context){
+                                          var id=list[index].catId??0;
+                                          return DeleteCat(id.toInt());});
+                                        setState(() {
 
-                                  )),
-                              CategoryCard(context,list[index]),
-                            ],
-                          ),
-                        ) ,),
-                  );
+                                        });}
+
+                                    )),
+                                CategoryCard(context,list[index]),
+                              ],
+                            ),
+                          ) ,),
+                    );
+                }
+                else{
+                  return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                }
+
               }
               else{
                 return Center(child: Text("Error ${snapshot.error.toString()}"));
 
               }
 
-            }
-            else{
-              return Center(child: Text("Error ${snapshot.error.toString()}"));
+            },),
 
-            }
-
-          },),
-
-      ) ,
-    );
+        ) ,
+    ),
+      );
       
 
 

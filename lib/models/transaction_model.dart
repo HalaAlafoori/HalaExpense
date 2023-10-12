@@ -1,47 +1,47 @@
-/// Id : 1
-/// Name : "Burger"
-/// Total : 5500.00
-/// TransDate : "YYYY-MM-DD"
+/// TransId : 0
+/// TransName : "Sandwiches"
 /// CatId : 1
+/// Total : 2000.0
+/// TransDate : "3-12-2023"
 
 class TransactionModel {
   TransactionModel({
-      this.id, 
-      this.name, 
+      this.transId, 
+      this.transName, 
+      this.catId, 
       this.total, 
-      this.transDate, 
-      this.catId,});
+      this.transDate,});
 
   TransactionModel.fromJson(dynamic json) {
-    id = json['Id'];
-    name = json['Name'];
+    transId = json['TransId'];
+    transName = json['TransName'];
+    catId = json['CatId'];
     total = json['Total'];
     transDate = json['TransDate'];
-    catId = json['CatId'];
   }
-  int? id;
-  String? name;
+  int? transId;
+  String? transName;
+  int? catId;
   double? total;
   String? transDate;
-  int? catId;
-TransactionModel copyWith({  int? id,
-  String? name,
+TransactionModel copyWith({  int? transId,
+  String? transName,
+  int? catId,
   double? total,
   String? transDate,
-  int? catId,
-}) => TransactionModel(  id: id ?? this.id,
-  name: name ?? this.name,
+}) => TransactionModel(  transId: transId ?? this.transId,
+  transName: transName ?? this.transName,
+  catId: catId ?? this.catId,
   total: total ?? this.total,
   transDate: transDate ?? this.transDate,
-  catId: catId ?? this.catId,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['Id'] = id;
-    map['Name'] = name;
+    map['TransId'] = transId;
+    map['TransName'] = transName;
+    map['CatId'] = catId;
     map['Total'] = total;
     map['TransDate'] = transDate;
-    map['CatId'] = catId;
     return map;
   }
 

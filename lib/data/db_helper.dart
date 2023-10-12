@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
@@ -8,9 +9,9 @@ class DbTables{
   static const String Transactions = "MyTransaction";
   static const String Plan = "Plan";
 }
-String _catTbl = 'CREATE TABLE ${DbTables.Categories} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT  NULL UNIQUE, CatIcon INTEGER, Type INTEGER )';
-String _transTbl = '''CREATE TABLE ${DbTables.Transactions} (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT NOT NULL, Total REAL NOT NULL, TransDate Text, CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id) )''';
-String _planTbl = '''CREATE TABLE ${DbTables.Plan} (Id INTEGER PRIMARY KEY AUTOINCREMENT,SpentLimit INTEGER NOT NULL,
+String _catTbl = 'CREATE TABLE ${DbTables.Categories} (CatId INTEGER PRIMARY KEY AUTOINCREMENT, CatName TEXT  NULL UNIQUE, CatIcon INTEGER, Type INTEGER )';
+String _transTbl = '''CREATE TABLE ${DbTables.Transactions} (TransId INTEGER PRIMARY KEY AUTOINCREMENT, TransName TEXT NOT NULL, Total REAL NOT NULL, TransDate Text, CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id) )''';
+String _planTbl = '''CREATE TABLE ${DbTables.Plan} (PlanId INTEGER PRIMARY KEY AUTOINCREMENT,SpentLimit INTEGER NOT NULL,
     CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id)  )''';
 
 
@@ -30,15 +31,23 @@ class DbHelper{
     final dbPath = p.join(dbFolder!.path, "Database");
     Directory dbFolderDir = await Directory(dbPath).create(recursive: true);
 
-    final file = File(p.join(dbFolderDir.path, 'exptrack.db'));
+    final file = File(p.join(dbFolderDir.path, 'exptrack2.db'));
     var testDb = await openDatabase(
         file.path,
         version: dbVersion,
         onCreate: _createDatabaseV1,
-        onDowngrade: onDatabaseDowngradeDelete
+        onDowngrade: onDatabaseDowngradeDelete,
     );
     return testDb;
   }
+  void deleteDatabase() async {
+    final dbFolder = await getExternalStorageDirectory();
+    final path = p.join(dbFolder!.path, "Database").toString();
+    //final path = File(p.join(dbFolderDir.path, 'exptrack.db')).toString();
+    databaseFactory.deleteDatabase(path);
+  }
+  // Future<void> deleteDatabase(String path) =>
+  //     databaseFactory.deleteDatabase(path);
 
   void _createDatabaseV1(Database db, int version) async {
     try {
@@ -61,6 +70,18 @@ class DbHelper{
     try {
       Database db = await database;
       var res = await db.query(tbl);
+      return res;
+    } on Exception catch (e) {
+      print("Exception in getAll: $e");
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getAllTransCat() async{
+    try {
+      Database db = await database;
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} INNER JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId');
+      print("------------------------------${res}");
       return res;
     } on Exception catch (e) {
       print("Exception in getAll: $e");
@@ -106,11 +127,13 @@ class DbHelper{
     }
   }
 
-  Future<int> delete(String tbl,Object pkValue, {String pkName = 'Id'})async{
+  Future<int> delete(String tbl,Object pkValue,String pkName)async{
     try {
+     // String pkName = pk;
       Database db = await database;
       if(pkValue != null){
         var res = await db.delete(tbl, where: '$pkName = ?', whereArgs: [pkValue]);
+        print("Deleted item with id ${pkValue}");
         return res;
       }
       return 0;
@@ -119,5 +142,8 @@ class DbHelper{
       return 0;
     }
   }
+
+
+
 
 }

@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../categories/icons.dart';
 import '../color.dart';
 
 
-Widget TransactionCard(context,index){
+
+
+Widget TransactionCard(context,item){
+  var index=0;
+ // print(category);
   return
     Container(//color: Colors.yellowAccent,
     height: MediaQuery.of(context).size.height *.12 ,
@@ -17,20 +22,20 @@ Widget TransactionCard(context,index){
             padding: EdgeInsets.all(14),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
-              color:index%3==0?darkred:darkgreen,
+            color:item['Type']==0?darkgreen:darkred,
             ),
-            child: Icon(index%3==0?Icons.coffee:Icons.monetization_on_rounded,size: 30,)),
-        title: Container(margin: EdgeInsets.only(left: 20),//color: Colors.redAccent,
-          child: Text(index%3==0?"Food":"Salary"),
+           child: Icon(MyIcons.allicons[item['CatIcon']],size: 30,)),
+        title: Container(margin: EdgeInsets.only(left: 10),//color: Colors.redAccent,
+          child: Text(item['TransName']),
         ),
         subtitle: Container(margin: EdgeInsets.only(left: 20),//color: Colors.indigoAccent,
-          child: Text(index%3==0?"Lunch":"Monthly Salary"),
+          child: Text(item['CatName']),
         ),
         trailing:
         Container(
           //color: Colors.pinkAccent,
             padding: EdgeInsets.symmetric(vertical: 10)
-            ,child: Column(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("\$200"),Text("Mon 06,2023",style: TextStyle(color: Colors.grey),),],))
+            ,child: Column(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("\$ ${item['Total']}"),Text(item['TransDate'],style: TextStyle(color: Colors.grey),),],))
 
     ),
   );

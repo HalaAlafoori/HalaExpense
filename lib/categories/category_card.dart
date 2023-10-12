@@ -30,7 +30,7 @@ Widget CategoryCard(context,item){
          child: Icon(MyIcons.allicons[item.catIcon],size: 40,)),
 
        Container(margin: EdgeInsets.only(left: 10,top: 10),//color: Colors.redAccent,
-         child: Text(item.name,style: TextStyle(fontSize: 13),),
+         child: Text(item.catName,style: TextStyle(fontSize: 13),),
        ),
 
      ]

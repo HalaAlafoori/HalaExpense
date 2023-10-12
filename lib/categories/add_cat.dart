@@ -215,6 +215,7 @@ class _AddCat extends State<AddCat> {
 
               ],),
             ),
+
             loading?CircularProgressIndicator():
             Container(//color: Colors.blue,
               height: MediaQuery.of(context).size.height *.1,
@@ -270,12 +271,12 @@ class _AddCat extends State<AddCat> {
 
                               });
                               var date={
-                                "Name":nameCon.text,
+                                "CatName":nameCon.text,
                                 "CatIcon":_selectedIcon,
                                 "Type":_selectedType.index
 
                               };
-                              print(date);
+                              print("********************${date}");
                               var addRes=await CategoryRepository().addToDb(CategoryModel.fromJson(date));
                               if(addRes ){
                                 setState(() {

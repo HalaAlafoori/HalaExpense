@@ -10,10 +10,13 @@ Widget MyFloatingBtn(context,_currentIndex){
       borderRadius: BorderRadius.circular(15),
 
     ), onPressed: () async{
-  Navigator.of(context).push(MaterialPageRoute(builder: (context){
+  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(page)
 
-     return BrunchPage(page);
-   }));
 
+   ));
+
+  // if(isAdd !=null && isAdd==true){
+  //
+  // }
   }, );
 }

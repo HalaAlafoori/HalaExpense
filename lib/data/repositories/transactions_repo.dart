@@ -46,7 +46,7 @@ class TransactionRepository{
   Future<bool> deleteFromDb(int id)async{
     try{
       await Future.delayed(Duration(milliseconds: 300));
-      var delRes = await DbHelper().delete(DbTables.Transactions, id);
+      var delRes = await DbHelper().delete(DbTables.Transactions, id,"TransId");
       if(delRes > 0){
         return true;
       }

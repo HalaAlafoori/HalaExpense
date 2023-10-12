@@ -1,38 +1,38 @@
-/// Id : 1
-/// Name : "Food"
-/// CatIcon : 1
-/// Type : 1
+/// CatId : 1
+/// CatName : "Food"
+/// CatIcon : 2
+/// Type : 0
 
 class CategoryModel {
   CategoryModel({
-      this.id, 
-      this.name, 
+      this.catId, 
+      this.catName, 
       this.catIcon, 
       this.type,});
 
   CategoryModel.fromJson(dynamic json) {
-    id = json['Id'];
-    name = json['Name'];
+    catId = json['CatId'];
+    catName = json['CatName'];
     catIcon = json['CatIcon'];
     type = json['Type'];
   }
-  int? id;
-  String? name;
+  int? catId;
+  String? catName;
   int? catIcon;
   int? type;
-CategoryModel copyWith({  int? id,
-  String? name,
+CategoryModel copyWith({  int? catId,
+  String? catName,
   int? catIcon,
   int? type,
-}) => CategoryModel(  id: id ?? this.id,
-  name: name ?? this.name,
+}) => CategoryModel(  catId: catId ?? this.catId,
+  catName: catName ?? this.catName,
   catIcon: catIcon ?? this.catIcon,
   type: type ?? this.type,
 );
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['Id'] = id;
-    map['Name'] = name;
+    map['CatId'] = catId;
+    map['CatName'] = catName;
     map['CatIcon'] = catIcon;
     map['Type'] = type;
     return map;
