@@ -4,7 +4,8 @@ import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 
 class TitleInput extends StatelessWidget {
   TitleInput(this._controller,this._textLabel);
-  var _controller = TextEditingController();
+  var _controller ;
+
   final String _textLabel;
 
   @override

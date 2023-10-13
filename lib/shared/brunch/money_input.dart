@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'reg_exp.dart';
 class MoneyInput extends StatelessWidget {
   MoneyInput(this._controller,this._textLabel);
-  var _controller = TextEditingController();
+  var _controller ;
   final String _textLabel;
   @override
   Widget build(BuildContext context) {

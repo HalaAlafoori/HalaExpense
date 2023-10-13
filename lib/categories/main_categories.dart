@@ -21,6 +21,11 @@ class MainCategories extends StatefulWidget {
 class _MainCategoriesState extends State<MainCategories> {
   //final List<String> items=new List<String>.generate(5, (index) => "items ${index+1}");
 
+
+
+
+
+
   var dismissedItem;
   @override
   Widget build(BuildContext context) {
@@ -60,17 +65,72 @@ class _MainCategoriesState extends State<MainCategories> {
                                     GestureDetector(child:
                                     CircleAvatar(child:
                                     Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 13,backgroundColor: darkred,),
-                                      onTap: ()async{
-                                        var delRes=await showDialog(context: context, builder: (context){
-                                          var id=list[index].catId??0;
-                                          return DeleteCat(id.toInt());});
-                                        setState(() {
+                                      onTap:() async{
+                                        var delRes=await
 
-                                        });}
 
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius: BorderRadius.circular(16),
+                                                ),
+                                                title: Text(
+                                                  'Confirm Delete',
+                                                  style: TextStyle(
+                                                    fontSize: 20,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                                content: Text(
+                                                  'Are you sure you want to delete this item?',
+                                                  style: TextStyle(fontSize: 16),
+                                                ),
+                                                actions: [
+                                                  TextButton(
+                                                    onPressed: () {
+                                                       CategoryRepository().deleteFromDb(list[index].catId!.toInt()); // Call deleteFromDB function
+                                                      Navigator.of(context).pop(true); // Close the dialog
+                                                    },
+                                                    child: Text(
+                                                      'Delete',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  TextButton(
+                                                    onPressed: () {
+                                                      Navigator.of(context).pop(false); // Close the dialog
+                                                    },
+
+                                                    child: Text(
+                                                      'Cancel',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.bold,
+                                                        color: Colors.grey,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        if(delRes){
+                                          setState(() {
+
+                                          });
+                                        }
+
+                                      }
                                     )),
                                 CategoryCard(context,list[index]),
                               ],
+
                             ),
                           ) ,),
                     );

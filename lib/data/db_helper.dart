@@ -112,7 +112,7 @@ class DbHelper{
     }
   }
 
-  Future<int> update(String tbl, Map<String, dynamic> obj, {String pkName = 'Id'})async{
+  Future<int> update(String tbl, Map<String, dynamic> obj, String pkName )async{
     try {
       Database db = await database;
       var pkValue = obj[pkName];

@@ -44,7 +44,7 @@ class CategoryRepository{
   Future<bool> deleteFromDb(int id)async{
     try{
       await Future.delayed(Duration(milliseconds: 300));
-      var delRes = await DbHelper().delete(DbTables.Categories,id,"TransId" );
+      var delRes = await DbHelper().delete(DbTables.Categories,id,"CatId" );
       if(delRes > 0){
         return true;
       }

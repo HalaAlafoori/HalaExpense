@@ -44,6 +44,7 @@ dependencies:
   sqflite: ^2.2.8+4
   path_provider: ^2.1.0
   date_format: ^2.0.7
+  smartrefresh: ^0.0.2
 
 
 dev_dependencies:

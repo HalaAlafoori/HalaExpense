@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/data/db_helper.dart';
-import 'package:halaexpenses/data/repositories/category_repo.dart';
+
 import 'package:halaexpenses/home/transaction_card.dart';
 import 'package:halaexpenses/models/transaction_model.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -9,6 +9,10 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../color.dart';
 import '../data/repositories/transactions_repo.dart';
 import '../shared/main/dismiss_backgrounds.dart';
+import 'package:smartrefresh/smartrefresh.dart';
+
+import '../transactions/edit_trans.dart';
+
 class Total{
   Total(this.title,this.money);
   final String title;
@@ -29,28 +33,161 @@ class MainHome extends StatefulWidget {
 class _MainHomeState extends State<MainHome> {
   late List<Total> _chartData;
   late TooltipBehavior _tooltipBehavior=TooltipBehavior(enable: true);
-  // List<String> items=new List<String>.generate(10, (index) => "items ${index+1}");
-var dir;
+  var dir;
   var dismissedItem;
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  GlobalKey<RefreshIndicatorState>();
+  final RefreshController _refreshController = RefreshController();
+  Future<List<Map<String, dynamic>>?>? _data;
+  late List<Map<String, dynamic>> data=[]; // Change the type to a mutable list
+
+
+
+
+  @override
+  void initState(){
+    _chartData=getChartData();
+    DbHelper().deleteDatabase();
+    _data = fetchData();
+    //_tooltipBehavior=TooltipBehavior(enable: true);
+    super.initState();
+  }
+
+
 
   List<Total> getChartData(){
     final List<Total> chartData=[
       Total('total', widget.income+widget.spent),
       Total('spent', widget.spent),
 
-
-
     ];
     return chartData;
   }
 
-  @override
-  void initState(){
-    _chartData=getChartData();
-    DbHelper().deleteDatabase();
-    //_tooltipBehavior=TooltipBehavior(enable: true);
-    super.initState();
+  Future<List<Map<String, dynamic>>?> fetchData() async {
+    //getting data from db
+    var res=await DbHelper().getAllTransCat();
+    data.clear();
+    res!.forEach((item) {
+      data.add(item);
+    });
+
+
+    return data;
   }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      _data=null;
+      _data = fetchData();
+    });
+    await _data;
+
+    _refreshController.refreshCompleted();
+  }
+
+
+  Future<void> _dismissItem(int index) async {
+
+    bool undo=false;
+    print("+++++++++++++++++++++++++++++++++++++++++");
+    var removedItem=data[index];
+    print("^^^^^^^^^^^^^${removedItem}");
+
+    data?.removeAt(index);
+
+    setState(() {
+      _data = Future.value(data);
+    });
+    // _refreshData();
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+
+    //udno snack
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Item dismissed'),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+
+              undo=true;
+
+              data?.insert(index,removedItem);
+              setState(() {
+                _data = Future.value(data);
+              });
+              print("^^^^^^^^^^^^^^^^^^${data}");
+              _refreshController.refreshCompleted();
+
+            },
+          ),
+        ));
+
+
+    // Wait for the Snackbar to be closed
+    await Future.delayed(Duration(seconds: 3));
+
+    // Call your method after the Snackbar is hidden
+    if(!undo)
+      TransactionRepository().deleteFromDb(removedItem['TransId']);
+
+
+  }
+
+  void confirmUpdate(item){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+          Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.green),
+              SizedBox(width: 8),
+              Text(
+                'Item ${item['TransName']} updated successfully',
+                style: TextStyle(color: Colors.green, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+
+          backgroundColor: Colors.white,
+          elevation: 6,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+
+
+
+        ));
+    setState(() {
+      _data = fetchData();
+    });
+    print("^^^^^^^^^^^^^^^^^^${data}");
+    _refreshController.refreshCompleted();
+    // _refreshData();
+  }
+
+  void errorUpdate(item){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.error, color: Colors.red),
+              SizedBox(width: 8),
+              Text(
+                'Failed to update item',
+                style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.white,
+          elevation: 6,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: Duration(seconds: 3),
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Container(padding: EdgeInsets.all(10),//color: Colors.pink,
@@ -192,102 +329,101 @@ var dir;
 
                 ),
               ),
-              Container(//color: Colors.lime,
-                height: MediaQuery.of(context).size.height *.444 ,
-                child:
-                FutureBuilder<List<Map<String,dynamic>>?>(
-                  future: DbHelper().getAllTransCat(),
-                  builder: (context,snapshot){
-                    if(snapshot.connectionState ==ConnectionState.waiting){
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    else if(snapshot.connectionState ==ConnectionState.done){
-                      if(snapshot.hasError)
-                        return Center(child: Text("Error ${snapshot.error.toString()}"));
-                      else if(snapshot.hasData){
-                        var list=snapshot.data??[];
-                        return
+              RefreshIndicator(
+                notificationPredicate:(notification) => false,//to stop refresh on pull down
+                key: _refreshIndicatorKey,
+                onRefresh: _refreshData,
+                child: Container(//color: Colors.lime,
+                  height: MediaQuery.of(context).size.height *.444 ,
+                  child:
+                  FutureBuilder<List<Map<String, dynamic>>?>(
+                    future:_data!,
+                    builder: (context,snapshot){
+                      if(snapshot.connectionState ==ConnectionState.waiting){
+                        return Center(child: CircularProgressIndicator());
+                      }
+                      else if(snapshot.connectionState ==ConnectionState.done){
+                        if(snapshot.hasError)
+                          return Center(child: Text("Error ${snapshot.error.toString()}"));
+                        else if(snapshot.hasData){
 
-                          ListView.builder(itemBuilder:(context, index){
-                            return
-                              Dismissible(
-                                background: slideRightBackground(),
-                                secondaryBackground: slideLeftBackground(),
-                                key: Key(list[index].toString()),
-                                child: InkWell(
-                                    onTap: () {
-                                     // print("${items[index]} clicked");
-                                    },
-                                    child: TransactionCard(context,list[index])),
-                                //onDismissed always dismiss or returns an error
+                          final List<Map<String, dynamic>> data = snapshot.data!;
 
-                                confirmDismiss: (direction) async {
-                                  //async--> Future return value: true or false
-                                  //true--> dismissed
-                                  //makes the card undragable while confirm(if there is )
-                                  //false--> draged back
-                                  if (direction == DismissDirection.endToStart) {
-                                    setState(() {
-                                      dismissedItem=list[index];
-                                      print(dismissedItem);
-                                      TransactionRepository().deleteFromDb(dismissedItem['TransId']);
-                                     //list.removeAt(index);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(
-                                            content: Text('item dismissed'),
-                                            duration: Duration(seconds: 2),
+                          //  var myList = List.from(list);
 
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {
-                                                setState(() {
-                                                  var data={
-                                                    "TransId":dismissedItem['TransId'],
+                          return
 
-                                                    "TransName":dismissedItem['TransName'],
-                                                    "CatId":dismissedItem['CatId'],
-                                                    "Total":(dismissedItem['Total']),
+                            ListView.builder(itemBuilder:(context, index){
+                              return
+                                Dismissible(
+                                  background: slideRightBackground(),
+                                  secondaryBackground: slideLeftBackground(),
+                                  key: Key(data![index].toString()),
+                                  child: InkWell(
+                                      onTap: () {
+                                        // print("${items[index]} clicked");
+                                      },
+                                      child: TransactionCard(context,data[index])),
+                                  //onDismissed always dismiss or returns an error
 
-                                                    // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
-                                                    "TransDate":dismissedItem['TransDate']
+                                  confirmDismiss: (direction) async {
+                                    //async--> Future return value: true or false
+                                    //true--> dismissed
+                                    //makes the card undragable while confirm(if there is )
+                                    //false--> draged back
+                                    if (direction == DismissDirection.endToStart) {
 
-                                                  };
-                                                  print(data);
-                                                  var addRes= TransactionRepository().addToDb(TransactionModel.fromJson(data));
-
-                                                  //  items.insert(index, dismissedItem!);
-                                                  dismissedItem = null;
-                                                });
-                                              },
-                                            ),
-                                          )
-                                      );
-                                    });
-                                  } else {
-                                    // TODO: Navigate to edit page;
-                                  }
-                                },
-
-                              );
+                                      _dismissItem(index);
 
 
-                          } ,
-                            itemCount:list.length ,
-                          );
+
+
+
+                                      print("after dismiss${data}");
+                                      print("@@@@@@@@@@@@");
+
+
+
+                                    } else {
+                                      // TODO: Navigate to edit page;
+                                      var updateRes=await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => EditTrans(data[index]),
+                                          ));
+                                      if(updateRes){
+                                        confirmUpdate(data[index]);
+
+
+                                      }
+                                      else{
+                                        errorUpdate(data[index]);
+
+                                      }
+                                    }
+                                  },
+
+                                );
+
+
+                            } ,
+                              itemCount:data.length ,
+                            );
+                        }
+                        else{
+                          return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                        }
+
                       }
                       else{
                         return Center(child: Text("Error ${snapshot.error.toString()}"));
 
                       }
 
-                    }
-                    else{
-                      return Center(child: Text("Error ${snapshot.error.toString()}"));
+                    },),
 
-                    }
-
-                  },),
-
+                ),
               )
             ],
 
