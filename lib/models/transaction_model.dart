@@ -2,7 +2,7 @@
 /// TransName : "Sandwiches"
 /// CatId : 1
 /// Total : 2000.0
-/// TransDate : "3-12-2023"
+/// TransDate : 20001382
 
 class TransactionModel {
   TransactionModel({
@@ -23,12 +23,12 @@ class TransactionModel {
   String? transName;
   int? catId;
   double? total;
-  String? transDate;
+  int? transDate;
 TransactionModel copyWith({  int? transId,
   String? transName,
   int? catId,
   double? total,
-  String? transDate,
+  int? transDate,
 }) => TransactionModel(  transId: transId ?? this.transId,
   transName: transName ?? this.transName,
   catId: catId ?? this.catId,

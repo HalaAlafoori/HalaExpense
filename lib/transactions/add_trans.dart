@@ -10,6 +10,7 @@ import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/brunch/title_input.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 import 'package:date_format/date_format.dart';
+import 'package:intl/intl.dart';
 
 import '../shared/brunch/money_input.dart';
 
@@ -31,10 +32,7 @@ _AddTrans(){
     //print(categories[0].name);
   }
   late List categories;
-  // final List categories=['Food','Salary'];
-  // final List categories_icons=[Icon(MyIcons.allicons[6]),Icon(MyIcons.allicons[9])];
-  // //final List transaction_type=['income','spent'];
-  // final  List transaction_color=[darkred,darkgreen];
+
 
 
   CategoryModel? _selectedCategory;
@@ -45,7 +43,7 @@ _AddTrans(){
   var formKey=GlobalKey<FormState>();
   var totalCon=TextEditingController();
   var titleCon=TextEditingController();
-  DateTime now = new DateTime.now();
+
 
 
 //add status:
@@ -221,17 +219,26 @@ _AddTrans(){
                               issuccess=false;
                               iserror=false;
 
+
+
+
+
                               });
+
+                              var dateTime = DateFormat('yyyy-MM-ddThh:mm:ss').parse(DateTime.now().toIso8601String());
+                              print("numbers= ${dateTime.millisecondsSinceEpoch} & ${dateTime}");
+
                               var data={
                               "TransName":titleCon.text,
                               "CatId":categories[_selectedIndex].catId,
                               "Total":double.parse(totalCon.text),
 
                              // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
-                              "TransDate":(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]))
+
+                              "TransDate":dateTime.millisecondsSinceEpoch
 
                               };
-                              print(data);
+                              print(data['TransDate']);
                               var addRes=await TransactionRepository().addToDb(TransactionModel.fromJson(data));
                               if(addRes ){
                               setState(() {

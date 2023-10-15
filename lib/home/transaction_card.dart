@@ -4,10 +4,16 @@ import 'package:flutter/material.dart';
 import '../categories/icons.dart';
 import '../color.dart';
 
-
+String dateOnly(DateTime date) {
+  var dateStr=date.toString();
+  var dateArr=dateStr.split(' ');
+  return dateArr[0];
+}
 
 
 Widget TransactionCard(context,item){
+  DateTime date = new DateTime.fromMillisecondsSinceEpoch(item['TransDate']);
+  print(date);
   var index=0;
  // print(category);
   return
@@ -35,7 +41,7 @@ Widget TransactionCard(context,item){
         Container(
           //color: Colors.pinkAccent,
             padding: EdgeInsets.symmetric(vertical: 10)
-            ,child: Column(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("\$ ${item['Total']}"),Text(item['TransDate'],style: TextStyle(color: Colors.grey),),],))
+            ,child: Column(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("\$ ${item['Total']}"),Text("${dateOnly(date)}",style: TextStyle(color: Colors.grey),),],))
 
     ),
   );

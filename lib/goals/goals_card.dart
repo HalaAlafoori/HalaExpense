@@ -1,88 +1,86 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:halaexpenses/categories/icons.dart';
 
 import '../color.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 
 
-Widget GoalCard(context,index){
-  return Container(//color: Colors.grey.shade200,
-      width: MediaQuery.of(context).size.width,
-      height:MediaQuery.of(context).size.height * .13,
-      //color:Colors.white70,
+Widget GoalCard(context,item){
 
 
-      child:
-      Row(
-        children: [
+  var index=0;
+  return Container(
+    //color: Colors.indigo,
+    child: Row(
+      children: [
+        Container(//color: Colors.cyan,
+          width: MediaQuery.of(context).size.width *.25,
+          height:MediaQuery.of(context).size.height * .12,
+          padding: EdgeInsets.all(14),
+          child: Container(
 
-          Container(//color: Colors.cyan,
-            width: MediaQuery.of(context).size.width *.25,
-            height:MediaQuery.of(context).size.height * .15,
-            padding: EdgeInsets.all(14),
-            child: Container(
-
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color:Colors.grey.shade200,
-                ),
-                child: Icon(index%3==0?Icons.coffee:Icons.monetization_on_rounded,size: 30,)),
-          ),
-          Container(//color: Colors.yellow,
-            width: MediaQuery.of(context).size.width *.57,
-            height:MediaQuery.of(context).size.height * .15,
-            child: Column(
-              children: [
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color:Colors.grey.shade200,
+              ),
+              child: Icon(MyIcons.allicons[item['CatIcon']],size: 30,)),
+        ),
+        Container(
+          child: Column(
+            children: [
+              Container(
+                child:
                 Container(//color: Colors.red,
-                  width: MediaQuery.of(context).size.width *.65,
+                  width: MediaQuery.of(context).size.width *.45,
                   height:MediaQuery.of(context).size.height * .06,
                   child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
                     Container(margin: EdgeInsets.only(left: 10,top: 25),//color: Colors.redAccent,
-                      child: Text(index%3==0?"Food":"Salary",style: TextStyle(fontSize: 17),),
+                      child: Text(item['CatName'],style: TextStyle(fontSize: 17),),
                     ),
                     Container(
-                      //color: Colors.pinkAccent,
+
+
+                        //color: Colors.pinkAccent,
                         padding: EdgeInsets.only(top: 20)
                         ,child:
-                    Row(crossAxisAlignment: CrossAxisAlignment.end,children: [Text("2000",style: TextStyle(fontSize: 17)),Icon(Icons.monetization_on)],))
+                    Row(crossAxisAlignment: CrossAxisAlignment.end,children: [Text(item['SpentLimit'].toString(),style: TextStyle(fontSize: 17)),Icon(Icons.monetization_on)],))
                   ],
-                    // Row(children: [],)
+// Row(children: [],)
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  width: 300,
-                  height: 20,
-                  child:
-                  ClipRRect(
 
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    child: LinearProgressIndicator(
+                /////////////////////////
+              ),
+              Container(
+                 //color: Colors.cyan,
 
 
-                      value: 0.7,
-                      valueColor: AlwaysStoppedAnimation<Color>(darkgreen),
-                      backgroundColor: darkred,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    width: 180,
+                    height: 20,
+                    child:
+                    ClipRRect(
+
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      child: LinearProgressIndicator(
+
+
+                        value: 0.7,
+                        valueColor: AlwaysStoppedAnimation<Color>(darkgreen),
+                        backgroundColor: darkred,
+                      ),
                     ),
-                  ),
-                )
-
-              ],
-            ),
-
-          )
-
-        ],
-      )
+                  )
 
 
-
-
-
-
-
-
+            ],
+          ),
+        )
+      ],
+    ),
   );
 }
+
 

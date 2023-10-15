@@ -7,12 +7,12 @@ import 'package:path/path.dart' as p;
 class DbTables{
   static const String Categories = "Categories";
   static const String Transactions = "MyTransaction";
-  static const String Plan = "Plan";
+  static const String Goal = "Goal";
 }
 String _catTbl = 'CREATE TABLE ${DbTables.Categories} (CatId INTEGER PRIMARY KEY AUTOINCREMENT, CatName TEXT  NULL UNIQUE, CatIcon INTEGER, Type INTEGER )';
-String _transTbl = '''CREATE TABLE ${DbTables.Transactions} (TransId INTEGER PRIMARY KEY AUTOINCREMENT, TransName TEXT NOT NULL, Total REAL NOT NULL, TransDate Text, CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id) )''';
-String _planTbl = '''CREATE TABLE ${DbTables.Plan} (PlanId INTEGER PRIMARY KEY AUTOINCREMENT,SpentLimit INTEGER NOT NULL,
-    CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (Id)  )''';
+String _transTbl = '''CREATE TABLE ${DbTables.Transactions} (TransId INTEGER PRIMARY KEY AUTOINCREMENT, TransName TEXT NOT NULL, Total REAL NOT NULL, TransDate INTEGER, CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (CatId) )''';
+String _planTbl = '''CREATE TABLE ${DbTables.Goal} (GoalId INTEGER PRIMARY KEY AUTOINCREMENT,SpentLimit REAL NOT NULL, GoalDate INTEGER,
+    CatId INTEGER NOT NULL, FOREIGN KEY (CatId) REFERENCES ${DbTables.Categories} (CatId)  )''';
 
 
 class DbHelper{
@@ -31,7 +31,7 @@ class DbHelper{
     final dbPath = p.join(dbFolder!.path, "Database");
     Directory dbFolderDir = await Directory(dbPath).create(recursive: true);
 
-    final file = File(p.join(dbFolderDir.path, 'exptrack2.db'));
+    final file = File(p.join(dbFolderDir.path, 'exptrack4.db'));
     var testDb = await openDatabase(
         file.path,
         version: dbVersion,
@@ -89,6 +89,31 @@ class DbHelper{
     }
   }
 
+  Future<List<Map<String, dynamic>>?> getAllPlansCat() async{
+    try {
+      Database db = await database;
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Goal} INNER JOIN ${DbTables.Categories} ON ${DbTables.Goal}.catId = ${DbTables.Categories}.catId');
+      print("------------------------------${res}");
+      return res;
+    } on Exception catch (e) {
+      print("Exception in getAll: $e");
+      return null;
+    }
+  }
+
+
+  Future<List<Map<String, dynamic>>?> getAllPlanWithAll() async{
+    try {
+      Database db = await database;
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Goal} INNER JOIN ${DbTables.Categories} INNER JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId');
+      print("------------------------------${res}");
+      return res;
+    } on Exception catch (e) {
+      print("Exception in getAll: $e");
+      return null;
+    }
+  }
+
   Future<Map<String, dynamic>?> getById(String tableName, int id, {String pkName = "Id"}) async{
     try {
       Database db = await database;
@@ -103,8 +128,11 @@ class DbHelper{
 
   Future<int> add(String tbl, Map<String, dynamic> obj)async{
     try {
+
       Database db = await database;
+
       var res = await db.insert(tbl, obj, conflictAlgorithm: ConflictAlgorithm.ignore );
+      print("llll${res}");
       return res;
     } on Exception catch (e) {
       print("EXP in Insert : ${e}");
