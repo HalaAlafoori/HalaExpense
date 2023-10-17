@@ -7,7 +7,7 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 
 
-Widget GoalCard(context,item){
+Widget GoalCard(context,item,progressVal){
 
 
   var index=0;
@@ -67,7 +67,7 @@ Widget GoalCard(context,item){
                       child: LinearProgressIndicator(
 
 
-                        value: 0.7,
+                        value: progressVal,
                         valueColor: AlwaysStoppedAnimation<Color>(darkgreen),
                         backgroundColor: darkred,
                       ),

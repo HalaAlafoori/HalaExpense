@@ -101,11 +101,30 @@ class DbHelper{
     }
   }
 
-
-  Future<List<Map<String, dynamic>>?> getAllPlanWithAll() async{
+  Future<Map?> getAllPlansCatTrans() async{
     try {
       Database db = await database;
-      var res = await db.rawQuery('SELECT * FROM ${DbTables.Goal} INNER JOIN ${DbTables.Categories} INNER JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId');
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Goal} INNER JOIN ${DbTables.Categories} ON ${DbTables.Goal}.catId = ${DbTables.Categories}.catId');
+      print("----------------------res--------${res}");
+      var res2 = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} ');
+      print("---------------------res2---------${res2}");
+      Map result={"main":res,"sub":res2};
+      result[0]=res;
+      result[1]=res2;
+      print("------------------result------------${result[1]}");
+
+
+      return result;
+    } on Exception catch (e) {
+      print("Exception in getAll: $e");
+      return null;
+    }
+  }
+
+  Future<List<Map<String, dynamic>>?> getAllTransCatForPlan(catId) async{
+    try {
+      Database db = await database;
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} INNER JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId WHERE ${DbTables.Transactions}.catId =${catId} ');
       print("------------------------------${res}");
       return res;
     } on Exception catch (e) {
@@ -113,6 +132,7 @@ class DbHelper{
       return null;
     }
   }
+
 
   Future<Map<String, dynamic>?> getById(String tableName, int id, {String pkName = "Id"}) async{
     try {

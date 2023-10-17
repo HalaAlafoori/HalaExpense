@@ -12,9 +12,10 @@ String dateOnly(DateTime date) {
 
 
 Widget TransactionCard(context,item){
+  print("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii$item");
   DateTime date = new DateTime.fromMillisecondsSinceEpoch(item['TransDate']);
   print(date);
-  var index=0;
+
  // print(category);
   return
     Container(//color: Colors.yellowAccent,

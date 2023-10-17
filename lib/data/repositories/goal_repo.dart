@@ -56,8 +56,10 @@ class GoalRepository{
   Future<bool> deleteFromDb(int id)async{
     try{
       await Future.delayed(Duration(milliseconds: 300));
-      var delRes = await DbHelper().delete(DbTables.Goal,id,"CatId" );
+      var delRes = await DbHelper().delete(DbTables.Goal,id,"GoalId" );
       if(delRes > 0){
+        print("deleted");
+
         return true;
       }
       else{
