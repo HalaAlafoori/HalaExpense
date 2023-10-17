@@ -32,6 +32,7 @@ class _EditTrans extends State<EditTrans> {
 
 
   }
+
   @override
   void initState() {
     get_categories();
@@ -108,10 +109,8 @@ class _EditTrans extends State<EditTrans> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyBrunchAppBar("Edit Transaction"),
+      appBar: MyBrunchAppBar("Edit Goals"),
       body:
-
-
 
       SingleChildScrollView(
         child: Container(//color: Colors.indigoAccent,

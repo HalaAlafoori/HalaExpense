@@ -12,6 +12,7 @@ import '../shared/main/dismiss_backgrounds.dart';
 import '../shared/main/main_app_bar.dart';
 import 'package:smartrefresh/smartrefresh.dart';
 
+import 'edit_goals.dart';
 import 'goals_card.dart';
 
 

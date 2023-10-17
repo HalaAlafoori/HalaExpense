@@ -52,6 +52,23 @@ class GoalRepository{
       rethrow;
     }
   }
+  Future<bool> updateToDb(GoalModel obj)async{
+    try{
+
+      await Future.delayed(Duration(milliseconds: 300));
+      var updateRes = await DbHelper().update(DbTables.Goal, obj.toJson(),"GoalId");
+      if(updateRes > 0){
+        print("Update item with name: ${obj.goalId}");
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+    catch(ex){
+      rethrow;
+    }
+  }
 
   Future<bool> deleteFromDb(int id)async{
     try{
