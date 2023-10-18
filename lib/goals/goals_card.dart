@@ -5,6 +5,8 @@ import 'package:halaexpenses/categories/icons.dart';
 import '../color.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../providers/theme_provider.dart';
+
 
 
 Widget GoalCard(context,item,progressVal){
@@ -23,7 +25,7 @@ Widget GoalCard(context,item,progressVal){
 
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color:Colors.grey.shade200,
+                  color:ThemeProvider.getBack(context)
               ),
               child: Icon(MyIcons.allicons[item['CatIcon']],size: 30,)),
         ),

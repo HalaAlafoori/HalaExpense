@@ -6,6 +6,7 @@ import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 
 import '../data/repositories/category_repo.dart';
+import '../providers/theme_provider.dart';
 import '../shared/brunch/title_input.dart';
 import 'icons.dart';
 
@@ -83,7 +84,7 @@ class _AddCat extends State<AddCat> {
 
                               groupValue: _selectedType,
                               title: Text(TransactionType.income.name),
-                              tileColor:TransactionType.income==_selectedType? Colors.white70:Colors.grey.shade200,
+                              tileColor:TransactionType.income==_selectedType? Colors.white70:ThemeProvider.getBack(context),
 
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),
                               onChanged: (val){
@@ -99,7 +100,7 @@ class _AddCat extends State<AddCat> {
                           child: RadioListTile(value: TransactionType.spent,
                               groupValue: _selectedType,
                               title: Text(TransactionType.spent.name),
-                              tileColor:TransactionType.spent==_selectedType? Colors.white70:Colors.grey.shade200,
+                              tileColor:TransactionType.spent==_selectedType? Colors.white70:ThemeProvider.getBack(context),
 
 
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20), side: BorderSide(color: Colors.grey)),

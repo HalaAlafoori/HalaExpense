@@ -10,6 +10,7 @@ import '../data/repositories/transactions_repo.dart';
 import '../models/category_model.dart';
 import '../models/goal_model.dart';
 import '../models/transaction_model.dart';
+import '../providers/theme_provider.dart';
 import '../shared/brunch/brunch_app_bar.dart';
 import '../shared/brunch/money_input.dart';
 
@@ -137,7 +138,7 @@ class _EditGoalState extends State<EditGoal> {
                       margin: EdgeInsets.only(bottom: 10),
                       height: MediaQuery.of(context).size.height*.14,
                       padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
 
 
 
@@ -179,11 +180,11 @@ class _EditGoalState extends State<EditGoal> {
                                           print("_________${categories[_selectedIndex].catName}");
                                         });
                                       },
-                                      icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
-                                      dropdownColor: Colors.grey.shade200,
+                                      icon: Icon(Icons.arrow_drop_down_circle_outlined,color:ThemeProvider.getBack(context),),
+                                      dropdownColor: ThemeProvider.getBack(context),
 
                                       decoration: InputDecoration(
-                                        fillColor: Colors.grey.shade200,
+                                        fillColor: ThemeProvider.getBack(context),
                                         filled: true,
                                         labelText: "Categories",
                                         labelStyle: TextStyle(color: Colors.black),

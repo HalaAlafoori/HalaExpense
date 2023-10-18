@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 
 import '../data/repositories/goal_repo.dart';
 import '../models/goal_model.dart';
+import '../providers/theme_provider.dart';
 import '../shared/brunch/money_input.dart';
 
 class AddGoals extends StatefulWidget {
@@ -85,7 +86,7 @@ class _AddGoals extends State<AddGoals> {
                     margin: EdgeInsets.only(bottom: 10),
                     height: MediaQuery.of(context).size.height*.14,
                     padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
 
 
 
@@ -123,10 +124,10 @@ class _AddGoals extends State<AddGoals> {
                                       });
                                     },
                                     icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
-                                    dropdownColor: Colors.grey.shade200,
+                                    dropdownColor: ThemeProvider.getBack(context),
 
                                     decoration: InputDecoration(
-                                      fillColor: Colors.grey.shade200,
+                                      fillColor: ThemeProvider.getBack(context),
                                       filled: true,
                                       labelText: "Categories",
                                       labelStyle: TextStyle(color: Colors.black),

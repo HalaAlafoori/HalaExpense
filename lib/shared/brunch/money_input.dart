@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
+import '../../providers/theme_provider.dart';
 import 'reg_exp.dart';
 class MoneyInput extends StatelessWidget {
   MoneyInput(this._controller,this._textLabel);
@@ -11,7 +12,7 @@ class MoneyInput extends StatelessWidget {
     return  Container(
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
 
 
 
@@ -39,7 +40,7 @@ class MoneyInput extends StatelessWidget {
             }
           }},
         decoration: InputDecoration(
-          fillColor: Colors.grey.shade200,
+          fillColor: ThemeProvider.getBack(context),
           filled: true,
           labelText: _textLabel,
 

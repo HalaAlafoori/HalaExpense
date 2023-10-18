@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 
+import '../../providers/theme_provider.dart';
+
 class TitleInput extends StatelessWidget {
   TitleInput(this._controller,this._textLabel);
   var _controller ;
@@ -12,7 +14,7 @@ class TitleInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return  Container(margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
 
 
 
@@ -40,7 +42,7 @@ class TitleInput extends StatelessWidget {
             }
           }},
         decoration: InputDecoration(
-          fillColor: Colors.grey.shade200,
+          fillColor: ThemeProvider.getBack(context),
           filled: true,
           labelText: _textLabel ,
 

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+
+import '../../providers/theme_provider.dart';
 class EmailInput extends StatelessWidget {
 
 
@@ -11,7 +13,7 @@ class EmailInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.grey.shade200,),
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
 
 
 

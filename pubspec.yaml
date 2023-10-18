@@ -46,6 +46,7 @@ dependencies:
   date_format: ^2.0.7
   smartrefresh: ^0.0.2
   intl: ^0.17.0
+  provider: ^6.0.1
 
 
 dev_dependencies:

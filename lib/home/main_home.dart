@@ -4,6 +4,7 @@ import 'package:halaexpenses/data/db_helper.dart';
 
 import 'package:halaexpenses/home/transaction_card.dart';
 import 'package:halaexpenses/models/transaction_model.dart';
+import 'package:halaexpenses/providers/theme_provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../color.dart';
@@ -187,13 +188,19 @@ class _MainHomeState extends State<MainHome> {
           duration: Duration(seconds: 3),
         ));
   }
+  //dark /light
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
     return  Container(padding: EdgeInsets.all(10),//color: Colors.pink,
       child: Column(children: [
         Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:Colors.blueGrey.shade50,),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context)
+            ,),
           //padding: EdgeInsets.all(25),
           height: MediaQuery.of(context).size.height * .3,
           child: Row(children: [
