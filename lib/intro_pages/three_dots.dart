@@ -8,8 +8,7 @@ Widget threeDots (int chosenDot){
     Icon(Icons.circle,color:chosenDot==1? darkgreen:Colors.grey.shade200,),
     SizedBox(width: 16),
     Icon(Icons.circle,color: chosenDot==2? darkgreen:Colors.grey.shade200,),
-    SizedBox(width: 16),
-    Icon(Icons.circle,color: chosenDot==3? darkgreen:Colors.grey.shade200,),
+
 
   ],);
 }

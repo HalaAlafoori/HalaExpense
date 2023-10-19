@@ -14,12 +14,12 @@ class IntroOne extends StatelessWidget {
       body: Container(
 
         height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.all(26.0),
+        padding: EdgeInsets.symmetric(horizontal: 26.0),
         width:MediaQuery.of(context).size.width ,
         child: Column(
           children: [
             Container(
-               height: MediaQuery.of(context).size.height *.7,
+               height: MediaQuery.of(context).size.height *.75,
             child:
             Column(children: [
               Padding(
@@ -54,32 +54,34 @@ class IntroOne extends StatelessWidget {
 
             ],),),
             Container(//color: Colors.blueGrey ,
-               height: MediaQuery.of(context).size.height *.23,
-            child:
+              height: MediaQuery.of(context).size.height *.23,
+              child:
               Column(
                 children: [
                   Padding(
-                  padding: const EdgeInsets.all(50.0),
-                  child:
-                  OutlinedButton(
+                    padding: const EdgeInsets.only( bottom: 40.0),
                     child:
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text("Continue",style: TextStyle(fontSize: 20,color: Colors.black)),
+                    OutlinedButton(
+                      child:
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Text("Continue",style: TextStyle(fontSize: 20,color: Colors.black)),
+                      ),
+
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                      ),
+
+                      onPressed: () {
+
+
+                          Navigator.pushNamed(context, "/intro2");
+                      }
+
+
                     ),
-
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                    ),
-
-                    onPressed: () {
-
-                        Navigator.pushReplacementNamed(context, "/intro2");
-
-                    },
                   ),
-                ),
                   threeDots(1),],
               ),)
 

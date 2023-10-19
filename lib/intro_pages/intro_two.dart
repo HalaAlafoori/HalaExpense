@@ -5,8 +5,10 @@ import 'package:halaexpenses/shared/brunch/email_input.dart';
 import 'package:halaexpenses/shared/brunch/money_input.dart';
 
 import 'package:halaexpenses/shared/brunch/title_input.dart';
+import 'package:provider/provider.dart';
 
 import '../color.dart';
+import '../providers/login_provider.dart';
 import '../shared/brunch/pass_input.dart';
 import 'three_dots.dart';
 
@@ -19,19 +21,30 @@ class IntroTwo extends StatelessWidget {
   var passwordCtr=TextEditingController();
   var formKey=GlobalKey<FormState>();
 
+  void _login(BuildContext context) {
+    final String email = emailCtr.text.trim();
+    final String password = passwordCtr.text.trim();
+    final String name = nameCtr.text.trim();
+    final double budget = double.parse(budgetCtr.text.trim());
+
+    final loginProvider = Provider.of<LoginProvider>(context, listen: false);
+    loginProvider.login(email, password,name,budget);
+    Navigator.pushNamed(context, "/");
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
-        padding: EdgeInsets.all(26.0),
+        padding: EdgeInsets.symmetric(horizontal: 26.0),
         width:MediaQuery.of(context).size.width ,
         child: 
         SingleChildScrollView(
           child: Column(
             children: [
               Container(//color: Colors.teal,
-                 height: MediaQuery.of(context).size.height *.8,
+                 height: MediaQuery.of(context).size.height *.75,
               child:  Column(children: [ Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: Text(
@@ -66,7 +79,7 @@ class IntroTwo extends StatelessWidget {
                 Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(50.0),
+                      padding: const EdgeInsets.only( bottom: 40.0),
                       child:
                       OutlinedButton(
                         child:
@@ -83,7 +96,9 @@ class IntroTwo extends StatelessWidget {
                         onPressed: () {
     if(formKey.currentState!.validate()){
 
-                          Navigator.pushReplacementNamed(context, "/intro3");}
+                               _login(context);
+
+    }
 
                         },
                       ),

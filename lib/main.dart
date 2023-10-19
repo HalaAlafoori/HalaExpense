@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:halaexpenses/providers/login_provider.dart';
 import 'package:provider/provider.dart';
 import 'color.dart';
 import 'intro_pages/intro_one.dart';
@@ -12,7 +13,15 @@ import 'transactions/show_all_trans.dart';
 import 'providers/theme_provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -20,26 +29,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, _) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            theme: themeProvider.themeData,
-            routes: {
-              '/intro1': (context) => IntroOne(),
-              '/intro2': (context) => IntroTwo(),
-              '/intro3': (context) => IntroThree(),
-              '/': (context) => MainPage(),
-              '/showtrans': (context) => ShowAllTrans(),
-              '/addtrans': (context) => AddTrans(),
-              '/settings': (context) => Settings(),
-            },
-            initialRoute: '/intro1',
-          );
-        },
-      ),
+    return Consumer2<ThemeProvider, LoginProvider>(
+      builder: (context, themeProvider, loginProvider, _) {
+        final String initialRoute = loginProvider.isLoggedIn ? '/' : '/intro1';
+
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: themeProvider.themeData,
+          routes: {
+            '/intro1': (context) => IntroOne(),
+            '/intro2': (context) => IntroTwo(),
+            '/intro3': (context) => IntroThree(),
+            '/': (context) => MainPage(),
+            '/showtrans': (context) => ShowAllTrans(),
+            '/addtrans': (context) => AddTrans(),
+            '/settings': (context) => Settings(),
+          },
+          initialRoute: initialRoute,
+        );
+      },
     );
   }
 }
