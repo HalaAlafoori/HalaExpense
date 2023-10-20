@@ -4,8 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/categories/category_card.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/models/category_model.dart';
+import 'package:smartrefresh/smartrefresh.dart';
 
+import '../brunch_page.dart';
 import '../data/repositories/category_repo.dart';
+import '../shared/main/floating_btn.dart';
 import 'delete_cat.dart';
 
 
@@ -22,26 +25,80 @@ class _MainCategoriesState extends State<MainCategories> {
   //final List<String> items=new List<String>.generate(5, (index) => "items ${index+1}");
 
 
+  Future<List<CategoryModel>>? _data;
+  late List<CategoryModel> data=[];
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+  GlobalKey<RefreshIndicatorState>();
+  final RefreshController _refreshController = RefreshController();
+
+
+  @override
+  void initState(){
+    print("init -----------");
+
+    //print("budget ----------- ${CurrentBudget}");
+
+
+    _data = fetchData();
+
+    super.initState();
+  }
+
+  Future<List<CategoryModel>> fetchData() async {
+    // Getting data from the database
+    var res = await CategoryRepository().getAll();
+    data.clear();
+
+
+    res!.forEach((item) {
+      data.add(item);
+
+    });
+
+    return data;
+  }
+  Future<void> _refreshData() async {
+    setState(() {
+      _data=null;
+      _data = fetchData();
+    });
+    await _data;
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+  }
 
 
 
 
-  var dismissedItem;
   @override
   Widget build(BuildContext context) {
     return
-      RefreshIndicator(
-        onRefresh: ()async{
-          setState(() {
 
-          });
-        },
-        child: Scaffold(
+        Scaffold(
+          floatingActionButton:MyFloatingBtn(context,()async{
+
+            var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(2)
+            ));
+            if(isAdd!=null && isAdd==true){
+              setState(() {
+                _data = fetchData();
+              });
+              print("^^^^^^^^^^^^^^^^^^${data}");
+              _refreshController.refreshCompleted();
+            }
+
+
+
+          }),
         body:
         Container(padding: EdgeInsets.all(10),
           child:
-           FutureBuilder<List<CategoryModel>>(
-            future: CategoryRepository().getAll(),
+          RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: _refreshData,
+            child:
+            FutureBuilder<List<CategoryModel>>(
+            future: _data!,
             builder: (context,snapshot){
               if(snapshot.connectionState ==ConnectionState.waiting){
                 return Center(child: CircularProgressIndicator());
@@ -121,9 +178,14 @@ class _MainCategoriesState extends State<MainCategories> {
                                             },
                                           );
                                         if(delRes){
+                                          print("deleteeeeeeeeeeted");
                                           setState(() {
-
+                                            _data = Future.value(data);
                                           });
+                                          // _refreshData();
+                                          _refreshController.setFRefreshState(PullToRefreshState());
+                                          _refreshController.refreshCompleted();
+
                                         }
 
                                       }

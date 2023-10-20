@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:halaexpenses/data/repositories/transactions_repo.dart';
 import 'package:halaexpenses/transactions/edit_trans.dart';
 
+import '../brunch_page.dart';
 import '../data/db_helper.dart';
 import '../data/repositories/goal_repo.dart';
 import '../home/transaction_card.dart';
 
 import '../models/transaction_model.dart';
 import '../shared/main/dismiss_backgrounds.dart';
+import '../shared/main/floating_btn.dart';
 import '../shared/main/main_app_bar.dart';
 import 'package:smartrefresh/smartrefresh.dart';
 
@@ -247,125 +249,143 @@ List getTransById(Map<String, dynamic> item){
   @override
   Widget build(BuildContext context) {
     return
-      RefreshIndicator(
+    Scaffold(
+      floatingActionButton:MyFloatingBtn(context,()async{
+
+        var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(1)
+        ));
+        if(isAdd!=null && isAdd==true){
+          setState(() {
+            _data = fetchData();
+          });
+          print("^^^^^^^^^^^^^^^^^^${data}");
+          _refreshController.refreshCompleted();
+        }
+
+
+
+      }),
+      body:RefreshIndicator(
         notificationPredicate:(notification) => false,//to stop refresh on pull down
         key: _refreshIndicatorKey,
         onRefresh: _refreshData,
 
-       child:
-         SingleChildScrollView(
-           child: Container(//color: Colors.redAccent,
-              padding: EdgeInsets.all(10),//color: Colors.pink,
-              child: Column(children: [
+        child:
+        SingleChildScrollView(
+          child: Container(//color: Colors.redAccent,
+            padding: EdgeInsets.all(10),//color: Colors.pink,
+            child: Column(children: [
 
 
 
-                Container(//color: Colors.indigo,
-                  padding: EdgeInsets.all(10),
-                  // color: Colors.blue ,
+              Container(//color: Colors.indigo,
+                padding: EdgeInsets.all(10),
+                // color: Colors.blue ,
 
-                  child: Column(
-                      children: [
+                child: Column(
+                    children: [
 
-                        Container(//color: Colors.lime,
-                          height: MediaQuery.of(context).size.height *.85  ,
-                          child:
-                          FutureBuilder<List<Map<String, dynamic>>?>(
-                            future:_data!,
-                            builder: (context,snapshot){
-                              if(snapshot.connectionState ==ConnectionState.waiting){
-                                return Center(child: CircularProgressIndicator());
-                              }
-                              else if(snapshot.connectionState ==ConnectionState.done){
-                                if(snapshot.hasError)
-                                  return Center(child: Text("Error ${snapshot.error.toString()}"));
-                                else if(snapshot.hasData){
+                      Container(//color: Colors.lime,
+                        height: MediaQuery.of(context).size.height *.85  ,
+                        child:
+                        FutureBuilder<List<Map<String, dynamic>>?>(
+                          future:_data!,
+                          builder: (context,snapshot){
+                            if(snapshot.connectionState ==ConnectionState.waiting){
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            else if(snapshot.connectionState ==ConnectionState.done){
+                              if(snapshot.hasError)
+                                return Center(child: Text("Error ${snapshot.error.toString()}"));
+                              else if(snapshot.hasData){
 
-                                  final List<Map<String, dynamic>> data = snapshot.data!;
+                                final List<Map<String, dynamic>> data = snapshot.data!;
 
-                                  //  var myList = List.from(list);
+                                //  var myList = List.from(list);
 
-                                  return
+                                return
 
-                                    ListView.builder(
-                                      scrollDirection: Axis.vertical,
-                                      shrinkWrap: true,
-                                      itemCount: data.length,
-                                      itemBuilder: (context, index) {
-                                        var transactions = getTransById(data[index]);
-                                        double progressVal=getProgressVal(transactions,data[index]["SpentLimit"]);
-                                        return Dismissible(
-                                          key: Key(data[index].toString()),
-                                          background: slideRightBackground(),
-                                          secondaryBackground: slideLeftBackground(),
-                                          child: InkWell(
-                                            onTap: () {
-                                              // print("${items[index]} clicked");
-                                            },
-                                            child: ExpansionTile(
-                                              title: GoalCard(context, data[index],progressVal),
-                                              children: transactions.map((transaction) {
-                                                return TransactionCard(context, transaction);
-                                              }).toList(),
-                                            ),
+                                  ListView.builder(
+                                    scrollDirection: Axis.vertical,
+                                    shrinkWrap: true,
+                                    itemCount: data.length,
+                                    itemBuilder: (context, index) {
+                                      var transactions = getTransById(data[index]);
+                                      double progressVal=getProgressVal(transactions,data[index]["SpentLimit"]);
+                                      return Dismissible(
+                                        key: Key(data[index].toString()),
+                                        background: slideRightBackground(),
+                                        secondaryBackground: slideLeftBackground(),
+                                        child: InkWell(
+                                          onTap: () {
+                                            // print("${items[index]} clicked");
+                                          },
+                                          child: ExpansionTile(
+                                            title: GoalCard(context, data[index],progressVal),
+                                            children: transactions.map((transaction) {
+                                              return TransactionCard(context, transaction);
+                                            }).toList(),
                                           ),
-                                          confirmDismiss: (direction) async {
-                                            if (direction == DismissDirection.endToStart) {
-                                              _dismissItem(index);
+                                        ),
+                                        confirmDismiss: (direction) async {
+                                          if (direction == DismissDirection.endToStart) {
+                                            _dismissItem(index);
 
 
 
-                                              print("after dismiss${data}");
-                                              print("@@@@@@@@@@@@");
-                                            } else {
+                                            print("after dismiss${data}");
+                                            print("@@@@@@@@@@@@");
+                                          } else {
 
-                                              // TODO: Navigate to edit page;
-                                              var updateRes=await Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) => EditGoal(data[index]),
-                                                  ));
-                                              if(updateRes){
-                                                confirmUpdate(data[index]);
-
-
-                                              }
-                                              else{
-                                                errorUpdate(data[index]);
-
-                                              }
+                                            // TODO: Navigate to edit page;
+                                            var updateRes=await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EditGoal(data[index]),
+                                                ));
+                                            if(updateRes){
+                                              confirmUpdate(data[index]);
 
 
                                             }
-                                            return false; // Return false to prevent dismissing the item
-                                          },
-                                        );
-                                      },
-                                    );
-                                }
-                                else{
-                                  return Center(child: Text("Error ${snapshot.error.toString()}"));
+                                            else{
+                                              errorUpdate(data[index]);
 
-                                }
+                                            }
 
+
+                                          }
+                                          return false; // Return false to prevent dismissing the item
+                                        },
+                                      );
+                                    },
+                                  );
                               }
                               else{
                                 return Center(child: Text("Error ${snapshot.error.toString()}"));
 
                               }
 
-                            },),
-                        ) ,
-                      ]
+                            }
+                            else{
+                              return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                            }
+
+                          },),
+                      ) ,
+                    ]
 
 
-                  ),
                 ),
+              ),
 
-              ],),
-            ),
-         ) ,
+            ],),
+          ),
+        ) ,
 
-      );
+      ),
+    );
+
   }
 }

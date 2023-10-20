@@ -39,7 +39,7 @@ class _MainPageState extends State<MainPage> {
 
       body:MyMainBody(_currentIndex),
 
-    floatingActionButton:MyFloatingBtn(context,_currentIndex),
+
 
 
       bottomNavigationBar: MyButtomNav(_currentIndex,(i){

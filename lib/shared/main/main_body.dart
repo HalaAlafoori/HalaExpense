@@ -9,11 +9,13 @@ import '../../providers/login_provider.dart';
 
 
 class MyMainBody extends StatelessWidget {
+
   MyMainBody(this._currentIndex);
   int _currentIndex;
 
   @override
   Widget build(BuildContext context) {
+
     final loginProvider = Provider.of<LoginProvider>(context);
     late double CurrentBudget = loginProvider.budget;
     List pages=[

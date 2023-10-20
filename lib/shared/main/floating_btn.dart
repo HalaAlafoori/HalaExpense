@@ -2,21 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:halaexpenses/brunch_page.dart';
 
-Widget MyFloatingBtn(context,_currentIndex){
-  int page=_currentIndex;
+Widget MyFloatingBtn(context,onPress){
+
   return  FloatingActionButton(
     child: Icon(Icons.add,size: 34),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(15),
 
-    ), onPressed: () async{
-  Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(page)
-
-
-   ));
-
-  // if(isAdd !=null && isAdd==true){
-  //
-  // }
-  }, );
+    ), onPressed: onPress, );
 }
