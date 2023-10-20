@@ -27,7 +27,7 @@ class TitleInput extends StatelessWidget {
 
         //controller: nameCtr,
         autovalidateMode: AutovalidateMode.onUserInteraction,
-        style: TextStyle(color: Colors.green.shade900),
+        style: TextStyle(color:ThemeProvider.getLabel(context)),
         controller:_controller ,
 
         validator: (value){
@@ -46,7 +46,7 @@ class TitleInput extends StatelessWidget {
           filled: true,
           labelText: _textLabel ,
 
-          labelStyle: TextStyle(color: Colors.black),
+          labelStyle: TextStyle(color:ThemeProvider.getLabel(context)),
           focusedBorder:UnderlineInputBorder(
             borderSide: BorderSide(color: Colors.grey.shade200),
             borderRadius: BorderRadius.circular(23.0),

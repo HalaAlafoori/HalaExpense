@@ -109,7 +109,7 @@ class _AddGoals extends State<AddGoals> {
                               _selectedCategory = data[0];
                               return
                                 DropdownButtonFormField(items: categories.map(
-                                        (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
+                                        (item) =>  DropdownMenuItem(child:Text(item.catName,style: TextStyle(color:ThemeProvider.getLabel(context)),) ,value: item,)).toList(),
 
                                     onChanged: (val){
                                       print(val);
@@ -207,7 +207,7 @@ class _AddGoals extends State<AddGoals> {
                       child:
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
+                        child: Text("Cancel",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                       ),
 
                       style: ButtonStyle(
@@ -216,7 +216,7 @@ class _AddGoals extends State<AddGoals> {
                       ),
 
                       onPressed: () {
-                        Navigator.pushNamed(context, "/main");
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -229,7 +229,7 @@ class _AddGoals extends State<AddGoals> {
                         child:
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Text("Add",style: TextStyle(fontSize: 20,color: Colors.black)),
+                          child: Text("Add",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                         ),
 
                         style: ButtonStyle(

@@ -131,7 +131,7 @@ _AddTrans(){
                                           fillColor: ThemeProvider.getBack(context),
                                           filled: true,
                                           labelText: "Categories",
-                                          labelStyle: TextStyle(color: Colors.black),
+                                          labelStyle: TextStyle(color:ThemeProvider.getLabel(context)),
 
 
                                           prefixIcon:  Container(
@@ -206,7 +206,7 @@ _AddTrans(){
                            child:
                            Padding(
                              padding: const EdgeInsets.all(20.0),
-                             child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
+                             child: Text("Cancel",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                            ),
 
                            style: ButtonStyle(
@@ -215,7 +215,7 @@ _AddTrans(){
                            ),
 
                            onPressed: () {
-                             Navigator.pushNamed(context, "/main");
+                             Navigator.pop(context);
                            },
                          ),
                        ),
@@ -228,7 +228,7 @@ _AddTrans(){
                            child:
                            Padding(
                              padding: const EdgeInsets.all(20.0),
-                             child: Text("Add",style: TextStyle(fontSize: 20,color: Colors.black)),
+                             child: Text("Add",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                            ),
 
                            style: ButtonStyle(

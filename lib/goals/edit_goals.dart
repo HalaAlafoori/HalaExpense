@@ -190,7 +190,7 @@ class _EditGoalState extends State<EditGoal> {
                                         fillColor: ThemeProvider.getBack(context),
                                         filled: true,
                                         labelText: "Categories",
-                                        labelStyle: TextStyle(color: Colors.black),
+                                        labelStyle: TextStyle(color:ThemeProvider.getLabel(context)),
 
 
                                         prefixIcon:  Container(
@@ -243,7 +243,7 @@ class _EditGoalState extends State<EditGoal> {
                         child:
                         Padding(
                           padding: const EdgeInsets.all(20.0),
-                          child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
+                          child: Text("Cancel",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                         ),
 
                         style: ButtonStyle(
@@ -252,7 +252,7 @@ class _EditGoalState extends State<EditGoal> {
                         ),
 
                         onPressed: () {
-                          Navigator.pushNamed(context, "/main");
+                          Navigator.pop(context);
                         },
                       ),
                     ),
@@ -265,7 +265,7 @@ class _EditGoalState extends State<EditGoal> {
                           child:
                           Padding(
                             padding: const EdgeInsets.all(20.0),
-                            child: Text("Update",style: TextStyle(fontSize: 20,color: Colors.black)),
+                            child: Text("Update",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                           ),
 
                           style: ButtonStyle(

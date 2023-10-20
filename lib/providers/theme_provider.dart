@@ -10,7 +10,7 @@ class ThemeProvider extends ChangeNotifier {
   }
   static Color? getLabel(BuildContext context){
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDarkMode ? Colors.grey.shade600 : Colors.blueGrey.shade50;
+    final backgroundColor = isDarkMode ? Colors.white : Colors.black;
     return backgroundColor;
 
   }

@@ -131,28 +131,53 @@ List getTransById(Map<String, dynamic> item){
     _refreshController.refreshCompleted();
 
     //udno snack
-
     ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Item dismissed'),
-          action: SnackBarAction(
-            label: 'Undo',
-            onPressed: () {
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+            SizedBox(width: 8.0),
+            Text(
+              'Item dismissed',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.grey.shade200,
+        elevation: 6.0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
+        ),
+        behavior: SnackBarBehavior.floating,
+        duration: Duration(seconds: 3),
+        action: SnackBarAction(
+          label: 'Undo',
+          textColor: Colors.red,
+          onPressed: () {
 
-              undo=true;
-              print("7777777777777777777777777777777777777777777777777777777777777777");
+            undo=true;
+            print("7777777777777777777777777777777777777777777777777777777777777777");
 
 
-              data?.insert(index,removedItem);
-              setState(() {
-                _data = Future.value(data);
-              });
-              print("^^^^^^^^^^^^^^^^^^${data}");
-              _refreshController.refreshCompleted();
+            data?.insert(index,removedItem);
+            setState(() {
+              _data = Future.value(data);
+            });
+            print("^^^^^^^^^^^^^^^^^^${data}");
+            _refreshController.refreshCompleted();
 
-            },
-          ),
-        ));
+          },
+        ),
+      ),
+    );
+
+
 
 
     // Wait for the Snackbar to be closed

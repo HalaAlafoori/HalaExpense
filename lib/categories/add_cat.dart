@@ -232,7 +232,7 @@ class _AddCat extends State<AddCat> {
                       child:
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text("Cancel",style: TextStyle(fontSize: 20,color: Colors.black)),
+                        child: Text("Cancel",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                       ),
 
                       style: ButtonStyle(
@@ -241,7 +241,7 @@ class _AddCat extends State<AddCat> {
                       ),
 
                       onPressed: () {
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pop(context);
                       },
                     ),
                   ),
@@ -254,7 +254,7 @@ class _AddCat extends State<AddCat> {
                       child:
                       Padding(
                         padding: const EdgeInsets.all(20.0),
-                        child: Text("Add",style: TextStyle(fontSize: 20,color: Colors.black)),
+                        child: Text("Add",style: TextStyle(fontSize: 20,color:ThemeProvider.getLabel(context))),
                       ),
 
                       style: ButtonStyle(
