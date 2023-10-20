@@ -110,7 +110,7 @@ class _EditTrans extends State<EditTrans> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: MyBrunchAppBar("Edit Goals"),
+      appBar: MyBrunchAppBar("Edit Transactions"),
       body:
 
       SingleChildScrollView(
@@ -305,8 +305,7 @@ else{
                                  "Total":double.parse(totalCon.text),
 
                                  // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
-                                 "TransDate":(formatDate(DateTime.now(), [yyyy, '-', mm, '-', dd]))
-
+                                 "TransDate":editedItem['TransDate']
                                };
                                print(data);
                                var updateRes=await TransactionRepository().updateToDb(TransactionModel.fromJson(data));

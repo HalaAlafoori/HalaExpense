@@ -107,7 +107,7 @@ class _EditGoalState extends State<EditGoal> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: MyBrunchAppBar("Edit Transaction"),
+        appBar: MyBrunchAppBar("Edit Goals"),
         body:
 
 

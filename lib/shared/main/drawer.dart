@@ -16,6 +16,8 @@ class MyDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     final loginProvider = Provider.of<LoginProvider>(context);
     final currentEmail = loginProvider.email;
+    final currentName = loginProvider.username;
+    final current = loginProvider.email;
     return
       Drawer(
 

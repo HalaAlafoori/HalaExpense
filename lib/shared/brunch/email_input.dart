@@ -42,7 +42,7 @@ class EmailInput extends StatelessWidget {
             }
           }},
         decoration: InputDecoration(
-          fillColor: Colors.grey.shade200,
+          fillColor: ThemeProvider.getBack(context),
           filled: true,
           labelText: "${_textLabel}" ,
 
