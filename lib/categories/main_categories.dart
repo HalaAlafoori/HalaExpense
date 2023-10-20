@@ -9,6 +9,7 @@ import 'package:smartrefresh/smartrefresh.dart';
 import '../brunch_page.dart';
 import '../data/repositories/category_repo.dart';
 import '../shared/main/floating_btn.dart';
+import '../shared/main/main_app_bar.dart';
 import 'delete_cat.dart';
 
 
@@ -66,6 +67,27 @@ class _MainCategoriesState extends State<MainCategories> {
     _refreshController.setFRefreshState(PullToRefreshState());
     _refreshController.refreshCompleted();
   }
+  void search(value){
+    print("insearch");
+    List<CategoryModel> datacopy=List.from(data);
+
+    var res=List.from(datacopy);
+    print("------------${res}");
+    datacopy.clear();
+    res!.forEach((item) {
+      print("inloop ");
+      if (item.catName.contains(value))
+        datacopy.add(item);
+
+    });
+    setState(() {
+      _data = Future.value(datacopy);
+    });
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+
+
+  }
 
 
 
@@ -75,6 +97,9 @@ class _MainCategoriesState extends State<MainCategories> {
     return
 
         Scaffold(
+          appBar: MyMainAppBar("Hala Expense",(value){
+            search(value);
+          }),
           floatingActionButton:MyFloatingBtn(context,()async{
 
             var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(2)
@@ -146,8 +171,8 @@ class _MainCategoriesState extends State<MainCategories> {
                                                 ),
                                                 actions: [
                                                   TextButton(
-                                                    onPressed: () {
-                                                       CategoryRepository().deleteFromDb(list[index].catId!.toInt()); // Call deleteFromDB function
+                                                    onPressed: () async{
+                                                      await CategoryRepository().deleteFromDb(list[index].catId!.toInt()); // Call deleteFromDB function
                                                       Navigator.of(context).pop(true); // Close the dialog
                                                     },
                                                     child: Text(
@@ -180,11 +205,9 @@ class _MainCategoriesState extends State<MainCategories> {
                                         if(delRes){
                                           print("deleteeeeeeeeeeted");
                                           setState(() {
-                                            _data = Future.value(data);
+                                            _refreshData();
                                           });
-                                          // _refreshData();
-                                          _refreshController.setFRefreshState(PullToRefreshState());
-                                          _refreshController.refreshCompleted();
+
 
                                         }
 

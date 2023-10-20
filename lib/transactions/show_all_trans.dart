@@ -48,6 +48,27 @@ class _ShowAllTransState extends State<ShowAllTrans> {
 
     return data;
   }
+  void search(value){
+    print("insearch");
+    List<Map<String, dynamic>> datacopy=List.from(data);
+
+    var res=List.from(datacopy);
+    print("------------${res}");
+    datacopy.clear();
+    res!.forEach((item) {
+      print("inloop ");
+      if (item["TransName"].contains(value))
+        datacopy.add(item);
+
+    });
+    setState(() {
+      _data = Future.value(datacopy);
+    });
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+
+
+  }
 
   Future<void> _refreshData() async {
     setState(() {
@@ -197,119 +218,127 @@ class _ShowAllTransState extends State<ShowAllTrans> {
         onRefresh: _refreshData,
 
         child: Scaffold(
-        appBar: MyMainAppBar(context,"All Transactions"),
-        body:Container(//color: Colors.redAccent,
-          padding: EdgeInsets.all(10),//color: Colors.pink,
-          child: Column(children: [
+        appBar: MyMainAppBar("All Transactions",(value){
+          search(value);
+        }),
+        body:
+        SingleChildScrollView(
+          child: Container(//color: Colors.redAccent,
+            padding: EdgeInsets.all(10),//color: Colors.pink,
+            child: 
+           
+             Column(children: [
 
 
 
-            Container(//color: Colors.indigo,
-              padding: EdgeInsets.all(10),
-              // color: Colors.blue ,
+                Container(//color: Colors.indigo,
+                  padding: EdgeInsets.all(10),
+                  // color: Colors.blue ,
 
-              child: Column(
-                children: [
+                  child: Column(
+                    children: [
 
-                  Container(//color: Colors.lime,
-                    height: MediaQuery.of(context).size.height *.85  ,
-                    child:
-                    FutureBuilder<List<Map<String, dynamic>>?>(
-                      future:_data!,
-                      builder: (context,snapshot){
-                        if(snapshot.connectionState ==ConnectionState.waiting){
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        else if(snapshot.connectionState ==ConnectionState.done){
-                          if(snapshot.hasError)
-                            return Center(child: Text("Error ${snapshot.error.toString()}"));
-                          else if(snapshot.hasData){
+                      Container(//color: Colors.lime,
+                        height: MediaQuery.of(context).size.height *.85  ,
+                        child:
+                        FutureBuilder<List<Map<String, dynamic>>?>(
+                          future:_data!,
+                          builder: (context,snapshot){
+                            if(snapshot.connectionState ==ConnectionState.waiting){
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            else if(snapshot.connectionState ==ConnectionState.done){
+                              if(snapshot.hasError)
+                                return Center(child: Text("Error ${snapshot.error.toString()}"));
+                              else if(snapshot.hasData){
 
-                            final List<Map<String, dynamic>> data = snapshot.data!;
+                                final List<Map<String, dynamic>> data = snapshot.data!;
 
 
 
-                            return
-
-                              ListView.builder(itemBuilder:(context, index){
                                 return
-                                  Dismissible(
-                                    background: slideRightBackground(),
-                                    secondaryBackground: slideLeftBackground(),
-                                    key: Key(data![index].toString()),
-                                    child: InkWell(
-                                        onTap: () {
-                                          // print("${items[index]} clicked");
+
+                                  ListView.builder(itemBuilder:(context, index){
+                                    return
+                                      Dismissible(
+                                        background: slideRightBackground(),
+                                        secondaryBackground: slideLeftBackground(),
+                                        key: Key(data![index].toString()),
+                                        child: InkWell(
+                                            onTap: () {
+                                              // print("${items[index]} clicked");
+                                            },
+                                            child: TransactionCard(context,data[index])),
+                                        //onDismissed always dismiss or returns an error
+
+                                        confirmDismiss: (direction) async {
+                                          //async--> Future return value: true or false
+                                          //true--> dismissed
+                                          //makes the card undragable while confirm(if there is )
+                                          //false--> draged back
+                                          if (direction == DismissDirection.endToStart) {
+
+                                            _dismissItem(index);
+
+
+
+
+
+                                              print("after dismiss${data}");
+                                              print("@@@@@@@@@@@@");
+
+
+
+                                          } else {
+                                            // TODO: Navigate to edit page;
+                                           var updateRes=await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => EditTrans(data[index]),
+                                                ));
+                                           if(updateRes){
+                                             confirmUpdate(data[index]);
+
+
+                                           }
+                                           else{
+                                             errorUpdate(data[index]);
+
+                                           }
+                                          }
                                         },
-                                        child: TransactionCard(context,data[index])),
-                                    //onDismissed always dismiss or returns an error
 
-                                    confirmDismiss: (direction) async {
-                                      //async--> Future return value: true or false
-                                      //true--> dismissed
-                                      //makes the card undragable while confirm(if there is )
-                                      //false--> draged back
-                                      if (direction == DismissDirection.endToStart) {
-
-                                        _dismissItem(index);
+                                      );
 
 
-
-
-
-                                          print("after dismiss${data}");
-                                          print("@@@@@@@@@@@@");
-
-
-
-                                      } else {
-                                        // TODO: Navigate to edit page;
-                                       var updateRes=await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => EditTrans(data[index]),
-                                            ));
-                                       if(updateRes){
-                                         confirmUpdate(data[index]);
-
-
-                                       }
-                                       else{
-                                         errorUpdate(data[index]);
-
-                                       }
-                                      }
-                                    },
-
+                                  } ,
+                                    itemCount:data.length ,
                                   );
+                              }
+                              else{
+                                return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                              }
+
+                            }
+                            else{
+                              return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                            }
+
+                          },),
+                        ) ,
+                      ]
 
 
-                              } ,
-                                itemCount:data.length ,
-                              );
-                          }
-                          else{
-                            return Center(child: Text("Error ${snapshot.error.toString()}"));
+                  ),
+                ),
 
-                          }
-
-                        }
-                        else{
-                          return Center(child: Text("Error ${snapshot.error.toString()}"));
-
-                        }
-
-                      },),
-                    ) ,
-                  ]
-
-
-              ),
+              ],),
             ),
-
-          ],),
+        ),
         ) ,
-    ),
+    
       );
   }
 }

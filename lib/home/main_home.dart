@@ -15,6 +15,7 @@ import '../shared/main/dismiss_backgrounds.dart';
 import 'package:smartrefresh/smartrefresh.dart';
 
 import '../shared/main/floating_btn.dart';
+import '../shared/main/main_app_bar.dart';
 import '../transactions/edit_trans.dart';
 
 class Total{
@@ -102,7 +103,27 @@ class _MainHomeState extends State<MainHome> {
     _refreshController.refreshCompleted();
   }
 
+  void search(value){
+    print("insearch");
+    List<Map<String, dynamic>> datacopy=List.from(data);
 
+    var res=List.from(datacopy);
+    print("------------${res}");
+    datacopy.clear();
+    res!.forEach((item) {
+      print("inloop ");
+      if (item["TransName"].contains(value))
+        datacopy.add(item);
+
+    });
+    setState(() {
+      _data = Future.value(datacopy);
+    });
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+
+
+  }
   Future<void> _dismissItem(int index) async {
 
     bool undo=false;
@@ -239,6 +260,9 @@ class _MainHomeState extends State<MainHome> {
   Widget build(BuildContext context) {
 
     return Scaffold(
+      appBar: MyMainAppBar("Hala Expense",(value){
+        search(value);
+      }),
       floatingActionButton:MyFloatingBtn(context,()async{
 
           var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(0)
@@ -256,275 +280,277 @@ class _MainHomeState extends State<MainHome> {
       }),
       body: Container(padding: EdgeInsets.all(10),//color: Colors.pink,
         child:
-        Column(children: [
-          FutureBuilder<List<Map<String, dynamic>>?>(
-            future:_data!,
-            builder: (context,snapshot){
-              if(snapshot.connectionState ==ConnectionState.waiting){
-                return Center(child: CircularProgressIndicator());
-              }
-              else if(snapshot.connectionState ==ConnectionState.done){
-                if(snapshot.hasError)
-                  return Center(child: Text("Error ${snapshot.error.toString()}"));
-                else if(snapshot.hasData){
+        SingleChildScrollView(
+          child: Column(children: [
+            FutureBuilder<List<Map<String, dynamic>>?>(
+              future:_data!,
+              builder: (context,snapshot){
+                if(snapshot.connectionState ==ConnectionState.waiting){
+                  return Center(child: CircularProgressIndicator());
+                }
+                else if(snapshot.connectionState ==ConnectionState.done){
+                  if(snapshot.hasError)
+                    return Center(child: Text("Error ${snapshot.error.toString()}"));
+                  else if(snapshot.hasData){
 
-                  double spentAmount =  spent;
-                  _chartData=getChartData(spentAmount);
-                  //  var myList = List.from(list);
-
-
-
-                  return
-                    Container(
-                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
-                        //padding: EdgeInsets.all(25),
-                        height: MediaQuery.of(context).size.height * .3,
-                        child:
-                        Row(
-                            children: [
-                              Container(
-                                // ... Your existing code with modifications ...
-                                child: Column(
-                                  children: [
-                                    Container(//color: Colors.pink,
-                                      padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
-
-                                      height:
-                                      MediaQuery.of(context).size.height * .12,
-                                      child:
-                                      Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Text("\$",style: TextStyle(color: darkgreen),),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Text("income",style: TextStyle(color: Colors.grey),),
-                                              )
-
-                                            ],
-                                          ),
-                                          Container(padding: EdgeInsets.all(10),
-                                            child: Text("\$ ${CurrentBudget}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                                          )
-
-                                        ],
-                                      ),),
+                    double spentAmount =  spent;
+                    _chartData=getChartData(spentAmount);
+                    //  var myList = List.from(list);
 
 
 
-                                    Container(//color: Colors.pink,
-                                      padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
+                    return
+                      Container(
+                          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
+                          //padding: EdgeInsets.all(25),
+                          height: MediaQuery.of(context).size.height * .3,
+                          child:
+                          Row(
+                              children: [
+                                Container(
+                                  // ... Your existing code with modifications ...
+                                  child: Column(
+                                    children: [
+                                      Container(//color: Colors.pink,
+                                        padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
 
-                                      height:
-                                      MediaQuery.of(context).size.height * .12,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Text("\$",style: TextStyle(color: darkred),),
-                                              ),
-                                              Padding(
-                                                padding: const EdgeInsets.all(4.0),
-                                                child: Text("spent",style: TextStyle(color: Colors.grey),),
-                                              )
-
-                                            ],
-                                          ),
-                                          Container(padding: EdgeInsets.all(10),
-                                            child: Text("\$ ${spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                                          )
-
-                                        ],
-                                      ),
-                                    ),
-
-
-
-
-                                  ],
-                                ),
-                              ),
-
-                              Container(//color: Colors.amber,
-                                //padding: EdgeInsets.only(top:30),
-                                child: Column(//right
-                                  children: [
-                                    Container(width: MediaQuery.of(context).size.width * .55,
-                                        height: MediaQuery.of(context).size.height * .3,
+                                        height:
+                                        MediaQuery.of(context).size.height * .12,
                                         child:
-                                        SfCircularChart(
+                                        Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Text("\$",style: TextStyle(color: darkgreen),),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Text("income",style: TextStyle(color: Colors.grey),),
+                                                )
 
-                                          palette: [darkgreen,darkred],
-                                          //title: ChartTitle(text: "Contienents"),
-                                          //legend: Legend(isVisible: true,),
-                                          tooltipBehavior: _tooltipBehavior,
-                                          series: [
+                                              ],
+                                            ),
+                                            Container(padding: EdgeInsets.all(10),
+                                              child: Text("\$ ${CurrentBudget}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                                            )
 
-                                            DoughnutSeries(
+                                          ],
+                                        ),),
 
-                                                dataSource: _chartData,
-                                                xValueMapper: (datum, index) => datum.title,
-                                                yValueMapper: (datum, index) => datum.money,
-                                                dataLabelSettings: DataLabelSettings(isVisible: false),
-                                                enableTooltip: true,
-                                                explode: true,
 
-                                                // Explode all the segments
-                                                explodeAll: true
 
-                                            )],
+                                      Container(//color: Colors.pink,
+                                        padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
 
-                                          // ... Your existing code ...
-                                        ))],
+                                        height:
+                                        MediaQuery.of(context).size.height * .12,
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              children: [
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Text("\$",style: TextStyle(color: darkred),),
+                                                ),
+                                                Padding(
+                                                  padding: const EdgeInsets.all(4.0),
+                                                  child: Text("spent",style: TextStyle(color: Colors.grey),),
+                                                )
+
+                                              ],
+                                            ),
+                                            Container(padding: EdgeInsets.all(10),
+                                              child: Text("\$ ${spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                                            )
+
+                                          ],
+                                        ),
+                                      ),
+
+
+
+
+                                    ],
+                                  ),
                                 ),
-                              )]));
+
+                                Container(//color: Colors.amber,
+                                  //padding: EdgeInsets.only(top:30),
+                                  child: Column(//right
+                                    children: [
+                                      Container(width: MediaQuery.of(context).size.width * .55,
+                                          height: MediaQuery.of(context).size.height * .3,
+                                          child:
+                                          SfCircularChart(
+
+                                            palette: [darkgreen,darkred],
+                                            //title: ChartTitle(text: "Contienents"),
+                                            //legend: Legend(isVisible: true,),
+                                            tooltipBehavior: _tooltipBehavior,
+                                            series: [
+
+                                              DoughnutSeries(
+
+                                                  dataSource: _chartData,
+                                                  xValueMapper: (datum, index) => datum.title,
+                                                  yValueMapper: (datum, index) => datum.money,
+                                                  dataLabelSettings: DataLabelSettings(isVisible: false),
+                                                  enableTooltip: true,
+                                                  explode: true,
+
+                                                  // Explode all the segments
+                                                  explodeAll: true
+
+                                              )],
+
+                                            // ... Your existing code ...
+                                          ))],
+                                  ),
+                                )]));
+                  }
+                  else{
+                    return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                  }
+
                 }
                 else{
                   return Center(child: Text("Error ${snapshot.error.toString()}"));
 
                 }
 
-              }
-              else{
-                return Center(child: Text("Error ${snapshot.error.toString()}"));
-
-              }
-
-            },),
+              },),
 
 
-          Container(
-            padding: EdgeInsets.only(top: 10,left: 10,right: 10),
-            //color: Colors.blue ,
-            height: MediaQuery.of(context).size.height *.513,
-            child: Column(
-              children: [
-                Container(//color: Colors.lightGreen ,
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children:[
-                      Text("Recent treansactions",style: TextStyle(fontSize: 18,color: Colors.grey),),
-                      OutlinedButton(
-                        child: Text("See All >"),
+            Container(
+              padding: EdgeInsets.only(top: 10,left: 10,right: 10),
+              //color: Colors.blue ,
+              height: MediaQuery.of(context).size.height *.513,
+              child: Column(
+                children: [
+                  Container(//color: Colors.lightGreen ,
+                    child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children:[
+                        Text("Recent treansactions",style: TextStyle(fontSize: 18,color: Colors.grey),),
+                        OutlinedButton(
+                          child: Text("See All >"),
 
-                        style: ButtonStyle(
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                        ),
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
+                          ),
 
-                        onPressed: () {
-                          Navigator.of(context).pushNamed("/showtrans");
-                        },
-                      ),],
+                          onPressed: () {
+                            Navigator.of(context).pushNamed("/showtrans");
+                          },
+                        ),],
 
+                    ),
                   ),
-                ),
-                RefreshIndicator(
-                  notificationPredicate:(notification) => false,//to stop refresh on pull down
-                  key: _refreshIndicatorKey,
-                  onRefresh: _refreshData,
-                  child: Container(//color: Colors.lime,
-                    height: MediaQuery.of(context).size.height *.444 ,
-                    child:
-                    FutureBuilder<List<Map<String, dynamic>>?>(
-                      future:_data!,
-                      builder: (context,snapshot){
-                        if(snapshot.connectionState ==ConnectionState.waiting){
-                          return Center(child: CircularProgressIndicator());
-                        }
-                        else if(snapshot.connectionState ==ConnectionState.done){
-                          if(snapshot.hasError)
-                            return Center(child: Text("Error ${snapshot.error.toString()}"));
-                          else if(snapshot.hasData){
+                  RefreshIndicator(
+                    notificationPredicate:(notification) => false,//to stop refresh on pull down
+                    key: _refreshIndicatorKey,
+                    onRefresh: _refreshData,
+                    child: Container(//color: Colors.lime,
+                      height: MediaQuery.of(context).size.height *.444 ,
+                      child:
+                      FutureBuilder<List<Map<String, dynamic>>?>(
+                        future:_data!,
+                        builder: (context,snapshot){
+                          if(snapshot.connectionState ==ConnectionState.waiting){
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          else if(snapshot.connectionState ==ConnectionState.done){
+                            if(snapshot.hasError)
+                              return Center(child: Text("Error ${snapshot.error.toString()}"));
+                            else if(snapshot.hasData){
 
-                            final List<Map<String, dynamic>> data = snapshot.data!;
+                              final List<Map<String, dynamic>> data = snapshot.data!;
 
-                            //  var myList = List.from(list);
+                              //  var myList = List.from(list);
 
-                            return
+                              return
 
-                              ListView.builder(itemBuilder:(context, index){
-                                return
-                                  Dismissible(
-                                    background: slideRightBackground(),
-                                    secondaryBackground: slideLeftBackground(),
-                                    key: Key(data![index].toString()),
-                                    child: InkWell(
-                                        onTap: () {
-                                          // print("${items[index]} clicked");
-                                        },
-                                        child: TransactionCard(context,data[index])),
-                                    //onDismissed always dismiss or returns an error
+                                ListView.builder(itemBuilder:(context, index){
+                                  return
+                                    Dismissible(
+                                      background: slideRightBackground(),
+                                      secondaryBackground: slideLeftBackground(),
+                                      key: Key(data![index].toString()),
+                                      child: InkWell(
+                                          onTap: () {
+                                            // print("${items[index]} clicked");
+                                          },
+                                          child: TransactionCard(context,data[index])),
+                                      //onDismissed always dismiss or returns an error
 
-                                    confirmDismiss: (direction) async {
-                                      //async--> Future return value: true or false
-                                      //true--> dismissed
-                                      //makes the card undragable while confirm(if there is )
-                                      //false--> draged back
-                                      if (direction == DismissDirection.endToStart) {
+                                      confirmDismiss: (direction) async {
+                                        //async--> Future return value: true or false
+                                        //true--> dismissed
+                                        //makes the card undragable while confirm(if there is )
+                                        //false--> draged back
+                                        if (direction == DismissDirection.endToStart) {
 
-                                        _dismissItem(index);
-
+                                          _dismissItem(index);
 
 
 
 
-                                        print("after dismiss${data}");
-                                        print("@@@@@@@@@@@@");
+
+                                          print("after dismiss${data}");
+                                          print("@@@@@@@@@@@@");
 
 
 
-                                      } else {
-                                        // TODO: Navigate to edit page;
-                                        var updateRes=await Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => EditTrans(data[index]),
-                                            ));
-                                        if(  updateRes && updateRes!=null ){
-                                          confirmUpdate(data[index]);
+                                        } else {
+                                          // TODO: Navigate to edit page;
+                                          var updateRes=await Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => EditTrans(data[index]),
+                                              ));
+                                          if(  updateRes && updateRes!=null ){
+                                            confirmUpdate(data[index]);
 
 
+                                          }
+                                          else{
+                                            errorUpdate(data[index]);
+
+                                          }
                                         }
-                                        else{
-                                          errorUpdate(data[index]);
+                                      },
 
-                                        }
-                                      }
-                                    },
-
-                                  );
+                                    );
 
 
-                              } ,
-                                itemCount:data.length ,
-                              );
+                                } ,
+                                  itemCount:data.length ,
+                                );
+                            }
+                            else{
+                              return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+                            }
+
                           }
                           else{
                             return Center(child: Text("Error ${snapshot.error.toString()}"));
 
                           }
 
-                        }
-                        else{
-                          return Center(child: Text("Error ${snapshot.error.toString()}"));
+                        },),
 
-                        }
+                    ),
+                  )
+                ],
 
-                      },),
-
-                  ),
-                )
-              ],
-
+              ),
             ),
-          ),
 
-        ],),
+          ],),
+        ),
       ) ,
     );
 

@@ -84,6 +84,27 @@ class _MainGoals extends State<MainGoals> {
     _refreshController.refreshCompleted();
   }
 
+  void search(value){
+    print("insearch");
+    List<Map<String, dynamic>> datacopy=List.from(data);
+
+    var res=List.from(datacopy);
+    print("------------${res}");
+    datacopy.clear();
+    res!.forEach((item) {
+      print("inloop ");
+      if (item["CatName"].contains(value))
+        datacopy.add(item);
+
+    });
+    setState(() {
+      _data = Future.value(datacopy);
+    });
+    _refreshController.setFRefreshState(PullToRefreshState());
+    _refreshController.refreshCompleted();
+
+
+  }
 List getTransById(Map<String, dynamic> item){
     //print("+++++++++${item["CatId"]},$transData");
     transactions.clear();
@@ -250,6 +271,9 @@ List getTransById(Map<String, dynamic> item){
   Widget build(BuildContext context) {
     return
     Scaffold(
+      appBar: MyMainAppBar("Hala Expense",(value){
+        search(value);
+      }),
       floatingActionButton:MyFloatingBtn(context,()async{
 
         var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(1)
