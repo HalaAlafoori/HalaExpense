@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class MyIcons{
 
@@ -15,6 +14,50 @@ class MyIcons{
     Icons.house_rounded,
     Icons.electric_bolt_rounded,
     Icons.monetization_on_rounded,
+    Icons.family_restroom,
+    Icons.cake,
+    Icons.laptop,
+    Icons.menu_book_outlined,
+    Icons.directions_bike_rounded,
+    Icons.healing,
+    Icons.favorite,
+    Icons.pool,
+    Icons.camera_alt,
+    Icons.phone_android,
+    Icons.water_drop,
+    Icons.child_care,
+    Icons.child_friendly,
+    Icons.shopping_cart,
+    Icons.egg_sharp,
+    Icons.breakfast_dining,
+    Icons.coffee,
+    Icons.umbrella,
+    Icons.car_crash,
+    Icons.sailing,
+    Icons.local_post_office,
+    Icons.add_business,
+    Icons.bathtub,
+    Icons.battery_2_bar,
+    Icons.cabin,
+    Icons.call,
+    Icons.deck,
+    Icons.delivery_dining,
+    Icons.elderly,
+    Icons.face,
+    Icons.facebook,
+    Icons.festival_rounded,
+    Icons.golf_course,
+    Icons.grading_sharp,
+    Icons.hardware_outlined,
+    Icons.headset_mic,
+    Icons.ice_skating,
+    Icons.icecream,
+    Icons.imagesearch_roller_rounded,
+    Icons.language_rounded,
+    Icons.masks_rounded,
+    Icons.nature_rounded,
+    Icons.ondemand_video_rounded,
+
 
 
   ];

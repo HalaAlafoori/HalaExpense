@@ -38,7 +38,7 @@ class _EditTrans extends State<EditTrans> {
   void initState() {
     get_categories();
      editedItem=widget.item;
-     editedItem=widget.item;
+
       totalCon=TextEditingController(text: editedItem['Total'].toString());
       titleCon=TextEditingController(text: editedItem['TransName']);
     _selectedIcon=  Icon(MyIcons.allicons[editedItem['CatIcon']]);
@@ -50,7 +50,14 @@ class _EditTrans extends State<EditTrans> {
 
   Future get_categories()async{
     categories= await CategoryRepository().getAll() as List;
-    catId=editedItem['CatId']-1;
+    print(",,,,,,,,,,,,,,,,,,,,,,,,,,");
+    int index=0;
+    for(var category in categories){
+      if(editedItem['CatId']==category.catId)
+        catId=index;
+        index++;
+    }
+   // catId=editedItem['CatId'];
     print(categories);
     print("@@@@@@@@@${categories[catId].catName}");
 
@@ -250,7 +257,7 @@ class _EditTrans extends State<EditTrans> {
                       ),
 
                       onPressed: () {
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pushNamed(context, "/main");
                       },
                     ),
                   ),

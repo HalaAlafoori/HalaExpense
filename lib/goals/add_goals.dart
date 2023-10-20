@@ -102,9 +102,11 @@ class _AddGoals extends State<AddGoals> {
                         FutureBuilder<List<CategoryModel>>(
                           future: CategoryRepository().getAll(),
                           builder: (context, snapshot) {
-                            if (snapshot.hasData) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                               var data = snapshot.data!;
-                              _selectedCategory=data[0];
+                              _selectedCategory = data[0];
                               return
                                 DropdownButtonFormField(items: categories.map(
                                         (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
@@ -154,7 +156,29 @@ class _AddGoals extends State<AddGoals> {
                                       ),
                                     ));
                             } else {
-                              return const CircularProgressIndicator();
+                              return Container(
+                                padding: EdgeInsets.all(16.0),
+                                decoration: BoxDecoration(
+                                  color: darkred,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.error_outline,
+                                      color: Colors.white,
+                                    ),
+                                    SizedBox(width: 8.0),
+                                    Text(
+                                      'No categories available',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
                             }
                           },
                         )
@@ -192,7 +216,7 @@ class _AddGoals extends State<AddGoals> {
                       ),
 
                       onPressed: () {
-                        Navigator.pushNamed(context, "/");
+                        Navigator.pushNamed(context, "/main");
                       },
                     ),
                   ),

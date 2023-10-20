@@ -101,59 +101,83 @@ _AddTrans(){
                             FutureBuilder<List<CategoryModel>>(
                               future: CategoryRepository().getAll(),
                               builder: (context, snapshot) {
-                                if (snapshot.hasData) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return CircularProgressIndicator();
+                                } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                                   var data = snapshot.data!;
-                                  _selectedCategory=data[0];
+                                  _selectedCategory = data[0];
                                   return
                                     DropdownButtonFormField(items: categories.map(
-                                          (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
+                                            (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
 
-                                    onChanged: (val){
-                                      print(val);
-
-
-                                      setState(() {
-                                        //String valstr=val ;
-
-                                       // _selectedCategory=valstr;
-                                        _selectedIndex=categories.indexOf(val);
-
-                                        _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
-                                        print("_________${categories[_selectedIndex].catName}");
-                                      });
-                                    },
-                                    icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
-                                    dropdownColor: ThemeProvider.getBack(context),
-
-                                    decoration: InputDecoration(
-                                      fillColor: ThemeProvider.getBack(context),
-                                      filled: true,
-                                      labelText: "Categories",
-                                      labelStyle: TextStyle(color: Colors.black),
+                                        onChanged: (val){
+                                          print(val);
 
 
-                                      prefixIcon:  Container(
-                                          margin: EdgeInsets.only(right:15),
-                                          padding: EdgeInsets.all(14),
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(20),
-                                            color:categories[_selectedIndex].type==1?darkred:darkgreen,
+                                          setState(() {
+                                            //String valstr=val ;
+
+                                            // _selectedCategory=valstr;
+                                            _selectedIndex=categories.indexOf(val);
+
+                                            _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
+                                            print("_________${categories[_selectedIndex].catName}");
+                                          });
+                                        },
+                                        icon: Icon(Icons.arrow_drop_down_circle_outlined,color: Colors.grey,),
+                                        dropdownColor: ThemeProvider.getBack(context),
+
+                                        decoration: InputDecoration(
+                                          fillColor: ThemeProvider.getBack(context),
+                                          filled: true,
+                                          labelText: "Categories",
+                                          labelStyle: TextStyle(color: Colors.black),
+
+
+                                          prefixIcon:  Container(
+                                              margin: EdgeInsets.only(right:15),
+                                              padding: EdgeInsets.all(14),
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.circular(20),
+                                                color:categories[_selectedIndex].type==1?darkred:darkgreen,
+                                              ),
+                                              child: Icon(_selectedIcon?.icon,color: Colors.black26,)),
+
+
+
+                                          focusedBorder:UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey.shade200),
+                                            borderRadius: BorderRadius.circular(23.0),
                                           ),
-                                          child: Icon(_selectedIcon?.icon,color: Colors.black26,)),
-
-
-
-                                      focusedBorder:UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.shade200),
-                                        borderRadius: BorderRadius.circular(23.0),
-                                      ),
-                                      enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.grey.shade200),
-                                        borderRadius: BorderRadius.circular(23.0),
-                                      ),
-                                    ));
+                                          enabledBorder: UnderlineInputBorder(
+                                            borderSide: BorderSide(color: Colors.grey.shade200),
+                                            borderRadius: BorderRadius.circular(23.0),
+                                          ),
+                                        ));
                                 } else {
-                                  return const CircularProgressIndicator();
+                                  return Container(
+                                    padding: EdgeInsets.all(16.0),
+                                    decoration: BoxDecoration(
+                                      color: darkred,
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.error_outline,
+                                          color: Colors.white,
+                                        ),
+                                        SizedBox(width: 8.0),
+                                        Text(
+                                          'No categories available',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  );
                                 }
                               },
                             )
@@ -191,7 +215,7 @@ _AddTrans(){
                            ),
 
                            onPressed: () {
-                             Navigator.pushNamed(context, "/");
+                             Navigator.pushNamed(context, "/main");
                            },
                          ),
                        ),

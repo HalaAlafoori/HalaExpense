@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import '../color.dart';
 import '../providers/login_provider.dart';
 import '../shared/brunch/pass_input.dart';
-import 'three_dots.dart';
+import 'dots.dart';
 
 class IntroTwo extends StatelessWidget {
 
@@ -29,7 +29,7 @@ class IntroTwo extends StatelessWidget {
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
     loginProvider.login(email, password,name,budget);
-    Navigator.pushNamed(context, "/");
+    Navigator.pushNamed(context, "/main");
   }
 
   @override
@@ -59,12 +59,8 @@ class IntroTwo extends StatelessWidget {
                 Container(
                   child: Form(key: formKey,child: Column(children: [
 
-                   TitleInput(nameCtr, "Name"),
-                    EmailInput(emailCtr, "Email"),
+
                     MoneyInput(budgetCtr, "Current Budget"),
-                    PassInput(passwordCtr,"Password"),
-
-
 
 
                   ],),

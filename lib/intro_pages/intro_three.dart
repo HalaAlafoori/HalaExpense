@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:halaexpenses/intro_pages/three_dots.dart';
+import 'package:halaexpenses/intro_pages/dots.dart';
 
 
 

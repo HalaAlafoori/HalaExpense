@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../color.dart';
-import 'three_dots.dart';
+import 'dots.dart';
 
 class IntroOne extends StatelessWidget {
   const IntroOne({Key? key}) : super(key: key);

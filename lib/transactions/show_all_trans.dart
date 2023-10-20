@@ -171,7 +171,7 @@ class _ShowAllTransState extends State<ShowAllTrans> {
         onRefresh: _refreshData,
 
         child: Scaffold(
-        appBar: MyMainAppBar("All Transactions"),
+        appBar: MyMainAppBar(context,"All Transactions"),
         body:Container(//color: Colors.redAccent,
           padding: EdgeInsets.all(10),//color: Colors.pink,
           child: Column(children: [

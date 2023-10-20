@@ -45,9 +45,12 @@ class _EditGoalState extends State<EditGoal> {
 
   Future get_categories()async{
     categories= await CategoryRepository().getAll() as List;
-    catId=editedItem['CatId']-1;
-    print(categories);
-    print("@@@@@@@@@${categories[catId].catName}");
+    int index=0;
+    for(var category in categories){
+      if(editedItem['CatId']==category.catId)
+        catId=index;
+      index++;
+    }
 
   }
 
@@ -249,7 +252,7 @@ class _EditGoalState extends State<EditGoal> {
                         ),
 
                         onPressed: () {
-                          Navigator.pushNamed(context, "/");
+                          Navigator.pushNamed(context, "/main");
                         },
                       ),
                     ),

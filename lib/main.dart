@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer2<ThemeProvider, LoginProvider>(
       builder: (context, themeProvider, loginProvider, _) {
-        final String initialRoute = loginProvider.isLoggedIn ? '/' : '/intro1';
+        final String initialRoute = loginProvider.isLoggedIn ? '/main' : '/intro1';
 
         return MaterialApp(
           title: 'Flutter Demo',
@@ -39,8 +39,8 @@ class MyApp extends StatelessWidget {
           routes: {
             '/intro1': (context) => IntroOne(),
             '/intro2': (context) => IntroTwo(),
-            '/intro3': (context) => IntroThree(),
-            '/': (context) => MainPage(),
+
+            '/main': (context) => MainPage(),
             '/showtrans': (context) => ShowAllTrans(),
             '/addtrans': (context) => AddTrans(),
             '/settings': (context) => Settings(),

@@ -80,7 +80,9 @@ class DbHelper{
   Future<List<Map<String, dynamic>>?> getAllTransCat() async{
     try {
       Database db = await database;
-      var res = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} INNER JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId');
+
+
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} Inner JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId');
       print("------------------------------${res}");
       return res;
     } on Exception catch (e) {
@@ -181,6 +183,23 @@ class DbHelper{
       Database db = await database;
       if(pkValue != null){
         var res = await db.delete(tbl, where: '$pkName = ?', whereArgs: [pkValue]);
+        print("Deleted item with id ${pkValue}");
+        return res;
+      }
+      return 0;
+    } on Exception catch (e) {
+      print("EXP in delete : ${e}");
+      return 0;
+    }
+  }
+
+  Future<int> deleteByCatId(String tbl,String tbl2,Object pkValue,String pkName)async{
+    try {
+      // String pkName = pk;
+      Database db = await database;
+      if(pkValue != null){
+        var res = await db.delete(tbl, where: '$pkName = ?', whereArgs: [pkValue]);
+        var res2 = await db.delete(tbl2, where: '$pkName = ?', whereArgs: [pkValue]);
         print("Deleted item with id ${pkValue}");
         return res;
       }

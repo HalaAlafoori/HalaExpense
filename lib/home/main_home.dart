@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:halaexpenses/data/db_helper.dart';
 
 import 'package:halaexpenses/home/transaction_card.dart';
-import 'package:halaexpenses/models/transaction_model.dart';
 import 'package:halaexpenses/providers/theme_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../color.dart';
 import '../data/repositories/transactions_repo.dart';
+import '../providers/login_provider.dart';
 import '../shared/main/dismiss_backgrounds.dart';
 import 'package:smartrefresh/smartrefresh.dart';
 
@@ -22,9 +23,10 @@ class Total{
 
 
 class MainHome extends StatefulWidget {
-  final double income;
-  final double spent;
-  MainHome(this.income,this.spent);
+  MainHome(this.currentBudget);
+  double currentBudget;
+
+
 
 
   @override
@@ -32,6 +34,9 @@ class MainHome extends StatefulWidget {
 }
 
 class _MainHomeState extends State<MainHome> {
+  late double CurrentBudget=widget.currentBudget;
+  Future<double>? _spent;
+  //double spent = 0.0;
   late List<Total> _chartData;
   late TooltipBehavior _tooltipBehavior=TooltipBehavior(enable: true);
   var dir;
@@ -47,36 +52,44 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   void initState(){
-    _chartData=getChartData();
-    DbHelper().deleteDatabase();
+    print("init -----------");
+
+    //print("budget ----------- ${CurrentBudget}");
+
+
     _data = fetchData();
-    //_tooltipBehavior=TooltipBehavior(enable: true);
+
     super.initState();
   }
 
 
 
-  List<Total> getChartData(){
+  List<Total> getChartData(spentAmount){
     final List<Total> chartData=[
-      Total('total', widget.income+widget.spent),
-      Total('spent', widget.spent),
+      Total('total', CurrentBudget),
+      Total('spent', spentAmount),
 
     ];
     return chartData;
   }
 
+  // Define the spent variable
+  double spent = 0.0;
+
+// Fetch data and calculate spent
   Future<List<Map<String, dynamic>>?> fetchData() async {
-    //getting data from db
-    var res=await DbHelper().getAllTransCat();
+    // Getting data from the database
+    var res = await DbHelper().getAllTransCat();
     data.clear();
+    spent = 0.0; // Reset the spent amount
+
     res!.forEach((item) {
       data.add(item);
+      spent += item['Total'];
     });
-
 
     return data;
   }
-
   Future<void> _refreshData() async {
     setState(() {
       _data=null;
@@ -188,7 +201,7 @@ class _MainHomeState extends State<MainHome> {
           duration: Duration(seconds: 3),
         ));
   }
-  //dark /light
+
 
 
 
@@ -196,120 +209,152 @@ class _MainHomeState extends State<MainHome> {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(padding: EdgeInsets.all(10),//color: Colors.pink,
-      child: Column(children: [
-        Container(
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context)
-            ,),
-          //padding: EdgeInsets.all(25),
-          height: MediaQuery.of(context).size.height * .3,
-          child: Row(children: [
-            Container(//color: Colors.teal,
-              padding: EdgeInsets.symmetric(vertical: 21),
-              width: MediaQuery.of(context).size.width * .4,
+
+    return
+
+      Container(padding: EdgeInsets.all(10),//color: Colors.pink,
+      child:
+      Column(children: [
+        FutureBuilder<List<Map<String, dynamic>>?>(
+          future:_data!,
+          builder: (context,snapshot){
+            if(snapshot.connectionState ==ConnectionState.waiting){
+              return Center(child: CircularProgressIndicator());
+            }
+            else if(snapshot.connectionState ==ConnectionState.done){
+              if(snapshot.hasError)
+                return Center(child: Text("Error ${snapshot.error.toString()}"));
+              else if(snapshot.hasData){
+
+                double spentAmount =  spent;
+                _chartData=getChartData(spentAmount);
+                //  var myList = List.from(list);
 
 
-              child: Column(//left
-                children: [
-                  Container(//color: Colors.cyanAccent,
-                    padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
 
-                    height:
-                    MediaQuery.of(context).size.height * .12,
-                    child: Column(
+                return
+                  Container(
+                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
+            //padding: EdgeInsets.all(25),
+            height: MediaQuery.of(context).size.height * .3,
+                  child:
+                  Row(
+                    children: [
+                      Container(
+                      // ... Your existing code with modifications ...
+                      child: Column(
+                        children: [
+                      Container(//color: Colors.pink,
+                      padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
+
+                      height:
+                      MediaQuery.of(context).size.height * .12,
+                      child:
+                      Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text("\$",style: TextStyle(color: darkgreen),),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text("income",style: TextStyle(color: Colors.grey),),
+                                  )
+
+                                ],
+                              ),
+                              Container(padding: EdgeInsets.all(10),
+                                child: Text("\$ ${CurrentBudget}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                              )
+
+                            ],
+                          ),),
+
+
+
+                      Container(//color: Colors.pink,
+                      padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
+
+                      height:
+                      MediaQuery.of(context).size.height * .12,
+                      child: Column(
                       children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text("\$",style: TextStyle(color: darkgreen),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text("income",style: TextStyle(color: Colors.grey),),
-                            )
-
-                          ],
-                        ),
-                        Container(padding: EdgeInsets.all(10),
-                          child: Text("\$ ${widget.income}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                        )
+                      Row(
+                      children: [
+                      Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text("\$",style: TextStyle(color: darkred),),
+                      ),
+                      Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Text("spent",style: TextStyle(color: Colors.grey),),
+                      )
 
                       ],
-                    ),
-                  ),
-                  Container(//color: Colors.pink,
-                    padding: EdgeInsets.only(top:10,bottom: 10,left: 5),
-
-                    height:
-                    MediaQuery.of(context).size.height * .12,
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text("\$",style: TextStyle(color: darkred),),
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text("spent",style: TextStyle(color: Colors.grey),),
-                            )
-
-                          ],
-                        ),
-                        Container(padding: EdgeInsets.all(10),
-                          child: Text("\$ ${widget.spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
-                        )
+                      ),
+                      Container(padding: EdgeInsets.all(10),
+                      child: Text("\$ ${spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                      )
 
                       ],
-                    ),
-                  ),
+                      ),
+                      ),
 
 
 
 
-                ],
-              ),
+            ],
             ),
+            ),
+
             Container(//color: Colors.amber,
-              //padding: EdgeInsets.only(top:30),
-              child: Column(//right
-                children: [
-                  Container(width: MediaQuery.of(context).size.width * .55,
-                    height: MediaQuery.of(context).size.height * .3,
-                    child:
-                    SfCircularChart(
+            //padding: EdgeInsets.only(top:30),
+            child: Column(//right
+            children: [
+            Container(width: MediaQuery.of(context).size.width * .55,
+            height: MediaQuery.of(context).size.height * .3,
+            child:
+            SfCircularChart(
 
-                      palette: [darkgreen,darkred],
-                      //title: ChartTitle(text: "Contienents"),
-                      //legend: Legend(isVisible: true,),
-                      tooltipBehavior: _tooltipBehavior,
-                      series: [
+            palette: [darkgreen,darkred],
+            //title: ChartTitle(text: "Contienents"),
+            //legend: Legend(isVisible: true,),
+            tooltipBehavior: _tooltipBehavior,
+            series: [
 
-                        DoughnutSeries(
+            DoughnutSeries(
 
-                            dataSource: _chartData,
-                            xValueMapper: (datum, index) => datum.title,
-                            yValueMapper: (datum, index) => datum.money,
-                            dataLabelSettings: DataLabelSettings(isVisible: false),
-                            enableTooltip: true,
-                            explode: true,
+            dataSource: _chartData,
+            xValueMapper: (datum, index) => datum.title,
+            yValueMapper: (datum, index) => datum.money,
+            dataLabelSettings: DataLabelSettings(isVisible: false),
+            enableTooltip: true,
+            explode: true,
 
-                            // Explode all the segments
-                            explodeAll: true
+            // Explode all the segments
+            explodeAll: true
 
-                        )],
+            )],
 
-
-                    ),
+                      // ... Your existing code ...
+                      ))],
                   ),
+                )]));
+              }
+              else{
+                return Center(child: Text("Error ${snapshot.error.toString()}"));
 
-                ],
-              ),
-            )
-          ],),
-        ),
+              }
+
+            }
+            else{
+              return Center(child: Text("Error ${snapshot.error.toString()}"));
+
+            }
+
+          },),
 
 
         Container(
@@ -398,7 +443,7 @@ class _MainHomeState extends State<MainHome> {
                                           MaterialPageRoute(
                                             builder: (context) => EditTrans(data[index]),
                                           ));
-                                      if(updateRes){
+                                      if(  updateRes && updateRes!=null ){
                                         confirmUpdate(data[index]);
 
 
