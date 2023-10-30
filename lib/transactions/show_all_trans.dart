@@ -49,6 +49,14 @@ class _ShowAllTransState extends State<ShowAllTrans> {
     return data;
   }
   void search(value){
+    if(value==""){
+      setState(() {
+        _data = Future.value(data);
+      });
+      _refreshController.setFRefreshState(PullToRefreshState());
+      _refreshController.refreshCompleted();
+
+    }
     print("insearch");
     List<Map<String, dynamic>> datacopy=List.from(data);
 
@@ -56,11 +64,18 @@ class _ShowAllTransState extends State<ShowAllTrans> {
     print("------------${res}");
     datacopy.clear();
     res!.forEach((item) {
-      print("inloop ");
-      if (item["TransName"].contains(value))
-        datacopy.add(item);
+      print("inloop ${item["TransName"]} ${value}");
 
+      if (item["TransName"].contains(value)) {
+        print("object");
+        datacopy.add(item);
+        print("------------${datacopy}");
+
+      }
     });
+    print("here");
+    print("------------${datacopy}");
+
     setState(() {
       _data = Future.value(datacopy);
     });
@@ -220,7 +235,7 @@ class _ShowAllTransState extends State<ShowAllTrans> {
         child: Scaffold(
         appBar: MyMainAppBar("All Transactions",(value){
           search(value);
-        }),
+        },_refreshData),
         body:
         SingleChildScrollView(
           child: Container(//color: Colors.redAccent,

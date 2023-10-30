@@ -10,6 +10,7 @@ class CategoryRepository{
     try{
       // await Future.delayed(Duration(milliseconds: 300));
       var res = await DbHelper().getAll(DbTables.Categories);
+      print("----------${res}");
       List<CategoryModel> items = [];
       if(res != null){
         for (var e in res) {

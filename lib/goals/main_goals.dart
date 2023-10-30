@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 
-import 'package:halaexpenses/data/repositories/transactions_repo.dart';
-import 'package:halaexpenses/transactions/edit_trans.dart';
+
 
 import '../brunch_page.dart';
 import '../data/db_helper.dart';
 import '../data/repositories/goal_repo.dart';
 import '../home/transaction_card.dart';
 
-import '../models/transaction_model.dart';
 import '../shared/main/dismiss_backgrounds.dart';
 import '../shared/main/floating_btn.dart';
 import '../shared/main/main_app_bar.dart';
@@ -76,13 +74,17 @@ class _MainGoals extends State<MainGoals> {
 
   Future<void> _refreshData() async {
     setState(() {
-      _allData=null;
-      _allData = fetchData();
+      _data=null;
+      _data = fetchData();
     });
-    await _allData;
+    await _data;
 
     _refreshController.refreshCompleted();
   }
+
+
+
+
 
   void search(value){
     print("insearch");
@@ -273,7 +275,7 @@ List getTransById(Map<String, dynamic> item){
     Scaffold(
       appBar: MyMainAppBar("Hala Expense",(value){
         search(value);
-      }),
+      },_refreshData),
       floatingActionButton:MyFloatingBtn(context,()async{
 
         var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(1)
@@ -323,9 +325,7 @@ List getTransById(Map<String, dynamic> item){
                                 return Center(child: Text("Error ${snapshot.error.toString()}"));
                               else if(snapshot.hasData){
 
-                                final List<Map<String, dynamic>> data = snapshot.data!;
 
-                                //  var myList = List.from(list);
 
                                 return
 
@@ -340,17 +340,15 @@ List getTransById(Map<String, dynamic> item){
                                         key: Key(data[index].toString()),
                                         background: slideRightBackground(),
                                         secondaryBackground: slideLeftBackground(),
-                                        child: InkWell(
-                                          onTap: () {
-                                            // print("${items[index]} clicked");
-                                          },
+
+
                                           child: ExpansionTile(
                                             title: GoalCard(context, data[index],progressVal),
                                             children: transactions.map((transaction) {
                                               return TransactionCard(context, transaction);
                                             }).toList(),
                                           ),
-                                        ),
+
                                         confirmDismiss: (direction) async {
                                           if (direction == DismissDirection.endToStart) {
                                             _dismissItem(index);

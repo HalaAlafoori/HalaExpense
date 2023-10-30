@@ -6,11 +6,10 @@ import 'package:halaexpenses/data/repositories/category_repo.dart';
 import 'package:halaexpenses/data/repositories/transactions_repo.dart';
 import 'package:halaexpenses/models/category_model.dart';
 import 'package:halaexpenses/models/transaction_model.dart';
-import 'package:halaexpenses/shared/brunch/reg_exp.dart';
+import 'package:halaexpenses/providers/login_provider.dart';
 import 'package:halaexpenses/shared/brunch/title_input.dart';
-import 'package:halaexpenses/shared/main/main_app_bar.dart';
-import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../shared/brunch/money_input.dart';
@@ -24,15 +23,34 @@ class AddTrans extends StatefulWidget {
 
 
 class _AddTrans extends State<AddTrans> {
-_AddTrans(){
-  get_categories();
+
+
+
+
+  Future<List<CategoryModel>?>? _categories;
+  late List<CategoryModel> categories=[]; // Change the type to a mutable list
+  @override
+initState(){
+ _categories= get_categories();
 }
 
-  Future get_categories()async{
-    categories= await CategoryRepository().getAll() as List;
-    //print(categories[0].name);
+  Future<List<CategoryModel>> get_categories()async{
+    var res= await CategoryRepository().getAll() as List;
+    _selectedIcon=Icon(MyIcons.allicons[res[0].catIcon]);
+    _selectedCategory = res[0];
+    categories.clear();
+    res!.forEach((item) {
+      categories.add(item);
+    });
+
+
+    return categories;
+    print(categories[0].catIcon);
+
+
   }
-  late List categories;
+
+
 
 
 
@@ -45,38 +63,55 @@ _AddTrans(){
   var totalCon=TextEditingController();
   var titleCon=TextEditingController();
 
+void noMoney(){
+  ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            Icon(Icons.warning, color: Colors.orange),
+            SizedBox(width: 8),
+            Text(
+              'No enough money for this transaction',
+              style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.yellow,
+        elevation: 6,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        duration: Duration(seconds: 3),
+      ));
 
+}
 
 //add status:
   bool loading=false;
   bool iserror=false;
   bool issuccess=false;
   String error="";
+  bool noMoneyLeft=false;
 
 
 @override
   Widget build(BuildContext context) {
+  var left=context.watch<LoginProvider>().leftAmount;
+
     return
-
-
-      SingleChildScrollView(
+      SingleChildScrollView(physics: NeverScrollableScrollPhysics(),
         child: Container(//color: Colors.indigoAccent,
             height: MediaQuery.of(context).size.height,
             padding: EdgeInsets.all(20),child:
           Form(
             key: formKey,
             child:
-
-
-
-
                Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+
                   Container(//color: Colors.redAccent,
                     height: MediaQuery.of(context).size.height *.7,
 
                     child:
-                    SingleChildScrollView(
-                      child: Column(children: [
+                   Column(children: [
                        TitleInput(titleCon, "Title"),
                         MoneyInput(totalCon, "Total"),
 
@@ -86,41 +121,30 @@ _AddTrans(){
                           height: MediaQuery.of(context).size.height*.14,
                           padding: EdgeInsets.only(top:25,left: 20,right: 20,bottom: 10),
                           decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:ThemeProvider.getBack(context),),
-
-
-
-
                           child:
-
-
-
-                          Container(padding: EdgeInsets.only(left:10),
-                            width: MediaQuery.of(context).size.width,
-                            child:
                             // Text("Category")),
-                            FutureBuilder<List<CategoryModel>>(
-                              future: CategoryRepository().getAll(),
+                            FutureBuilder(
+                              future: _categories,
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState == ConnectionState.waiting) {
                                   return CircularProgressIndicator();
                                 } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                                  var data = snapshot.data!;
-                                  _selectedCategory = data[0];
+                                  final List<CategoryModel> data = snapshot.data!;
+
+
+
                                   return
-                                    DropdownButtonFormField(items: categories.map(
-                                            (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
+                                    DropdownButtonFormField(items: data.map(
+                                            (item) =>  DropdownMenuItem(child:Text(item.catName!) ,value: item,)).toList(),
 
                                         onChanged: (val){
-                                          print(val);
-
+                                          if(val != null)
+                                            print("0000000${val}");
 
                                           setState(() {
-                                            //String valstr=val ;
+                                            _selectedIndex=categories.indexOf(val!);
+                                            _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon!]);
 
-                                            // _selectedCategory=valstr;
-                                            _selectedIndex=categories.indexOf(val);
-
-                                            _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
                                             print("_________${categories[_selectedIndex].catName}");
                                           });
                                         },
@@ -182,12 +206,11 @@ _AddTrans(){
                               },
                             )
 
-                          ),
+
 
                         ),
 
                       ],),
-                    ),
                   ),
 
 
@@ -243,6 +266,7 @@ _AddTrans(){
                               loading=true;
                               issuccess=false;
                               iserror=false;
+                              noMoneyLeft=false;
 
 
 
@@ -250,40 +274,48 @@ _AddTrans(){
 
                               });
 
-                              var dateTime = DateFormat('yyyy-MM-ddThh:mm:ss').parse(DateTime.now().toIso8601String());
-                              print("numbers= ${dateTime.millisecondsSinceEpoch} & ${dateTime}");
+                              if(left- double.parse(totalCon.text)<0 ){//&& type is red
+                                 noMoney();
+                                 noMoneyLeft=true;
+                                 loading=false;
 
-                              var data={
-                              "TransName":titleCon.text,
-                              "CatId":categories[_selectedIndex].catId,
-                              "Total":double.parse(totalCon.text),
-
-                             // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
-
-                              "TransDate":dateTime.millisecondsSinceEpoch
-
-                              };
-                              print(data['TransDate']);
-                              var addRes=await TransactionRepository().addToDb(TransactionModel.fromJson(data));
-                              if(addRes ){
-                              setState(() {
-                              loading=false;
-                              issuccess=true;
-                              iserror=false;
-                              error="";
-
-                              });
-                              Navigator.of(context).pop(true);
                               }
-                              else{
-                              setState(() {
-                              loading=false;
-                              issuccess=false;
-                              iserror=true;
-                              error="Operation failed!!";
 
-                              });
+                              if (!noMoneyLeft) {
+                                var dateTime = DateFormat('yyyy-MM-ddThh:mm:ss').parse(DateTime.now().toIso8601String());
+                                print("numbers= ${dateTime.millisecondsSinceEpoch} & ${dateTime}");
+                                
+                                var data={
+                                "TransName":titleCon.text,
+                                "CatId":categories[_selectedIndex].catId,
+                                "Total":double.parse(totalCon.text),
+                                "TransDate":dateTime.millisecondsSinceEpoch
+                                
+                                };
+                                print(data['TransDate']);
+                                
+                                var addRes=await TransactionRepository().addToDb(TransactionModel.fromJson(data));
+                                if(addRes ){
+                                setState(() {
+                                loading=false;
+                                issuccess=true;
+                                iserror=false;
+                                error="";
+                                
+                                });
+                                Navigator.of(context).pop(true);
+                                }
+                                else{
+                                setState(() {
+                                loading=false;
+                                issuccess=false;
+                                iserror=true;
+                                error="Operation failed!!";
+                                
+                                });
+                                }
                               }
+                              
                               }
 
                               catch(e){

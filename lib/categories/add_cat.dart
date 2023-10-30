@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:halaexpenses/color.dart';
 import 'package:halaexpenses/models/category_model.dart';
-import 'package:halaexpenses/shared/brunch/reg_exp.dart';
-import 'package:halaexpenses/shared/main/main_app_bar.dart';
-
 import '../data/repositories/category_repo.dart';
 import '../providers/theme_provider.dart';
 import '../shared/brunch/title_input.dart';
@@ -19,10 +16,7 @@ class AddCat extends StatefulWidget {
 enum TransactionType{income, spent}
 
 class _AddCat extends State<AddCat> {
-  _AddCat(){
 
-
-  }
   TransactionType _selectedType=TransactionType.income;
   int _selectedIcon=0;
 
@@ -150,13 +144,7 @@ class _AddCat extends State<AddCat> {
                             width: MediaQuery.of(context).size.width*.21,
                             decoration: BoxDecoration(borderRadius: BorderRadius.circular(30),color:TransactionType.income==_selectedType?darkgreen:darkred),
 
-
-
-
                             child:
-
-
-
                             TextButton(
 
                                 onPressed: (){
@@ -180,7 +168,7 @@ class _AddCat extends State<AddCat> {
                                               itemBuilder: (_,index)=> Container(
                                                 key: ValueKey(MyIcons.allicons[index].codePoint),
                                                 padding:EdgeInsets.all(10),
-                                                child: IconButton(color: Colors.grey.shade600,
+                                                child: IconButton(color:ThemeProvider.getIcons(context),
                                                   iconSize: 30,
                                                   icon: Icon(MyIcons.allicons[index]),
                                                   onPressed: (){

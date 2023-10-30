@@ -77,6 +77,8 @@ class DbHelper{
     }
   }
 
+
+
   Future<List<Map<String, dynamic>>?> getAllTransCat() async{
     try {
       Database db = await database;
@@ -90,6 +92,21 @@ class DbHelper{
       return null;
     }
   }
+  Future<List<Map<String, dynamic>>?> getAllTransCatRecent() async{
+    try {
+      Database db = await database;
+
+
+      var res = await db.rawQuery('SELECT * FROM ${DbTables.Transactions} Inner JOIN ${DbTables.Categories} ON ${DbTables.Transactions}.catId = ${DbTables.Categories}.catId order by TransDate DESC');
+      print("------------------------------${res}");
+      return res;
+    } on Exception catch (e) {
+      print("Exception in getAll: $e");
+      return null;
+    }
+  }
+
+
 
   Future<List<Map<String, dynamic>>?> getAllPlansCat() async{
     try {

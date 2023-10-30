@@ -10,25 +10,26 @@ import 'package:provider/provider.dart';
 import '../color.dart';
 import '../providers/login_provider.dart';
 import '../shared/brunch/pass_input.dart';
+import 'custom_elvated_btn.dart';
 import 'dots.dart';
 
 class IntroTwo extends StatelessWidget {
 
 
-  var nameCtr=TextEditingController();
-  var emailCtr=TextEditingController();
+
+ // var emailCtr=TextEditingController();
   var budgetCtr=TextEditingController();
-  var passwordCtr=TextEditingController();
+  //var passwordCtr=TextEditingController();
   var formKey=GlobalKey<FormState>();
 
   void _login(BuildContext context) {
-    final String email = emailCtr.text.trim();
-    final String password = passwordCtr.text.trim();
-    final String name = nameCtr.text.trim();
+    //final String email = emailCtr.text.trim();
+    //final String password = passwordCtr.text.trim();
+
     final double budget = double.parse(budgetCtr.text.trim());
 
     final loginProvider = Provider.of<LoginProvider>(context, listen: false);
-    loginProvider.login(email, password,name,budget);
+    loginProvider.login(budget);
     Navigator.pushNamed(context, "/main");
   }
 
@@ -46,21 +47,27 @@ class IntroTwo extends StatelessWidget {
               Container(//color: Colors.teal,
                  height: MediaQuery.of(context).size.height *.75,
               child:  Column(children: [ Padding(
-                padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Text(
-                  'Sign up ',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: darkgreen[600],
+                padding: const EdgeInsets.symmetric(vertical: 30,horizontal: 0),
+                child:
+                Padding(padding:EdgeInsets.only(top: 50,bottom: 20) ,
+                  child: Text(
+                    'Sign up ',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: darkgreen[600],
+                    ),
                   ),
                 ),
               ),
                 Container(
-                  child: Form(key: formKey,child: Column(children: [
+                  child:
+                  Form(key: formKey,child: Column(children: [
 
 
                     MoneyInput(budgetCtr, "Current Budget"),
+
+                    //other inputs should be included here
 
 
                   ],),
@@ -74,32 +81,17 @@ class IntroTwo extends StatelessWidget {
                 child:
                 Column(
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.only( bottom: 40.0),
-                      child:
-                      OutlinedButton(
-                        child:
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text("Continue",style: TextStyle(fontSize: 20,color: Colors.black)),
-                        ),
+                    CustomElvatedBtn("Continue",(){
 
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStatePropertyAll(darkgreen)  ,
-                          shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0))),
-                        ),
+                        if(formKey.currentState!.validate()){
 
-                        onPressed: () {
-    if(formKey.currentState!.validate()){
+                          _login(context);
 
-                               _login(context);
+                        }
 
-    }
 
-                        },
-                      ),
-                    ),
-                    threeDots(2),],
+                    }),
+                    Dots(2),],
                 ),)
 
             ],

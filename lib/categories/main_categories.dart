@@ -10,7 +10,6 @@ import '../brunch_page.dart';
 import '../data/repositories/category_repo.dart';
 import '../shared/main/floating_btn.dart';
 import '../shared/main/main_app_bar.dart';
-import 'delete_cat.dart';
 
 
 
@@ -99,7 +98,8 @@ class _MainCategoriesState extends State<MainCategories> {
         Scaffold(
           appBar: MyMainAppBar("Hala Expense",(value){
             search(value);
-          }),
+
+          },_refreshData),
           floatingActionButton:MyFloatingBtn(context,()async{
 
             var isAdd=await Navigator.of(context).push(MaterialPageRoute(builder: (context)=> BrunchPage(2)
@@ -132,11 +132,11 @@ class _MainCategoriesState extends State<MainCategories> {
                 if(snapshot.hasError)
                   return Center(child: Text("Error ${snapshot.error.toString()}"));
                 else if(snapshot.hasData){
-                  var list=snapshot.data??[];
+                 data=snapshot.data??[];
                   return
 
                     GridView.count(crossAxisCount: 3,childAspectRatio: 1,
-                      children: List.generate(list.length, (index) =>
+                      children: List.generate(data.length, (index) =>
                           Container(//color: Colors.indigo,
                             child: Column(
                               children: [
@@ -149,8 +149,6 @@ class _MainCategoriesState extends State<MainCategories> {
                                     Icon(Icons.close_rounded,color: Colors.white70,size:20,),radius: 13,backgroundColor: darkred,),
                                       onTap:() async{
                                         var delRes=await
-
-
                                           showDialog(
                                             context: context,
                                             builder: (BuildContext context) {
@@ -172,7 +170,7 @@ class _MainCategoriesState extends State<MainCategories> {
                                                 actions: [
                                                   TextButton(
                                                     onPressed: () async{
-                                                      await CategoryRepository().deleteFromDb(list[index].catId!.toInt()); // Call deleteFromDB function
+                                                      await CategoryRepository().deleteFromDb(data[index].catId!.toInt()); // Call deleteFromDB function
                                                       Navigator.of(context).pop(true); // Close the dialog
                                                     },
                                                     child: Text(
@@ -213,7 +211,7 @@ class _MainCategoriesState extends State<MainCategories> {
 
                                       }
                                     )),
-                                CategoryCard(context,list[index]),
+                                CategoryCard(context,data[index]),
                               ],
 
                             ),
@@ -236,12 +234,6 @@ class _MainCategoriesState extends State<MainCategories> {
         ) ,
     ),
       );
-      
-
-
-
-
-
 
   }
 }

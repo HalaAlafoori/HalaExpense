@@ -28,56 +28,57 @@ class EditTrans extends StatefulWidget {
 
 
 class _EditTrans extends State<EditTrans> {
-  _EditTrans(){
-    get_categories();
+  Future<List<CategoryModel>?>? _categories;
+  late List<CategoryModel> categories=[]; // Change the type to a mutable list
 
 
+  Future<List<CategoryModel>> get_categories()async{
+    var res= await CategoryRepository().getAll() as List;
+    _selectedIcon=Icon(MyIcons.allicons[editedItem['CatIcon']]);
+    //_selectedCategory = res[0];
+    categories.clear();
+    res!.forEach((item) {
+
+
+      categories.add(item);
+    });
+
+
+    return categories;
+    print(categories[0].catIcon);
   }
 
   @override
   void initState() {
-    get_categories();
+    _categories= get_categories();
+
      editedItem=widget.item;
 
       totalCon=TextEditingController(text: editedItem['Total'].toString());
       titleCon=TextEditingController(text: editedItem['TransName']);
-    _selectedIcon=  Icon(MyIcons.allicons[editedItem['CatIcon']]);
     _selectedType=editedItem['Type'];
 
 
 
   }
 
-  Future get_categories()async{
-    categories= await CategoryRepository().getAll() as List;
-    print(",,,,,,,,,,,,,,,,,,,,,,,,,,");
-    int index=0;
-    for(var category in categories){
-      if(editedItem['CatId']==category.catId)
-        catId=index;
-        index++;
-    }
-   // catId=editedItem['CatId'];
-    print(categories);
-    print("@@@@@@@@@${categories[catId].catName}");
 
-  }
 
   bool dateChanged=false;
-  late List categories;
+
   var editedItem;
 
 
   var totalCon;
   var titleCon;
-  int catId=-1;
+ // int catId=-1;
 
   CategoryModel? _selectedCategory;
 
 
   Icon? _selectedIcon;
 
-  int _selectedIndex=0;
+  int _selectedIndex=-1;
   int _selectedType=0;
 
 
@@ -132,6 +133,7 @@ class _EditTrans extends State<EditTrans> {
 
 
           Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,children: [
+
             Container(//color: Colors.redAccent,
               height: MediaQuery.of(context).size.height *.7,
 
@@ -159,17 +161,19 @@ class _EditTrans extends State<EditTrans> {
                         width: MediaQuery.of(context).size.width,
                         child:
                         // Text("Category")),
-                        FutureBuilder<List<CategoryModel>>(
-                          future: CategoryRepository().getAll(),
+                        FutureBuilder(
+                          future: _categories,
                           builder: (context, snapshot) {
-                            if (snapshot.hasData) {
-                              var data = snapshot.data!;
-                              _selectedCategory=data[0];
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return CircularProgressIndicator();
+                            } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                              final List<CategoryModel> data = snapshot.data!;
+
                               return
                                 DropdownButtonFormField(
-                                    value: categories.isNotEmpty ? categories[catId] : null, // Set the default value
-                                    items: categories.map(
-                                        (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
+                                    //value: categories.isNotEmpty ? categories[catId] : null, // Set the default value
+                                    items: data.map(
+                                        (item) =>  DropdownMenuItem(child:Text(item.catName!) ,value: item,)).toList(),
 
                                     onChanged: (val){
                                       print(val);
@@ -177,14 +181,11 @@ class _EditTrans extends State<EditTrans> {
 
 
                                       setState(() {
-                                        //String valstr=val ;
+                                        _selectedIndex=categories.indexOf(val!);
+                                        _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon!]);
+                                        _selectedType=categories[_selectedIndex].type!;
 
-                                        // _selectedCategory=valstr;
-                                        print(".............${val}");
-                                        _selectedIndex=categories.indexOf(val);
-                                        _selectedType=categories[_selectedIndex].type;
 
-                                        _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
                                         print("_________${categories[_selectedIndex].catName}");
                                       });
                                     },
@@ -281,10 +282,12 @@ class _EditTrans extends State<EditTrans> {
                         onPressed: ()async{
                           if(formKey.currentState!.validate()){
                             try{
+
                               if(
                               editedItem['TransName']!= titleCon.text ||
                                   editedItem['Total']!= double.parse(totalCon.text)||
-                                  editedItem['CatId']!=categories[_selectedIndex].catId
+
+                                               _selectedIndex!=-1
 
 
                               ){
@@ -308,7 +311,8 @@ else{
 
                                  "TransId":editedItem['TransId'],
                                  "TransName":titleCon.text,
-                                 "CatId":categories[_selectedIndex].catId,
+                                 "CatId": (_selectedIndex==-1?editedItem['CatId']: categories[_selectedIndex].catId),//it sends 0
+                               //  "CatId": 0,
                                  "Total":double.parse(totalCon.text),
 
                                  // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));

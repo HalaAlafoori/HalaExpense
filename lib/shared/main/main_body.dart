@@ -19,7 +19,7 @@ class MyMainBody extends StatelessWidget {
     final loginProvider = Provider.of<LoginProvider>(context);
     late double CurrentBudget = loginProvider.budget;
     List pages=[
-      MainHome(CurrentBudget),
+      MainHome(),
       MainGoals(),
       MainCategories(),
 

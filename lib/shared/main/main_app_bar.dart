@@ -8,8 +8,11 @@ import '../../providers/theme_provider.dart';
 class MyMainAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
   final Function(String) onChanged;
+  final Function refresh;
 
-  const MyMainAppBar( this.title,  this.onChanged);
+
+
+  const MyMainAppBar( this.title,  this.onChanged,this.refresh);
 
   @override
   _MyMainAppBarState createState() => _MyMainAppBarState();
@@ -32,22 +35,27 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
     setState(() {
       _isSearching = false;
       _searchController.clear();
+      widget.refresh();
+
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Padding(
+      leading:
+      Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 18.0),
         child: IconButton(
           onPressed: () {
-            Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+           // Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+            context.read<ThemeProvider>().toggleTheme();
           },
           icon: Consumer<ThemeProvider>(
             builder: (context, themeProvider, _) {
               return Icon(
-                themeProvider.isDark()
+                themeProvider.isDarkMode
                     ? Icons.light_mode // Light mode icon
                     : Icons.dark_mode, // Dark mode icon
                 size: 25,
@@ -61,16 +69,16 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
         controller: _searchController,
         decoration: InputDecoration(
           hintText: 'Search',
-          hintStyle: TextStyle(color: Colors.black),
+          hintStyle: TextStyle(color:ThemeProvider.getTitle(context)),
         ),
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color:ThemeProvider.getTitle(context)),
         autofocus: true,
         onChanged: widget.onChanged,
       )
           : Text(
         widget.title,
         style: TextStyle(
-          color: Colors.black,
+          color:ThemeProvider.getTitle(context),
           fontSize: 20,
           fontWeight: FontWeight.bold,
         ),
@@ -83,6 +91,7 @@ class _MyMainAppBarState extends State<MyMainAppBar> {
             icon: _isSearching ? Icon(Icons.close) : Icon(Icons.search),
             onPressed: () {
               if (_isSearching) {
+                //search and val=""
                 _stopSearch();
               } else {
                 _startSearch();

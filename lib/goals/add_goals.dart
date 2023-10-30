@@ -26,15 +26,32 @@ class AddGoals extends StatefulWidget {
 
 
 class _AddGoals extends State<AddGoals> {
-  _AddGoals(){
-    get_categories();
+  Future<List<CategoryModel>?>? _categories;
+  late List<CategoryModel> categories=[]; // Change the type to a mutable list
+  @override
+  initState(){
+    _categories= get_categories();
   }
 
-  Future get_categories()async{
-    categories= await CategoryRepository().getAll() as List;
-    //print(categories[0].name);
+  Future<List<CategoryModel>> get_categories()async{
+    var res= await CategoryRepository().getAll() as List;
+    _selectedIcon=Icon(MyIcons.allicons[res[0].catIcon]);
+  //  _selectedCategory =res[0].type==1? res[0]:res[1];
+    categories.clear();
+    res!.forEach((item) {
+      if(item.type==1)
+      categories.add(item);
+    });
+
+
+    return categories;
+    print(categories[0].catIcon);
+
+
   }
-  late List categories;
+
+
+
 
 
 
@@ -99,8 +116,8 @@ class _AddGoals extends State<AddGoals> {
                         width: MediaQuery.of(context).size.width,
                         child:
                         // Text("Category")),
-                        FutureBuilder<List<CategoryModel>>(
-                          future: CategoryRepository().getAll(),
+                        FutureBuilder(
+                          future: _categories,
                           builder: (context, snapshot) {
                             if (snapshot.connectionState == ConnectionState.waiting) {
                               return CircularProgressIndicator();
@@ -109,19 +126,17 @@ class _AddGoals extends State<AddGoals> {
                               _selectedCategory = data[0];
                               return
                                 DropdownButtonFormField(items: categories.map(
-                                        (item) =>  DropdownMenuItem(child:Text(item.catName,style: TextStyle(color:ThemeProvider.getLabel(context)),) ,value: item,)).toList(),
+                                        (item) =>  DropdownMenuItem(child:Text(item.catName!,style: TextStyle(color:ThemeProvider.getLabel(context)),) ,value: item,)).toList(),
 
                                     onChanged: (val){
                                       print(val);
 
 
+
                                       setState(() {
-                                        //String valstr=val ;
+                                        _selectedIndex=categories.indexOf(val!);
+                                        _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon!]);
 
-                                        // _selectedCategory=valstr;
-                                        _selectedIndex=categories.indexOf(val);
-
-                                        _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
                                         print("_________${categories[_selectedIndex].catName}");
                                       });
                                     },

@@ -27,6 +27,26 @@ class TransactionRepository{
     }
   }
 
+  Future<List<TransactionModel>> getAllRecent()async{
+
+    try{
+      // await Future.delayed(Duration(milliseconds: 300));
+      var res = await DbHelper().getAll(DbTables.Transactions);
+      List<TransactionModel> items = [];
+      if(res != null){
+        for (var e in res) {
+          items.add(TransactionModel.fromJson(e));
+        }
+        return items;
+      }
+
+      return items;
+    }
+    catch(ex){
+      rethrow;
+    }
+  }
+
   Future<bool> addToDb(TransactionModel obj)async{
     try{
       await Future.delayed(Duration(milliseconds: 300));
