@@ -334,7 +334,7 @@ else{
                                  noMoneyLeft=false;
 
                                });
-                               if(_selectedIndex==-1)
+
                                //var _selected=_selectedIndex
 
                                if(left+editedItem["Total"]- double.parse(totalCon.text)<0 && _selectedType==1 ){//&& type is red

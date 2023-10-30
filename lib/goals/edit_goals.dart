@@ -1,6 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../categories/icons.dart';
 import '../color.dart';
@@ -10,6 +11,7 @@ import '../data/repositories/goal_repo.dart';
 import '../models/category_model.dart';
 import '../models/goal_model.dart';
 
+import '../providers/login_provider.dart';
 import '../providers/theme_provider.dart';
 import '../shared/brunch/brunch_app_bar.dart';
 import '../shared/brunch/money_input.dart';
@@ -73,9 +75,30 @@ class _EditGoalState extends State<EditGoal> {
   var limitCon;
   var titleCon;
   int catId=-1;
+  bool noMoneyLeft=false;
 
   CategoryModel? _selectedCategory;
+  void noMoney(){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.warning, color: Colors.orange),
+              SizedBox(width: 8),
+              Text(
+                'No enough money for this saving plan',
+                style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.yellow,
+          elevation: 6,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: Duration(seconds: 3),
+        ));
 
+  }
 
   Icon? _selectedIcon;
 
@@ -120,6 +143,7 @@ class _EditGoalState extends State<EditGoal> {
 
   @override
   Widget build(BuildContext context) {
+    var left=context.watch<LoginProvider>().leftAmount;
     return Scaffold(
         appBar: MyBrunchAppBar("Edit Goals"),
         body:
@@ -304,8 +328,17 @@ class _EditGoalState extends State<EditGoal> {
                                     loading=true;
                                     issuccess=false;
                                     iserror=false;
+                                    noMoneyLeft=false;
 
                                   });
+                                      //1000+800-1800
+                                  if(left- double.parse(limitCon.text)<0 ){//&& type is red
+                                    noMoney();
+                                    noMoneyLeft=true;
+                                    loading=false;
+
+                                  }
+                                if(!noMoneyLeft){
                                   var data={
 
                                     "GoalId":editedItem['GoalId'],
@@ -338,7 +371,7 @@ class _EditGoalState extends State<EditGoal> {
                                     });
                                   }
                                 }
-                              }
+                              }}
 
                               catch(e){
                                 setState(() {
