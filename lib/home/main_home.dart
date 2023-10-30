@@ -429,7 +429,7 @@ print(">>>>>>>>>>>>>${income}");
                         ],
                         ),
                         Container(padding: EdgeInsets.all(10),
-                        child: Text("\$ ${income}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                        child: Text("\$ ${income}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                         )
 
                         ],
@@ -458,7 +458,7 @@ print(">>>>>>>>>>>>>${income}");
                         ],
                         ),
                         Container(padding: EdgeInsets.all(10),
-                        child: Text("\$ ${spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25),),
+                        child: Text("\$ ${spent}",style: TextStyle(fontWeight: FontWeight.bold,fontSize: 15),),
                         )
 
                         ],

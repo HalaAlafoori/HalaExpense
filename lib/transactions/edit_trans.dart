@@ -10,7 +10,9 @@ import 'package:halaexpenses/shared/brunch/reg_exp.dart';
 import 'package:halaexpenses/shared/brunch/title_input.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 import 'package:date_format/date_format.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/login_provider.dart';
 import '../providers/theme_provider.dart';
 import '../shared/brunch/brunch_app_bar.dart';
 import '../shared/brunch/money_input.dart';
@@ -92,7 +94,29 @@ class _EditTrans extends State<EditTrans> {
   bool iserror=false;
   bool issuccess=false;
   String error="";
+  bool noMoneyLeft=false;
 
+  void noMoney(){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.warning, color: Colors.orange),
+              SizedBox(width: 8),
+              Text(
+                'No enough money for this transaction',
+                style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.yellow,
+          elevation: 6,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: Duration(seconds: 3),
+        ));
+
+  }
   void noChange(){
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -117,6 +141,8 @@ class _EditTrans extends State<EditTrans> {
 
   @override
   Widget build(BuildContext context) {
+    var left=context.watch<LoginProvider>().leftAmount;
+
     return Scaffold(
       appBar: MyBrunchAppBar("Edit Transactions"),
       body:
@@ -305,8 +331,20 @@ else{
                                  loading=true;
                                  issuccess=false;
                                  iserror=false;
+                                 noMoneyLeft=false;
 
                                });
+                               if(_selectedIndex==-1)
+                               //var _selected=_selectedIndex
+
+                               if(left+editedItem["Total"]- double.parse(totalCon.text)<0 && _selectedType==1 ){//&& type is red
+                                 noMoney();
+                                 noMoneyLeft=true;
+                                 loading=false;
+
+                               }
+
+                               if(!noMoneyLeft){
                                var data={
 
                                  "TransId":editedItem['TransId'],
@@ -339,7 +377,7 @@ else{
 
                                  });
                                }
-                             }
+                             }}
                             }
 
                             catch(e){

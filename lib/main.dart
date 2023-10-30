@@ -26,8 +26,8 @@ void main() async {
     ),
   );
   // Delete the shared preference
-  //  SharedPreferences preferences = await SharedPreferences.getInstance();
-  //  preferences.clear();
+   SharedPreferences preferences = await SharedPreferences.getInstance();
+   preferences.clear();
   // preferences.remove('_budget');
 }
 class MyApp extends StatelessWidget {

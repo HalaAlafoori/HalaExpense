@@ -47,7 +47,7 @@ Widget GoalCard(context,item,progressVal){
                         //color: Colors.pinkAccent,
                         padding: EdgeInsets.only(top: 20)
                         ,child:
-                    Row(crossAxisAlignment: CrossAxisAlignment.end,children: [Text(item['SpentLimit'].toString(),style: TextStyle(fontSize: 17)),Icon(Icons.monetization_on)],))
+                    Row(crossAxisAlignment: CrossAxisAlignment.end,children: [Text(item['SpentLimit'].toString(),style: TextStyle(fontSize: 12)),Icon(Icons.monetization_on)],))
                   ],
 // Row(children: [],)
                   ),

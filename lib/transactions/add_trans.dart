@@ -268,13 +268,9 @@ void noMoney(){
                               iserror=false;
                               noMoneyLeft=false;
 
-
-
-
-
                               });
 
-                              if(left- double.parse(totalCon.text)<0 ){//&& type is red
+                              if(left- double.parse(totalCon.text)<0 && (_selectedIndex!=-1 &&categories[_selectedIndex].type==1)){//&& type is red
                                  noMoney();
                                  noMoneyLeft=true;
                                  loading=false;

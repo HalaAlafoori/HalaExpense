@@ -11,9 +11,11 @@ import 'package:halaexpenses/shared/brunch/title_input.dart';
 import 'package:halaexpenses/shared/main/main_app_bar.dart';
 import 'package:date_format/date_format.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../data/repositories/goal_repo.dart';
 import '../models/goal_model.dart';
+import '../providers/login_provider.dart';
 import '../providers/theme_provider.dart';
 import '../shared/brunch/money_input.dart';
 
@@ -33,6 +35,28 @@ class _AddGoals extends State<AddGoals> {
     _categories= get_categories();
   }
 
+
+  void noMoney(){
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Row(
+            children: [
+              Icon(Icons.warning, color: Colors.orange),
+              SizedBox(width: 8),
+              Text(
+                'No enough money for this saving plan',
+                style: TextStyle(color: Colors.orange, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          backgroundColor: Colors.yellow,
+          elevation: 6,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: Duration(seconds: 3),
+        ));
+
+  }
   Future<List<CategoryModel>> get_categories()async{
     var res= await CategoryRepository().getAll() as List;
 
@@ -71,10 +95,11 @@ class _AddGoals extends State<AddGoals> {
   bool iserror=false;
   bool issuccess=false;
   String error="";
-
+  bool noMoneyLeft=false;
 
   @override
   Widget build(BuildContext context) {
+    var left=context.watch<LoginProvider>().leftAmount;
     return
 
 
@@ -259,6 +284,7 @@ class _AddGoals extends State<AddGoals> {
                                 loading=true;
                                 issuccess=false;
                                 iserror=false;
+                                noMoneyLeft=false;
 
 
 
@@ -266,39 +292,49 @@ class _AddGoals extends State<AddGoals> {
 
                               });
 
-                              var dateTime = DateFormat('yyyy-MM-ddThh:mm:ss').parse(DateTime.now().toIso8601String());
-                              print("numbers= ${dateTime.millisecondsSinceEpoch} & ${dateTime}");
+                              if(left- double.parse(limitCon.text)<0 ){//&& type is red
+                                noMoney();
+                                noMoneyLeft=true;
+                                loading=false;
 
-                              var data={
-
-                                "CatId":categories[_selectedIndex].catId,
-                                "SpentLimit":double.parse(limitCon.text),
-
-                                // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
-
-                                "GoalDate":dateTime.millisecondsSinceEpoch
-
-                              };
-                             // print(data['TransDate']);
-                              var addRes=await GoalRepository().addToDb(GoalModel.fromJson(data));
-                              if(addRes ){
-                                setState(() {
-                                  loading=false;
-                                  issuccess=true;
-                                  iserror=false;
-                                  error="";
-
-                                });
-                                Navigator.of(context).pop(true);
                               }
-                              else{
-                                setState(() {
-                                  loading=false;
-                                  issuccess=false;
-                                  iserror=true;
-                                  error="Operation failed!!";
 
-                                });
+
+                              if (!noMoneyLeft) {
+                                var dateTime = DateFormat('yyyy-MM-ddThh:mm:ss').parse(DateTime.now().toIso8601String());
+                                print("numbers= ${dateTime.millisecondsSinceEpoch} & ${dateTime}");
+
+                                var data={
+
+                                  "CatId":categories[_selectedIndex].catId,
+                                  "SpentLimit":double.parse(limitCon.text),
+
+                                  // "TransDate":formatDate(DateFormat('hh:mm:ss').format(DateTime.now()));
+
+                                  "GoalDate":dateTime.millisecondsSinceEpoch
+
+                                };
+                                                             // print(data['TransDate']);
+                                var addRes=await GoalRepository().addToDb(GoalModel.fromJson(data));
+                                if(addRes ){
+                                  setState(() {
+                                    loading=false;
+                                    issuccess=true;
+                                    iserror=false;
+                                    error="";
+
+                                  });
+                                  Navigator.of(context).pop(true);
+                                }
+                                else{
+                                  setState(() {
+                                    loading=false;
+                                    issuccess=false;
+                                    iserror=true;
+                                    error="Operation failed!!";
+
+                                  });
+                                }
                               }
                             }
 
