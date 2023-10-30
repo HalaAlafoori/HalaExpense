@@ -132,7 +132,7 @@ class _MainCategoriesState extends State<MainCategories> {
                 if(snapshot.hasError)
                   return Center(child: Text("Error ${snapshot.error.toString()}"));
                 else if(snapshot.hasData){
-                 data=snapshot.data??[];
+                 final List data=snapshot.data??[];
                   return
 
                     GridView.count(crossAxisCount: 3,childAspectRatio: 1,

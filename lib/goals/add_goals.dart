@@ -35,14 +35,14 @@ class _AddGoals extends State<AddGoals> {
 
   Future<List<CategoryModel>> get_categories()async{
     var res= await CategoryRepository().getAll() as List;
-    _selectedIcon=Icon(MyIcons.allicons[res[0].catIcon]);
-  //  _selectedCategory =res[0].type==1? res[0]:res[1];
+
+
     categories.clear();
     res!.forEach((item) {
       if(item.type==1)
       categories.add(item);
     });
-
+    _selectedIcon=Icon(MyIcons.allicons[categories[0].catIcon!]);
 
     return categories;
     print(categories[0].catIcon);
@@ -125,7 +125,7 @@ class _AddGoals extends State<AddGoals> {
                               var data = snapshot.data!;
                               _selectedCategory = data[0];
                               return
-                                DropdownButtonFormField(items: categories.map(
+                                DropdownButtonFormField(items: data.map(
                                         (item) =>  DropdownMenuItem(child:Text(item.catName!,style: TextStyle(color:ThemeProvider.getLabel(context)),) ,value: item,)).toList(),
 
                                     onChanged: (val){

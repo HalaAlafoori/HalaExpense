@@ -28,10 +28,30 @@ class EditGoal extends StatefulWidget {
 
 class _EditGoalState extends State<EditGoal> {
 
+  Future<List<CategoryModel>?>? _categories;
+  late List<CategoryModel> categories=[]; // Change the type to a mutable list
+
+
+  Future<List<CategoryModel>> get_categories()async{
+    var res= await CategoryRepository().getAll() as List;
+
+
+    categories.clear();
+    res!.forEach((item) {
+      if(item.type==1)
+        categories.add(item);
+    });
+    _selectedIcon=Icon(MyIcons.allicons[categories[0].catIcon!]);
+
+    return categories;
+    print(categories[0].catIcon);
+
+
+  }
 
   @override
   void initState() {
-    get_categories();
+    _categories= get_categories();
 
     editedItem=widget.item;
     limitCon=TextEditingController(text: editedItem['SpentLimit'].toString());
@@ -43,19 +63,10 @@ class _EditGoalState extends State<EditGoal> {
 
   }
 
-  Future get_categories()async{
-    categories= await CategoryRepository().getAll() as List;
-    int index=0;
-    for(var category in categories){
-      if(editedItem['CatId']==category.catId)
-        catId=index;
-      index++;
-    }
 
-  }
 
   bool dateChanged=false;
-  late List categories;
+
   var editedItem;
 
 
@@ -68,7 +79,7 @@ class _EditGoalState extends State<EditGoal> {
 
   Icon? _selectedIcon;
 
-  int _selectedIndex=0;
+  int _selectedIndex=-1;
   int _selectedType=0;
 
 
@@ -154,17 +165,17 @@ class _EditGoalState extends State<EditGoal> {
                           width: MediaQuery.of(context).size.width,
                           child:
                           // Text("Category")),
-                          FutureBuilder<List<CategoryModel>>(
-                            future: CategoryRepository().getAll(),
+                          FutureBuilder(
+                            future: _categories,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
                                 var data = snapshot.data!;
                                 _selectedCategory=data[0];
                                 return
                                   DropdownButtonFormField(
-                                      value: categories.isNotEmpty ? categories[catId] : null, // Set the default value
-                                      items: categories.map(
-                                              (item) =>  DropdownMenuItem(child:Text(item.catName) ,value: item,)).toList(),
+                                    //value: categories.isNotEmpty ? categories[catId] : null, // Set the default value
+                                      items: data.map(
+                                              (item) =>  DropdownMenuItem(child:Text(item.catName!) ,value: item,)).toList(),
 
                                       onChanged: (val){
                                         print(val);
@@ -172,14 +183,11 @@ class _EditGoalState extends State<EditGoal> {
 
 
                                         setState(() {
-                                          //String valstr=val ;
+                                          _selectedIndex=categories.indexOf(val!);
+                                          _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon!]);
+                                          _selectedType=categories[_selectedIndex].type!;
 
-                                          // _selectedCategory=valstr;
-                                          print(".............${val}");
-                                          _selectedIndex=categories.indexOf(val);
-                                          _selectedType=categories[_selectedIndex].type;
 
-                                          _selectedIcon=Icon(MyIcons.allicons[categories[_selectedIndex].catIcon]);
                                           print("_________${categories[_selectedIndex].catName}");
                                         });
                                       },
@@ -279,8 +287,7 @@ class _EditGoalState extends State<EditGoal> {
                                 if(
 
                                     editedItem['SpentLimit']!= double.parse(limitCon.text)||
-                                    editedItem['CatId']!=categories[_selectedIndex].catId
-
+                                        _selectedIndex!=-1
 
                                 ){
                                   dateChanged=true;
@@ -302,7 +309,9 @@ class _EditGoalState extends State<EditGoal> {
                                   var data={
 
                                     "GoalId":editedItem['GoalId'],
-                                    "CatId":categories[_selectedIndex].catId,
+                                    //"CatId":categories[_selectedIndex].catId,
+                                    "CatId": (_selectedIndex==-1?editedItem['CatId']: categories[_selectedIndex].catId),//it sends 0
+
                                     "SpentLimit":double.parse(limitCon.text),
                                     "GoalDate":editedItem['GoalDate']
 
